@@ -297,7 +297,7 @@ export default function Home() {
     <>
       <Head>
         <title>Trump Fuckupometer™ — The Long Memo</title>
-        <meta name="description" content="For when 'drill baby drill' meets a little excursion/war. Live WTI crude index vs. Inauguration Day 2026." />
+        <meta name="description" content="For when 'drill baby drill' meets a little excursion/war. Live WTI crude index vs. Inauguration Day 2025." />
         <meta property="og:title" content="Trump Fuckupometer™ — The Long Memo" />
         <meta property="og:description" content={`WTI crude: $${price.toFixed(2)}/bbl — ${data?.sinceInaugurationPct ?? '~27'}% above the Inauguration Day baseline.`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -341,7 +341,7 @@ export default function Home() {
               For when "drill baby drill" meets a little excursion/war.
             </p>
             <p style={{ ...serif, fontSize: '13px', color: T.inkMuted, margin: 0, lineHeight: 1.7 }}>
-              WTI crude oil indexed to Inauguration Day 2026 (baseline ~$76/bbl). Prices refresh every five minutes.
+              WTI crude oil indexed to Inauguration Day 2025 (baseline ~$76/bbl). Prices refresh every five minutes.
               Casualty figures sourced from Pentagon statements, Al Jazeera, Britannica, HRANA, and USNI News — all open source.
             </p>
           </div>
@@ -394,7 +394,7 @@ export default function Home() {
                 "We're going to get the price of energy down… get it down fast… we're going to drill, baby, drill."
               </p>
               <p style={{ ...serif, fontSize: '12px', color: T.inkMuted, margin: 0 }}>
-                — Donald J. Trump, Inauguration Day, January 20, 2026. &nbsp;
+                — Donald J. Trump, Inauguration Day, January 20, 2025. &nbsp;
                 <span style={{ color: T.terra, fontWeight: 600 }}>WTI that day: ~$76. Today: ${price.toFixed(2)}.</span>
               </p>
             </div>
@@ -465,7 +465,7 @@ export default function Home() {
             )}
             <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.6 }}>
               Fertilizer tracked via CF Industries (NYSE: CF) — largest US urea producer. Urea is an OTC market with no liquid exchange-traded futures.
-              All inauguration baselines estimated from January 20, 2026 market close.
+              All inauguration baselines estimated from January 20, 2025 market close.
             </p>
           </div>
 
