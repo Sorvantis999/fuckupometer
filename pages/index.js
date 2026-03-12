@@ -312,7 +312,7 @@ export default function Home() {
         <div style={{ background: T.slateDk, borderTop: `3px solid ${T.terra}`, borderBottom: `1px solid rgba(255,255,255,0.08)` }}>
           <div style={{ maxWidth: '860px', margin: '0 auto', padding: '0 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '56px' }}>
             {/* Logo lockup: icon + wordmark */}
-            <a href="https://thelongmemo.substack.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://thelongmemo.com" target="_blank" rel="noopener noreferrer"
               style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
               <img src="/tlm-logo.png" alt="TLM" style={{ height: '34px', width: '34px', borderRadius: '3px', flexShrink: 0 }}/>
               <img src="/tlm-wordmark-dark.png" alt="The Long Memo" style={{ height: '22px', opacity: 0.92 }}/>
@@ -525,7 +525,7 @@ export default function Home() {
             <p style={{ ...serif, fontSize: '13px', color: T.inkMuted, margin: '0 0 1.25rem' }}>
               Read The Long Memo — institutional analysis for people who need to know what's actually happening.
             </p>
-            <a href="https://thelongmemo.substack.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://thelongmemo.com" target="_blank" rel="noopener noreferrer"
               style={{ display: 'inline-block', padding: '10px 28px', background: 'transparent', color: T.terraPale, border: `1px solid ${T.terra}`, borderRadius: '2px', fontSize: '12px', fontWeight: 400, textDecoration: 'none', ...serif, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               Read The Long Memo →
             </a>
@@ -537,7 +537,7 @@ export default function Home() {
               Data: WTI (CL=F), Natural Gas (NG=F), Gasoline (RB=F), Wheat (ZW=F), Corn (ZC=F), CF Industries (CF) via Yahoo Finance.
               Refreshes every five minutes. Not financial advice. This is a gag. A very accurate gag.
               &nbsp;·&nbsp;
-              <a href="https://thelongmemo.substack.com" style={{ color: T.inkMuted }}>The Long Memo</a>
+              <a href="https://thelongmemo.com" style={{ color: T.inkMuted }}>The Long Memo</a>
               &nbsp;·&nbsp;
               <em>Heckuva job, Trumpy!</em>
             </p>
