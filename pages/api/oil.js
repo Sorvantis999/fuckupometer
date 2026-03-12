@@ -21,12 +21,12 @@ export default async function handler(req, res) {
     if (!result) throw new Error('No data in response');
 
     const meta = result.meta;
-    const price = meta.regularMarketPrice ?? meta.previousClose;
-    const prevClose = meta.previousClose;
+    const price = meta.regularMarketPrice;
+    const prevClose = meta.chartPreviousClose ?? meta.regularMarketPreviousClose ?? price;
     const dayHigh = meta.regularMarketDayHigh;
     const dayLow = meta.regularMarketDayLow;
     const change = price - prevClose;
-    const changePct = (change / prevClose) * 100;
+    const changePct = prevClose ? (change / prevClose) * 100 : 0;
 
     const INAUGURATION_PRICE = 76.0;
     const ALL_TIME_PEAK = 119.48;
