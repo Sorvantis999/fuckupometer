@@ -84,6 +84,21 @@ const HORMUZ = {
   shipsSrc: 'USNI News, Mar 10',
 };
 
+/* ─── War cost data (CSIS, Pentagon, Penn Wharton) ──────────────────────────── */
+/* Pentagon confirmed $11.3B for first 6 days. CSIS: ~$891M/day peak (first 100hrs),
+   dropping to ~$220M/day sustained. Day 13 estimate: $11.3B + (7 × $220M) ≈ $12.8B */
+const WAR_COST_DAY6_B   = 11.3;  /* Pentagon briefing to Congress, Mar 5 */
+const WAR_COST_DAY6     = 6;
+const WAR_COST_DAILY_B  = 0.22;  /* $220M/day sustained after initial phase (CSIS) */
+const PWBM_MIDPOINT_B   = 65;    /* Penn Wharton midpoint direct cost, 2-month scenario */
+const PWBM_TOTAL_B      = 180;   /* Penn Wharton total economic impact, midpoint */
+const US_HOUSEHOLDS     = 132;   /* million — US Census 2024 */
+
+function getWarCostEstimate(dayCount) {
+  const sustainedDays = Math.max(0, dayCount - WAR_COST_DAY6);
+  return (WAR_COST_DAY6_B + sustainedDays * WAR_COST_DAILY_B).toFixed(1);
+}
+
 const EVENTS_2025 = [
   { date: 'Jan 20', tier: 'baseline', label: 'Inauguration. "We\'re going to get the price of energy down — drill, baby, drill." WTI: ~$76. Simultaneously, the US begins amassing the largest air power armada in the Middle East since the 2003 Iraq invasion.' },
   { date: 'Jun 13', tier: 'critical', label: 'Israel launches multipronged strikes on Iran\'s nuclear facilities, military sites, and senior commanders. Brent spikes 8.8% intraday to ~$75.5. Iran retaliates with missile attacks on Israel.' },
@@ -270,6 +285,145 @@ function CommodityCard({ c }) {
           {since ? '+' : ''}{c.sinceInaugPct}% since 1/20/25
         </span>
       </div>
+    </div>
+  );
+}
+
+/* ─── Average American Cost ─────────────────────────────────────────────────── */
+function AverageAmericanCost({ dayCount }) {
+  const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  const warCostB  = parseFloat(getWarCostEstimate(dayCount));
+  const perHH     = ((warCostB * 1000) / US_HOUSEHOLDS).toFixed(0); /* dollars per household */
+  const pwbmPerHH = ((PWBM_MIDPOINT_B * 1000) / US_HOUSEHOLDS).toFixed(0);
+  const totPerHH  = ((PWBM_TOTAL_B * 1000) / US_HOUSEHOLDS).toFixed(0);
+
+  const items = [
+    {
+      label: 'War cost to date',
+      value: `$${warCostB}B`,
+      sub: 'Pentagon confirmed $11.3B first 6 days. ~$220M/day sustained (CSIS). Day ' + dayCount + ' estimate.',
+      src: 'The Hill / Pentagon briefing to Congress, Mar 5; CSIS, Mar 5',
+      color: '#C0392B',
+    },
+    {
+      label: 'Your household share — so far',
+      value: `$${parseInt(perHH).toLocaleString()}`,
+      sub: `${US_HOUSEHOLDS}M US households. At $${warCostB}B total, each household's share of the unbudgeted cost.`,
+      src: 'US Census 2024; calculation by The Long Memo',
+      color: '#C0392B',
+    },
+    {
+      label: 'Projected direct cost (Penn Wharton)',
+      value: `$${PWBM_MIDPOINT_B}B`,
+      sub: 'Penn Wharton Budget Model midpoint for a 2-month campaign. Range: $40B–$95B direct.',
+      src: 'Penn Wharton Budget Model / Fortune, Mar 3, 2026',
+      color: '#B85C38',
+    },
+    {
+      label: 'Your household share — projected',
+      value: `$${parseInt(pwbmPerHH).toLocaleString()}`,
+      sub: `At Penn Wharton's $${PWBM_MIDPOINT_B}B midpoint. Total economic impact estimate reaches $180B — $${parseInt(totPerHH).toLocaleString()}/household.`,
+      src: 'Penn Wharton Budget Model; calculation by The Long Memo',
+      color: '#B85C38',
+    },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: '#CEC8B8', borderRadius: '2px', overflow: 'hidden' }}>
+      {items.map((item, i) => (
+        <div key={i} style={{ background: '#FFFFFF', padding: '1.25rem 1.5rem', borderTop: `3px solid ${item.color}` }}>
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9C9590' }}>{item.label}</p>
+          <p style={{ ...display, margin: '0 0 6px', fontSize: '2rem', color: item.color, lineHeight: 1 }}>{item.value}</p>
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '11px', color: '#6B6258', lineHeight: 1.6 }}>{item.sub}</p>
+          <p style={{ ...serif, margin: 0, fontSize: '10px', color: '#9C9590', fontStyle: 'italic' }}>{item.src}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── What It Could Buy ──────────────────────────────────────────────────────── */
+function WhatItCouldBuy({ dayCount }) {
+  const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  const warCostB = parseFloat(getWarCostEstimate(dayCount));
+  const warCostM = warCostB * 1000; /* in millions */
+
+  /* All math is: warCostM / unit_cost_M = quantity */
+  const ITEMS = [
+    {
+      icon: '🏥',
+      category: 'Healthcare',
+      headline: `${Math.round(warCostM / 6).toLocaleString()}`,
+      unit: 'people covered',
+      detail: 'Average ACA marketplace premium with subsidy: ~$6,000/year/person. At current war cost, this covers a full year of health insurance for that many Americans.',
+      src: 'KFF Health Insurance Marketplace Calculator 2025',
+      color: '#2E7D4F',
+    },
+    {
+      icon: '🏫',
+      category: 'Public Education',
+      headline: `${Math.round(warCostM / 0.069).toLocaleString()}`,
+      unit: 'teacher-years',
+      detail: 'Average US public school teacher salary: ~$69,000/year (NEA 2024). War cost to date could fund that many teachers for one full school year.',
+      src: 'NEA Rankings & Estimates 2024; calculation by The Long Memo',
+      color: '#2B4870',
+    },
+    {
+      icon: '🌉',
+      category: 'Infrastructure',
+      headline: `${(warCostB / 2600 * 100).toFixed(1)}%`,
+      unit: 'of the ASCE infrastructure gap',
+      detail: 'ASCE estimates a $2.6 trillion infrastructure investment gap over 10 years. The war cost to date covers that fraction of the total unfunded need.',
+      src: 'ASCE 2025 Infrastructure Report Card',
+      color: '#B85C38',
+    },
+    {
+      icon: '💰',
+      category: 'Working American Tax Relief',
+      headline: `$${Math.round(warCostM / 100).toLocaleString()}`,
+      unit: 'per working American',
+      detail: 'Roughly 100 million working Americans file taxes. The war cost to date divided equally would deliver that much per filer — not a stimulus check, a hypothetical cost comparison.',
+      src: 'IRS Statistics of Income 2024; calculation by The Long Memo',
+      color: '#B8860B',
+    },
+    {
+      icon: '🍽️',
+      category: 'Food Security (SNAP)',
+      headline: `${Math.round(warCostM / 2.4 / 12).toLocaleString()}`,
+      unit: 'families fed for a year',
+      detail: 'Average SNAP benefit: ~$2,400/year for a family of four. War cost to date could fund that many families' food assistance for one year.',
+      src: 'USDA FNS SNAP Data 2025; calculation by The Long Memo',
+      color: '#C0392B',
+    },
+    {
+      icon: '🎓',
+      category: 'Federal Student Aid',
+      headline: `${Math.round(warCostM / 7.5).toLocaleString()}`,
+      unit: 'Pell Grants',
+      detail: 'Maximum Pell Grant award: $7,395 for 2025–26. War cost to date could fund that many maximum-award grants — roughly one full year of college for each recipient.',
+      src: 'Federal Student Aid 2025–26 Award Year; calculation by The Long Memo',
+      color: '#1A2535',
+    },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: '#CEC8B8', borderRadius: '2px', overflow: 'hidden' }}>
+      {ITEMS.map((item, i) => (
+        <div key={i} style={{ background: '#FFFFFF', padding: '1.25rem', borderTop: `3px solid ${item.color}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ fontSize: '1.3rem' }}>{item.icon}</span>
+            <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9C9590' }}>{item.category}</p>
+          </div>
+          <p style={{ ...display, margin: '0 0 2px', fontSize: '1.6rem', color: item.color, lineHeight: 1 }}>{item.headline}</p>
+          <p style={{ ...serif, margin: '0 0 8px', fontSize: '11px', color: '#6B6258', fontWeight: 600 }}>{item.unit}</p>
+          <p style={{ ...serif, margin: '0 0 6px', fontSize: '11px', color: '#6B6258', lineHeight: 1.6 }}>{item.detail}</p>
+          <p style={{ ...serif, margin: 0, fontSize: '10px', color: '#9C9590', fontStyle: 'italic' }}>{item.src}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -576,13 +730,11 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Day counter — styled band between title and metrics */}
-          <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: '10px', background: T.slateDk, borderLeft: `4px solid ${T.red}`, borderRadius: '2px', padding: '10px 22px 10px 18px' }}>
-              <span style={{ ...display, fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontStyle: 'italic', color: T.red, lineHeight: 1 }}>Day {dayCount}</span>
-              <span style={{ ...serif, fontSize: '13px', color: 'rgba(245,241,235,0.65)', letterSpacing: '0.06em' }}>of Operation Epic Fury</span>
-              <span style={{ ...serif, fontSize: '11px', color: 'rgba(245,241,235,0.35)', letterSpacing: '0.04em', fontStyle: 'italic' }}>· commenced Feb 28, 2026</span>
-            </div>
+          {/* Day counter — clean centered red type, no banner */}
+          <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${T.border}`, textAlign: 'center' }}>
+            <p style={{ ...display, fontSize: 'clamp(1.3rem, 3vw, 1.75rem)', fontStyle: 'italic', color: T.red, margin: 0, letterSpacing: '-0.01em' }}>
+              Day {dayCount} of Operation Epic Fury &nbsp;·&nbsp; commenced Feb 28, 2026
+            </p>
           </div>
 
           {error && (
@@ -770,6 +922,34 @@ export default function Home() {
             <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.6 }}>
               Fertilizer tracked via CF Industries (NYSE: CF) — largest US urea producer. Urea is an OTC market with no liquid exchange-traded futures.
               All inauguration baselines estimated from January 20, 2025 market close.
+            </p>
+          </div>
+
+          {/* Average American cost */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead, color: T.red }}>What This Is Costing the Average American</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              The Pentagon confirmed $11.3 billion spent in the first six days. Penn Wharton projects $40–95 billion for a two-month campaign.
+              Here is what that means per household — and what those dollars could have done instead.
+            </p>
+            <AverageAmericanCost dayCount={dayCount}/>
+            <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
+              Household share calculated by dividing unbudgeted war cost by 132 million US households (Census 2024). Penn Wharton Budget Model range:
+              $40B–$95B direct; $50B–$210B total economic impact. Senator Coons has noted the Pentagon figure is likely an undercount.
+            </p>
+          </div>
+
+          {/* What it could buy */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead }}>What ${ parseFloat(getWarCostEstimate(dayCount)).toFixed(1) }B Would Have Bought</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              At the current estimated war cost — Day {dayCount}, running total — here is what the same dollars could alternatively fund.
+              Not an argument about whether the war was justified. Just arithmetic.
+            </p>
+            <WhatItCouldBuy dayCount={dayCount}/>
+            <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
+              All comparisons use the current estimated war cost to date (Day {dayCount}). Sources listed per card. These are illustrative dollar-for-dollar
+              comparisons — not policy proposals. The Long Memo does not take positions on whether the war should be fought. We do math.
             </p>
           </div>
 
