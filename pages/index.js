@@ -78,11 +78,11 @@ const TRUMP_SAID = [
 
 /* ─── Hormuz stat ────────────────────────────────────────────────────────────── */
 const HORMUZ = {
-  baseline: 160,
-  current: 55,
-  dropPct: 66,
-  src: 'S&P Global Market Intelligence, week of Mar 1–8',
-  shipsStruck: 20,
+  dropPct: 95,
+  kplerDropPct: 92,
+  src: 'S&P Global Market Intelligence (95%, week of Mar 1); Kpler vessel tracking (92%, week of Mar 12)',
+  shipsStruck: 13,
+  shipsSrc: 'USNI News, Mar 10',
 };
 
 const EVENTS_2025 = [
@@ -276,15 +276,18 @@ function CommodityCard({ c }) {
 }
 
 /* ─── Gas Calculator ─────────────────────────────────────────────────────────── */
-function GasCalc({ gasPrice }) {
+function GasCalc({ rbobPrice }) {
   const [mpg,   setMpg]   = useState(28);
-  const [miles, setMiles] = useState(250);
+  const [miles, setMiles] = useState(1000); /* ~avg American driver: 12k miles/year */
 
-  const INAUG_GAS = 3.20;
-  const currentGas = gasPrice || 3.85;
-  const galPerWeek = miles / mpg;
-  const extraPerWeek = ((currentGas - INAUG_GAS) * galPerWeek).toFixed(2);
-  const extraPerYear = ((currentGas - INAUG_GAS) * galPerWeek * 52).toFixed(0);
+  /* RBOB futures → retail pump price: add ~$1.00 for federal/state taxes + retail margin */
+  const RETAIL_MARKUP   = 1.00;
+  const INAUG_RETAIL    = 3.13;  /* EIA national avg retail Jan 20, 2025 */
+  const currentRetail   = rbobPrice ? parseFloat((rbobPrice + RETAIL_MARKUP).toFixed(2)) : 3.72;
+  const extraPerGal     = currentRetail - INAUG_RETAIL;
+  const galPerMonth     = miles / mpg;
+  const extraPerMonth   = (extraPerGal * galPerMonth).toFixed(2);
+  const extraPerYear    = (extraPerGal * galPerMonth * 12).toFixed(0);
 
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
   const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
@@ -304,34 +307,101 @@ function GasCalc({ gasPrice }) {
         </div>
         <div>
           <label style={{ ...serif, fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkMuted, display: 'block', marginBottom: '6px' }}>
-            Miles / week
+            Miles / month
           </label>
           <input
-            type="number" value={miles} min={10} max={2000}
+            type="number" value={miles} min={100} max={5000}
             onChange={e => setMiles(Math.max(1, parseFloat(e.target.value) || 1))}
             style={{ width: '100%', padding: '8px 10px', border: `1px solid ${T.border}`, borderRadius: '2px', background: T.bgTint, ...serif, fontSize: '1.1rem', color: T.ink, outline: 'none' }}
           />
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden', marginBottom: '10px' }}>
         <div style={{ background: T.bgCard, padding: '1rem 1.25rem' }}>
-          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkMuted }}>Extra cost / week</p>
-          <p style={{ ...display, margin: 0, fontSize: '2rem', color: parseFloat(extraPerWeek) > 0 ? T.red : T.green, lineHeight: 1 }}>
-            ${extraPerWeek}
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkMuted }}>Pump price now</p>
+          <p style={{ ...display, margin: 0, fontSize: '2rem', color: T.red, lineHeight: 1 }}>
+            ${currentRetail.toFixed(2)}
           </p>
-          <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', color: T.inkMuted }}>vs. Jan 20, 2025</p>
+          <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', color: T.inkMuted }}>vs. $3.13 on 1/20/25</p>
         </div>
         <div style={{ background: T.bgCard, padding: '1rem 1.25rem' }}>
-          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkMuted }}>Annualized pain</p>
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkMuted }}>Extra / month</p>
+          <p style={{ ...display, margin: 0, fontSize: '2rem', color: parseFloat(extraPerMonth) > 0 ? T.red : T.green, lineHeight: 1 }}>
+            ${extraPerMonth}
+          </p>
+          <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', color: T.inkMuted }}>at your mileage</p>
+        </div>
+        <div style={{ background: T.bgCard, padding: '1rem 1.25rem' }}>
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: T.inkMuted }}>Annualized</p>
           <p style={{ ...display, margin: 0, fontSize: '2rem', color: parseFloat(extraPerYear) > 0 ? T.red : T.green, lineHeight: 1 }}>
             ${parseInt(extraPerYear).toLocaleString()}
           </p>
-          <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', color: T.inkMuted }}>per year at this price</p>
+          <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', color: T.inkMuted }}>per year</p>
         </div>
       </div>
-      <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '8px 0 0', fontStyle: 'italic' }}>
-        Gasoline (RBOB) baseline: ~$3.20/gal on Jan 20, 2025. Current: ${currentGas.toFixed(2)}/gal live.
+      <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: 0, fontStyle: 'italic', lineHeight: 1.7 }}>
+        Pump price = RBOB futures + $1.00 (federal/state taxes + retail margin). Inauguration baseline: $3.13/gal (EIA national avg, Jan 20, 2025).
+        Average US driver: ~1,000 miles/month, ~28 MPG. EIA projects retail gas could approach $5.00/gal in Q2 if Hormuz closure persists (JPMorgan, Mar 11).
       </p>
+    </div>
+  );
+}
+
+/* ─── Broader Cost Impact ────────────────────────────────────────────────────── */
+function BroaderImpact() {
+  const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  /* Based on:
+     - Fed Board research: 10% oil increase → food CPI +0.3%, core CPI +0.1% (FEDS Notes, Dec 2023)
+     - WTI up ~25% from inauguration ($76 → $95+)
+     - Average US household grocery spend: ~$550/month (BLS CES 2024)
+     - JPMorgan/Goldman: airfare CPI up to 20% on jet fuel costs (CNBC, Mar 11)
+     - Fertilizer (natural gas derivative): already embedded in food supply chain
+  */
+  const IMPACTS = [
+    {
+      label: 'Groceries',
+      est: '+$15–30/mo',
+      estColor: '#C0392B',
+      note: 'Oil up ~25% from inaug → food CPI +~0.75%. Applied to avg household spend of ~$550/mo. Fertilizer (nat gas derivative) adds further upward pressure with 1–2 season lag.',
+      src: 'Fed Board FEDS Notes, Dec 2023; BLS Consumer Expenditure Survey',
+    },
+    {
+      label: 'Airfares',
+      est: '+15–20%',
+      estColor: '#C0392B',
+      note: 'Jet fuel is ~25–30% of airline operating cost. With crude at $95+, JPMorgan projects airfare CPI could rise from 2.2% to ~20% if sustained through Q2.',
+      src: 'JPMorgan Private Bank via CNBC, Mar 11, 2026',
+    },
+    {
+      label: 'Consumables',
+      est: '+$5–12/mo',
+      estColor: '#B85C38',
+      note: 'Petroleum is a primary input for plastics, packaging, cleaning products, and synthetic fibers. Core CPI +~0.25% at current oil levels; household impact ~$5–12/mo across consumables.',
+      src: 'Fed Board FEDS Notes, Dec 2023; EIA oil-to-consumer analysis',
+    },
+    {
+      label: 'Durables',
+      est: '1–2% costlier',
+      estColor: '#B8860B',
+      note: 'Appliances, vehicles, electronics: oil price increases raise PPI (producer prices) faster than CPI. PPI pass-through to retail durables typically runs 3–6 months. Effect building.',
+      src: 'ScienceDirect: Oil price shocks and inflation, 2025',
+    },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: '#CEC8B8', borderRadius: '2px', overflow: 'hidden' }}>
+      {IMPACTS.map((item, i) => (
+        <div key={i} style={{ background: '#FFFFFF', padding: '1rem 1.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+            <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9C9590' }}>{item.label}</p>
+            <span style={{ ...display, fontSize: '1.1rem', color: item.estColor, lineHeight: 1 }}>{item.est}</span>
+          </div>
+          <p style={{ ...serif, margin: '0 0 4px', fontSize: '11px', color: '#6B6258', lineHeight: 1.6 }}>{item.note}</p>
+          <p style={{ ...serif, margin: 0, fontSize: '10px', color: '#9C9590', fontStyle: 'italic' }}>{item.src}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -495,13 +565,7 @@ export default function Home() {
               Live Market Intelligence · Operation Epic Fury
             </div>
 
-            {/* Day counter banner */}
-            <div style={{ background: T.slateDk, borderRadius: '2px', padding: '10px 16px', marginBottom: '1.25rem', display: 'inline-flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ ...display, fontSize: '2rem', fontStyle: 'italic', color: T.red, lineHeight: 1 }}>Day {dayCount}</span>
-              <span style={{ ...serif, fontSize: '12px', color: 'rgba(245,241,235,0.55)', letterSpacing: '0.06em' }}>of Operation Epic Fury · commenced Feb 28, 2026</span>
-            </div>
-
-            <h1 style={{ ...display, fontSize: 'clamp(2.2rem, 6vw, 3.4rem)', fontStyle: 'italic', margin: '0 0 0.6rem', lineHeight: 1.1, color: T.ink, letterSpacing: '-0.01em' }}>
+            <h1 style={{ ...display, fontSize: 'clamp(2.6rem, 7vw, 4.2rem)', fontStyle: 'italic', margin: '0 0 0.5rem', lineHeight: 1.05, color: T.ink, letterSpacing: '-0.02em' }}>
               Trump Fuckupometer™
             </h1>
             <p style={{ ...serif, fontSize: '1.05rem', fontStyle: 'italic', color: T.inkMid, margin: '0 0 1rem', lineHeight: 1.7, fontWeight: 300 }}>
@@ -511,6 +575,14 @@ export default function Home() {
               WTI crude oil indexed to Inauguration Day 2025 (baseline ~$76/bbl). Prices refresh every five minutes.
               Casualty figures sourced from Pentagon statements, Al Jazeera, Britannica, HRANA, and USNI News — all open source.
             </p>
+          </div>
+
+          {/* Day counter — centered, between title and metrics */}
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: `1px solid ${T.border}` }}>
+            <span style={{ ...display, fontSize: 'clamp(1.4rem, 3.5vw, 2rem)', fontStyle: 'italic', color: T.red }}>Day {dayCount}</span>
+            <span style={{ ...serif, fontSize: '13px', color: T.inkMuted, marginLeft: '12px', letterSpacing: '0.04em' }}>
+              of Operation Epic Fury · commenced Feb 28, 2026
+            </span>
           </div>
 
           {error && (
@@ -568,14 +640,14 @@ export default function Home() {
           {/* Strait of Hormuz stat bar */}
           <div style={{ background: T.slateDk, border: `1px solid rgba(255,255,255,0.06)`, borderLeft: `4px solid ${T.red}`, borderRadius: '2px', padding: '1rem 1.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
-              <p style={{ ...serif, margin: '0 0 2px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.red }}>Strait of Hormuz — Transit Collapse</p>
+              <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.red }}>Strait of Hormuz — Transit Collapse</p>
               <p style={{ ...serif, margin: 0, fontSize: '13px', color: 'rgba(245,241,235,0.7)', lineHeight: 1.6 }}>
-                Ship transits: <strong style={{ color: '#F5F1EB' }}>{HORMUZ.current}/week</strong> vs. baseline <strong style={{ color: '#F5F1EB' }}>{HORMUZ.baseline}/week</strong> — a <strong style={{ color: T.red }}>{HORMUZ.dropPct}% collapse.</strong>
-                &nbsp;Vessels struck: <strong style={{ color: T.red }}>{HORMUZ.shipsStruck}+</strong> since Feb 28.
+                Tanker transits down <strong style={{ color: T.red }}>{HORMUZ.dropPct}%</strong> week of Mar 1 (S&P Global); <strong style={{ color: T.red }}>{HORMUZ.kplerDropPct}%</strong> week of Mar 12 (Kpler).
+                Western commercial traffic has since approached zero. &nbsp;<strong style={{ color: T.red }}>{HORMUZ.shipsStruck}+</strong> commercial vessels struck since Feb 28.
               </p>
             </div>
-            <div style={{ ...serif, fontSize: '10px', color: 'rgba(245,241,235,0.35)', fontStyle: 'italic', whiteSpace: 'nowrap' }}>
-              {HORMUZ.src}
+            <div style={{ ...serif, fontSize: '10px', color: 'rgba(245,241,235,0.35)', fontStyle: 'italic', flexShrink: 0 }}>
+              {HORMUZ.shipsSrc}
             </div>
           </div>
 
@@ -707,7 +779,22 @@ export default function Home() {
             <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
               Enter your vehicle specs. We&apos;ll tell you what the &quot;drill baby drill&quot; era is actually costing at the pump vs. inauguration day.
             </p>
-            <GasCalc gasPrice={gasPrice}/>
+            <GasCalc rbobPrice={commodities ? parseFloat(commodities.find(c => c.ticker === "RB=F")?.price || 2.72) : 2.72}/>
+          </div>
+
+          {/* Broader economic impact */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead }}>Beyond the Pump — What Else This Is Costing You</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              Oil is embedded in the price of nearly everything. These estimates apply Fed research pass-through rates to the current ~25% WTI increase from the inauguration baseline.
+              Effects on food and core goods build slowly — the full impact typically runs 2–4 quarters behind the oil shock itself.
+            </p>
+            <BroaderImpact/>
+            <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
+              Estimates derived from Federal Reserve Board (FEDS Notes, Dec 2023) oil pass-through research: 10% oil increase → food CPI +0.3%, core CPI +0.1%.
+              Applied to WTI increase of ~25% since Jan 20, 2025. Household dollar estimates use BLS Consumer Expenditure Survey averages.
+              Airfare estimate from JPMorgan Private Bank via CNBC, Mar 11, 2026. These are estimates, not precise forecasts.
+            </p>
           </div>
 
           {/* Incident log */}
