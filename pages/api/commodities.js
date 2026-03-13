@@ -3,7 +3,7 @@ const COMMODITIES = [
   { ticker: 'RB=F',  label: 'Gasoline (RBOB)',   unit: '$/gal',    inaugBaseline: 2.10,  decimals: 4 },
   { ticker: 'ZW=F',  label: 'Wheat',             unit: 'cents/bu', inaugBaseline: 535,   decimals: 2 },
   { ticker: 'ZC=F',  label: 'Corn',              unit: 'cents/bu', inaugBaseline: 450,   decimals: 2 },
-  { ticker: 'CF',    label: 'Fertilizer (CF Ind.)', unit: '$/sh',  inaugBaseline: 110,   decimals: 2 },
+  { ticker: 'CF',    label: 'Fertilizer', unit: '$/sh',  inaugBaseline: 110,   decimals: 2 },
 ];
 
 async function fetchTicker(ticker, decimals) {
