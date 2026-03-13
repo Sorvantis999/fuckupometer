@@ -34,12 +34,11 @@ const FONTS = `
   ::-webkit-scrollbar-thumb { background: ${T.border}; border-radius: 3px; }
 `;
 
-/* War started Feb 28, 2026 */
+/* War started Feb 28, 2026 — Pentagon counts elapsed days (Feb 28 = Day 0) */
 const WAR_START = new Date('2026-02-28T00:00:00Z');
 function getDayCount() {
   const now = new Date();
-  const diff = Math.floor((now - WAR_START) / (1000 * 60 * 60 * 24));
-  return Math.max(1, diff + 1);
+  return Math.max(0, Math.floor((now - WAR_START) / (1000 * 60 * 60 * 24)));
 }
 
 /* ─── Trump Said vs Reality ──────────────────────────────────────────────────── */
@@ -110,7 +109,7 @@ const EVENTS_2026 = [
   { date: 'Mar 13', tier: 'critical', label: 'US military aerial refueling tanker crashes in western Iraq, killing four of six crew. CENTCOM confirms rescue operations underway for two survivors. Largest single US military loss of the conflict to date.' },
   { date: 'Mar 13', tier: 'critical', label: 'Oil holds above $100 per barrel despite IEA 400M-barrel emergency reserve release and US Treasury sanctions waiver on stranded Russian seaborne crude. Neither measure moves prices. Analysts: structural Hormuz closure cannot be papered over by reserve releases.' },
   { date: 'Mar 13', tier: 'critical', label: 'Trump vows to hit Iran "very hard over the next week," claiming US strikes have damaged Iran so badly it will "take years to rebuild." Iran\'s new Supreme Leader Mojtaba Khamenei simultaneously issues first public statement vowing to maintain the Hormuz blockade — directly contradicting Trump\'s framing of a war approaching resolution.' },
-  { date: 'Mar 13', tier: 'today',    label: 'Today. Live price above. Fourteen days in. The war is apparently not over.' },
+  { date: 'Mar 13', tier: 'today',    label: 'Today. Live price above. Day 13. The war is apparently not over.' },
 ];
 
 const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: T.red, today: T.red };
@@ -577,12 +576,13 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Day counter — centered, between title and metrics */}
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: `1px solid ${T.border}` }}>
-            <span style={{ ...display, fontSize: 'clamp(1.4rem, 3.5vw, 2rem)', fontStyle: 'italic', color: T.red }}>Day {dayCount}</span>
-            <span style={{ ...serif, fontSize: '13px', color: T.inkMuted, marginLeft: '12px', letterSpacing: '0.04em' }}>
-              of Operation Epic Fury · commenced Feb 28, 2026
-            </span>
+          {/* Day counter — styled band between title and metrics */}
+          <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: '10px', background: T.slateDk, borderLeft: `4px solid ${T.red}`, borderRadius: '2px', padding: '10px 22px 10px 18px' }}>
+              <span style={{ ...display, fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontStyle: 'italic', color: T.red, lineHeight: 1 }}>Day {dayCount}</span>
+              <span style={{ ...serif, fontSize: '13px', color: 'rgba(245,241,235,0.65)', letterSpacing: '0.06em' }}>of Operation Epic Fury</span>
+              <span style={{ ...serif, fontSize: '11px', color: 'rgba(245,241,235,0.35)', letterSpacing: '0.04em', fontStyle: 'italic' }}>· commenced Feb 28, 2026</span>
+            </div>
           </div>
 
           {error && (
@@ -777,7 +777,7 @@ export default function Home() {
           <div style={{ ...section }}>
             <p style={{ ...sectionHead }}>What This Is Costing You</p>
             <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
-              Enter your vehicle specs. We&apos;ll tell you what the &quot;drill baby drill&quot; era is actually costing at the pump vs. inauguration day.
+              Enter your vehicle specs. We&apos;ll tell you what the &quot;excursion&quot; in Iran is actually costing you at the pump vs. inauguration day.
             </p>
             <GasCalc rbobPrice={commodities ? parseFloat(commodities.find(c => c.ticker === "RB=F")?.price || 2.72) : 2.72}/>
           </div>
