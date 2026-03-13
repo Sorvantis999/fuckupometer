@@ -55,7 +55,8 @@ const EVENTS_2026 = [
   { date: 'Mar 9',  tier: 'peak',     label: 'Israel bombs 30 Iranian oil depots. WTI spikes to $119.48 — a 3.75-year high. Mojtaba Khamenei appointed new Supreme Leader: markets read it as Tehran digging in. Trump: "It will be over soon."' },
   { date: 'Mar 10', tier: 'critical', label: 'Trump says he is "thinking about taking over" the Strait of Hormuz. Floats lifting Russia oil sanctions to ease prices. Iran FM calls it "Operation Epic Mistake" and posts that commodities are "skyrocketing." Saudi Arabia quietly shuts Safaniya and Zuluf offshore fields.' },
   { date: 'Mar 11', tier: 'critical', label: 'IEA releases 400M barrels — largest emergency reserve release in history. G7 finance ministers convene on coordinated response. Three more vessels struck in the Strait regardless.' },
-  { date: 'Mar 12', tier: 'today',    label: 'Today. Live price above. Twelve days in. The war is apparently not over.' },
+  { date: 'Mar 12', tier: 'critical', label: 'Mojtaba Khamenei issues first statement as Supreme Leader — read by a state TV anchor over a still photo; he has not been seen in public since Feb 28, fueling speculation he was wounded in the strikes that killed his father. Vows Strait stays closed, threatens US bases in the region, and signals Iran is studying "other fronts where the enemy has little experience." WTI surges ~10% on the day to ~$96 on the statement. UK Defence Secretary confirms Iran is laying mines in the Strait. 3.2 million Iranians displaced.' },
+  { date: 'Mar 12', tier: 'today',    label: 'Today. Live price above. Thirteen days in. The war is apparently not over.' },
 ];
 
 const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: T.red, today: T.red };
