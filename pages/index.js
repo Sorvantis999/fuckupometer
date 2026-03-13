@@ -368,7 +368,7 @@ export default function Home() {
                 subColor: isUp ? T.red : T.green,
               },
               {
-                eyebrow: 'Since Inauguration Day',
+                eyebrow: 'Since 1/20/25',
                 value: `+${data ? data.sinceInaugurationPct : '~27'}%`,
                 sub: `+$${data ? data.sinceInauguration : '~20'} above the $76 baseline`,
                 valueColor: T.terra,
