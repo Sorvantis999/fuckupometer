@@ -862,7 +862,7 @@ export default function Home() {
           {/* Day counter — clean centered red type, no banner */}
           <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: `1px solid ${T.border}`, textAlign: 'center' }}>
             <p style={{ ...display, fontSize: 'clamp(1.3rem, 3vw, 1.75rem)', fontStyle: 'italic', color: T.red, margin: 0, letterSpacing: '-0.01em' }}>
-              Day {dayCount} of Operation Epic Fury &nbsp;·&nbsp; commenced Feb 28, 2026
+              Day {dayCount} of Operation Epic Fury &nbsp;·&nbsp; Commenced Feb 28, 2026
             </p>
           </div>
 
