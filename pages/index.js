@@ -960,43 +960,70 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Two-column: Chart + Butcher's bill */}
+          {/* Two-column: Charts + Butcher's bill */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
 
-            {/* Chart */}
-            <div style={{ ...section, marginBottom: 0 }}>
-              <p style={{ ...sectionHead }}>WTI Crude — 30-Day Price</p>
-              <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', ...serif, fontSize: '11px', color: T.inkMuted }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <span style={{ width: '16px', height: '2px', background: T.terra, display: 'inline-block', borderRadius: '1px' }}/>
-                  WTI price
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <span style={{ width: '16px', borderTop: `2px dashed ${T.green}`, display: 'inline-block' }}/>
-                  Inaug. baseline ($76)
-                </span>
-              </div>
-              <OilChart chartReady={chartReady}/>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', ...serif, fontSize: '10px', color: T.inkMuted }}>
-                <span>30 days ago</span><span>Today</span>
-              </div>
-              {/* Scenario legend */}
-              <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: `1px solid ${T.border}` }}>
-                <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkMuted }}>Analyst scenarios</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  {[
-                    { label: 'Ceasefire tomorrow', price: '~$85', color: T.green },
-                    { label: 'War continues 30 days', price: '~$105', color: T.amber },
-                    { label: 'Hormuz closed 90 days', price: '~$130', color: T.red },
-                  ].map((s, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '20px', borderTop: `2px dashed ${s.color}`, display: 'inline-block', flexShrink: 0 }}/>
-                      <span style={{ ...serif, fontSize: '11px', color: T.inkMid }}>{s.label}</span>
-                      <span style={{ ...serif, fontSize: '11px', color: s.color, fontWeight: 600, marginLeft: 'auto' }}>{s.price}</span>
-                    </div>
-                  ))}
+            {/* Left col: WTI + Brent stacked */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+
+              {/* WTI chart */}
+              <div style={{ ...section, marginBottom: 0 }}>
+                <p style={{ ...sectionHead }}>WTI Crude — 30-Day Price</p>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', ...serif, fontSize: '11px', color: T.inkMuted }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: '16px', height: '2px', background: T.terra, display: 'inline-block', borderRadius: '1px' }}/>
+                    WTI price
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: '16px', borderTop: `2px dashed ${T.green}`, display: 'inline-block' }}/>
+                    Inaug. baseline ($76)
+                  </span>
+                </div>
+                <OilChart chartReady={chartReady}/>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', ...serif, fontSize: '10px', color: T.inkMuted }}>
+                  <span>30 days ago</span><span>Today</span>
+                </div>
+                {/* Scenario legend */}
+                <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: `1px solid ${T.border}` }}>
+                  <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkMuted }}>Analyst scenarios</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    {[
+                      { label: 'Ceasefire tomorrow', price: '~$85', color: T.green },
+                      { label: 'War continues 30 days', price: '~$105', color: T.amber },
+                      { label: 'Hormuz closed 90 days', price: '~$130', color: T.red },
+                    ].map((s, i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ width: '20px', borderTop: `2px dashed ${s.color}`, display: 'inline-block', flexShrink: 0 }}/>
+                        <span style={{ ...serif, fontSize: '11px', color: T.inkMid }}>{s.label}</span>
+                        <span style={{ ...serif, fontSize: '11px', color: s.color, fontWeight: 600, marginLeft: 'auto' }}>{s.price}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              {/* Brent chart */}
+              <div style={{ ...section, marginBottom: 0 }}>
+                <p style={{ ...sectionHead }}>Brent Crude — 30-Day Price</p>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', ...serif, fontSize: '11px', color: T.inkMuted }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: '16px', height: '2px', background: T.slateMid, display: 'inline-block', borderRadius: '1px' }}/>
+                    Brent price
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ width: '16px', borderTop: `2px dashed ${T.green}`, display: 'inline-block' }}/>
+                    Inaug. baseline ($79)
+                  </span>
+                </div>
+                <BrentChart chartReady={chartReady}/>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', ...serif, fontSize: '10px', color: T.inkMuted }}>
+                  <span>30 days ago</span><span>Today</span>
+                </div>
+                <p style={{ ...serif, margin: '8px 0 0', fontSize: '10px', color: T.inkMuted, fontStyle: 'italic' }}>
+                  Brent (BZ=F) — global benchmark, typically $3–5 above WTI
+                </p>
+              </div>
+
             </div>
 
             {/* Butcher's Bill */}
@@ -1022,28 +1049,6 @@ export default function Home() {
               <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.6 }}>
                 Iranian casualty figures remain heavily disputed between US government statements, Iranian state media, and independent monitors.
               </p>
-            </div>
-          </div>
-
-          {/* Brent Crude — 30-Day Price */}
-          <div style={{ ...section }}>
-            <p style={{ ...sectionHead }}>Brent Crude — 30-Day Price</p>
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '12px', ...serif, fontSize: '11px', color: T.inkMuted }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ width: '16px', height: '2px', background: T.slateMid, display: 'inline-block', borderRadius: '1px' }}/>
-                Brent price
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ width: '16px', borderTop: `2px dashed ${T.green}`, display: 'inline-block' }}/>
-                Inaug. baseline ($79)
-              </span>
-              <span style={{ ...serif, fontSize: '10px', color: T.inkMuted, marginLeft: 'auto', fontStyle: 'italic' }}>
-                Brent (BZ=F) — global benchmark · typically trades $3–5 above WTI
-              </span>
-            </div>
-            <BrentChart chartReady={chartReady}/>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', ...serif, fontSize: '10px', color: T.inkMuted }}>
-              <span>30 days ago</span><span>Today</span>
             </div>
           </div>
 
