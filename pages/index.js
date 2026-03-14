@@ -78,6 +78,16 @@ const TRUMP_SAID = [
     said: '"Iran will take years to rebuild."',
     reality: 'Khamenei simultaneously vowed to keep the Hormuz blockade in place. Oil: still above $100.',
   },
+  {
+    date: 'Mar 13, 2026',
+    said: '"Moments ago, at my direction, CENTCOM executed one of the most powerful bombing raids in the history of the Middle East, and totally obliterated every MILITARY target in Iran\'s crown jewel, Kharg Island."',
+    reality: "Iran's deputy governor of Bushehr province: oil exports 'continuing as normal.' No casualties. No oil infrastructure damaged. Iran immediately warned it would target UAE ports in retaliation. The IRGC informed the UAE that US hideouts are 'legitimate targets.'",
+  },
+  {
+    date: 'Mar 13, 2026',
+    said: '"Iran is totally defeated and wants a deal" — but not one he "would accept."',
+    reality: "Iran's Parliament Speaker warned the country would 'abandon all restraint' if its islands are attacked. Mojtaba Khamenei has not been seen publicly since Feb 28. His statement was read by a TV anchor over a still photo. Hegseth: he is 'wounded and likely disfigured.' The Strait remains closed. Day 14.",
+  },
 ];
 
 /* ─── Hormuz stat ────────────────────────────────────────────────────────────── */
@@ -143,10 +153,14 @@ const EVENTS_2026 = [
   { date: 'Mar 10', tier: 'critical', label: 'Trump says he is "thinking about taking over" the Strait of Hormuz. Floats lifting Russia oil sanctions to ease prices. Iran FM calls it "Operation Epic Mistake" and posts that commodities are "skyrocketing." Saudi Arabia quietly shuts Safaniya and Zuluf offshore fields.' },
   { date: 'Mar 11', tier: 'critical', label: 'IEA releases 400M barrels — largest emergency reserve release in history. G7 finance ministers convene on coordinated response. Three more vessels struck in the Strait regardless.' },
   { date: 'Mar 12', tier: 'critical', label: 'Mojtaba Khamenei issues first statement as Supreme Leader — read by a state TV anchor over a still photo; he has not been seen in public since Feb 28, fueling speculation he was wounded in the strikes that killed his father. Vows Strait stays closed, threatens US bases in the region, and signals Iran is studying "other fronts where the enemy has little experience." WTI surges ~10% on the day to ~$96 on the statement. UK Defence Secretary confirms Iran is laying mines in the Strait. 3.2 million Iranians displaced.' },
-  { date: 'Mar 13', tier: 'critical', label: 'US military aerial refueling tanker crashes in western Iraq, killing four of six crew. CENTCOM confirms rescue operations underway for two survivors. Largest single US military loss of the conflict to date.' },
+  { date: 'Mar 13', tier: 'critical', label: 'US military aerial refueling tanker (KC-135) crashes in western Iraq, killing all six crew members aboard. All confirmed lost — the largest single US military loss of the conflict to date. Pentagon confirms 13 US KIA total.' },
   { date: 'Mar 13', tier: 'critical', label: 'Oil holds above $100 per barrel despite IEA 400M-barrel emergency reserve release and US Treasury sanctions waiver on stranded Russian seaborne crude. Neither measure moves prices. Analysts: structural Hormuz closure cannot be papered over by reserve releases.' },
   { date: 'Mar 13', tier: 'critical', label: 'Trump vows to hit Iran "very hard over the next week," claiming US strikes have damaged Iran so badly it will "take years to rebuild." Iran\'s new Supreme Leader Mojtaba Khamenei simultaneously issues first public statement vowing to maintain the Hormuz blockade — directly contradicting Trump\'s framing of a war approaching resolution.' },
-  { date: 'Mar 13', tier: 'today',    label: 'Today. Live price above. Day 13. The war is apparently not over.' },
+  { date: 'Mar 13', tier: 'critical', label: 'Trump announces US struck Kharg Island — Iran\'s main crude export hub, handling ~90% of its oil exports — in "one of the most powerful bombing raids in the history of the Middle East." CENTCOM confirms 90+ military targets hit, oil infrastructure deliberately preserved as leverage. Iranian official: exports "continuing as normal." No casualties reported on island.' },
+  { date: 'Mar 13', tier: 'critical', label: 'Hegseth announces Iranian drone launches are "down 95%" — then declares today will be the "highest volume of strikes yet." US has now struck over 6,000 targets in 13 days. Hegseth says Mojtaba Khamenei is "wounded and likely disfigured." JD Vance: "We know he\'s hurt." Iran has not produced public footage of its new Supreme Leader since Feb 28.' },
+  { date: 'Mar 13', tier: 'critical', label: 'Trump: "Iran is totally defeated and wants a deal" — but not one he "would accept." Iran\'s Parliament Speaker simultaneously warns the country will "abandon all restraint" if Iranian islands are attacked. The Strait remains mined. The IRGC informs the UAE that US hideouts are "legitimate targets." Dubai building struck by debris from interception.' },
+  { date: 'Mar 14', tier: 'critical', label: 'Brent closes Friday at $103.14 (+2.67%). WTI: $98.71 (+3.11%). National gas average: $3.68/gal — up 23% since Feb 28, per AAA. 31st Marine Expeditionary Unit (USS Tripoli) ordered to the Middle East. Analysts note it\'s the unit you\'d want for a potential Kharg Island seizure or nuclear site operation.' },
+  { date: 'Mar 14', tier: 'today',    label: 'Iran\'s ambassador to India confirms some Indian-flagged vessels are being allowed through the Strait — provided cargo is traded in Chinese yuan. First partial opening since Feb 28. The US did not negotiate this. China did. Today. Live price above. Day 14. The war is apparently not over.' },
 ];
 
 const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: T.red, today: T.red };
@@ -156,7 +170,7 @@ const BILL = [
   { label: 'US WIA',          value: '~140',     sub: '108 returned to duty; 8 remain severe', src: 'Pentagon, Mar 10' },
   { label: 'Iranian dead',    value: '1,348+',   sub: "Per Iran's UN representative. HRANA estimates up to 7,000. Trump administration claims 32,000.", src: 'Al Jazeera / UN, Mar 13' },
   { label: 'Iranian injured', value: '17,000+',  sub: "Confirmed by Iran's UN representative Amir Saeid Iravani", src: 'Al Jazeera, Mar 13' },
-  { label: 'Lebanon dead',    value: '687',      sub: 'Since Israel renewed widespread attacks Mar 2. Includes 98 children.', src: 'Lebanon Information Minister, Mar 13' },
+  { label: 'Lebanon dead',    value: '773',      sub: 'Since Israel renewed widespread attacks Mar 2. Includes 98 children.', src: 'Lebanon Information Minister / NPR, Mar 14' },
   { label: 'Minab school',    value: '148–180',  sub: 'Girls school, Minab, near Bandar Abbas. US disputes intentionality.', src: 'Iranian govt / Britannica (disputed)' },
   { label: 'Ships struck',    value: '20+',      sub: 'Vessels hit in Strait of Hormuz and Persian Gulf since Feb 28. Includes tankers, cargo, and one US-flagged vessel.', src: 'UKMTO / Reuters / Al Jazeera' },
   { label: 'Gulf civilians',  value: 'Dozens',   sub: 'UAE, Kuwait, Saudi Arabia, Bahrain — Iranian retaliatory strikes', src: 'Reuters / official statements' },
