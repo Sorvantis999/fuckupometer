@@ -32,6 +32,11 @@ const FONTS = `
   ::selection { background: ${T.terraPale}; }
   ::-webkit-scrollbar { width: 6px; background: ${T.bg}; }
   ::-webkit-scrollbar-thumb { background: ${T.border}; border-radius: 3px; }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+  .live-counter { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 `;
 
 /* War started Feb 28, 2026 — Pentagon counts elapsed days (Feb 28 = Day 0) */
@@ -93,10 +98,27 @@ const WAR_COST_DAILY_B  = 0.22;  /* $220M/day sustained after initial phase (CSI
 const PWBM_MIDPOINT_B   = 65;    /* Penn Wharton midpoint direct cost, 2-month scenario */
 const PWBM_TOTAL_B      = 180;   /* Penn Wharton total economic impact, midpoint */
 const US_HOUSEHOLDS     = 132;   /* million — US Census 2024 */
+const WAR_COST_PER_SEC  = (WAR_COST_DAILY_B * 1e9) / 86400; /* ~$2,546/sec sustained */
 
 function getWarCostEstimate(dayCount) {
   const sustainedDays = Math.max(0, dayCount - WAR_COST_DAY6);
   return (WAR_COST_DAY6_B + sustainedDays * WAR_COST_DAILY_B).toFixed(1);
+}
+
+/* Live cost counter — ticks every second */
+function useLiveCost(dayCount) {
+  const base = WAR_COST_DAY6_B * 1e9 + Math.max(0, dayCount - WAR_COST_DAY6) * WAR_COST_DAILY_B * 1e9;
+  const [cost, setCost] = useState(base);
+  useEffect(() => {
+    const t = setInterval(() => setCost(c => c + WAR_COST_PER_SEC), 1000);
+    return () => clearInterval(t);
+  }, [dayCount]);
+  return cost;
+}
+
+function fmtCost(n) {
+  const b = n / 1e9;
+  return b >= 1000 ? `$${(b/1000).toFixed(2)}T` : `$${b.toFixed(2)}B`;
 }
 
 const EVENTS_2025 = [
@@ -139,6 +161,86 @@ const BILL = [
   { label: 'Ships struck',    value: '20+',      sub: 'Vessels hit in Strait of Hormuz and Persian Gulf since Feb 28. Includes tankers, cargo, and one US-flagged vessel.', src: 'UKMTO / Reuters / Al Jazeera' },
   { label: 'Gulf civilians',  value: 'Dozens',   sub: 'UAE, Kuwait, Saudi Arabia, Bahrain — Iranian retaliatory strikes', src: 'Reuters / official statements' },
 ];
+
+/* ─── Oil price journey visual ───────────────────────────────────────────────── */
+function OilJourney({ price }) {
+  const MIN = 55, MAX = 125;
+  const pct      = v => Math.min(100, Math.max(0, ((v - MIN) / (MAX - MIN)) * 100));
+  const inaugPct = pct(76);
+  const peakPct  = pct(119.48);
+  const nowPct   = pct(price || 95);
+  const serif    = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display  = { fontFamily: "'DM Serif Display', Georgia, serif" };
+  return (
+    <div style={{ padding: '1.25rem 1.5rem 1rem' }}>
+      <p style={{ ...serif, margin: '0 0 1.25rem', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.terra }}>
+        WTI Price Journey — Inauguration to Now
+      </p>
+      {/* Track */}
+      <div style={{ position: 'relative', height: '44px', marginBottom: '4px' }}>
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '4px', background: T.bgTint, borderRadius: '2px', transform: 'translateY(-50%)', border: `1px solid ${T.border}` }}/>
+        <div style={{ position: 'absolute', top: '50%', left: 0, width: `${nowPct}%`, height: '4px', background: `linear-gradient(90deg, ${T.green}, ${T.amber} 40%, ${T.terra} 70%, ${T.red})`, borderRadius: '2px', transform: 'translateY(-50%)', transition: 'width 1s ease' }}/>
+        {/* Inauguration marker */}
+        <div style={{ position: 'absolute', left: `${inaugPct}%`, top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ width: '3px', height: '20px', background: T.green, borderRadius: '2px' }}/>
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: T.green, border: `2px solid ${T.bgCard}`, marginTop: '-5px' }}/>
+        </div>
+        {/* Peak marker */}
+        <div style={{ position: 'absolute', left: `${peakPct}%`, top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ ...display, fontSize: '9px', color: T.red, whiteSpace: 'nowrap', marginBottom: '2px' }}>PEAK</span>
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: T.red, border: `2px solid ${T.bgCard}` }}/>
+        </div>
+        {/* Now marker */}
+        <div style={{ position: 'absolute', left: `${nowPct}%`, top: '50%', transform: 'translate(-50%, -50%)' }}>
+          <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: T.terra, border: `3px solid ${T.bgCard}`, boxShadow: `0 0 0 3px ${T.terra}44` }}/>
+        </div>
+      </div>
+      {/* Labels */}
+      <div style={{ position: 'relative', height: '36px' }}>
+        {[
+          { pct: inaugPct, label: '$76', sub: '1/20/25', color: T.green },
+          { pct: peakPct,  label: '$119.48', sub: 'Mar 9', color: T.red },
+          { pct: nowPct,   label: `$${(price || 95).toFixed(2)}`, sub: 'NOW', color: T.terra },
+        ].map((m, i) => (
+          <div key={i} style={{ position: 'absolute', left: `${m.pct}%`, transform: 'translateX(-50%)', textAlign: 'center' }}>
+            <p style={{ ...display, margin: 0, fontSize: '1rem', color: m.color, lineHeight: 1 }}>{m.label}</p>
+            <p style={{ ...serif, margin: '2px 0 0', fontSize: '9px', color: T.inkMuted, whiteSpace: 'nowrap' }}>{m.sub}</p>
+          </div>
+        ))}
+      </div>
+      <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '6px 0 0', fontStyle: 'italic' }}>
+        Scale: ${MIN}–${MAX}/bbl · WTI (CL=F) via Yahoo Finance
+      </p>
+    </div>
+  );
+}
+
+/* ─── Hormuz visual bar ──────────────────────────────────────────────────────── */
+function HormuzVisualBar() {
+  const serif   = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+  const openPct = 5;
+  return (
+    <div style={{ padding: '1rem 1.5rem', borderTop: `1px solid ${T.border}` }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+        <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.red }}>Hormuz — Transit Status</p>
+        <p style={{ ...serif, margin: 0, fontSize: '10px', color: T.inkMuted, fontStyle: 'italic' }}>S&P Global / Kpler</p>
+      </div>
+      <div style={{ position: 'relative', height: '32px', background: T.bgTint, borderRadius: '2px', overflow: 'hidden', border: `1px solid ${T.border}`, marginBottom: '6px' }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${HORMUZ.dropPct}%`, background: `linear-gradient(90deg, ${T.red}cc, ${T.red}88)`, display: 'flex', alignItems: 'center', paddingLeft: '12px' }}>
+          <span style={{ ...display, fontSize: '1rem', color: 'rgba(255,255,255,0.95)', fontStyle: 'italic' }}>{HORMUZ.dropPct}% CLOSED</span>
+        </div>
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: `${openPct}%`, background: `${T.green}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ ...serif, fontSize: '9px', color: T.green }}>{openPct}%</span>
+        </div>
+      </div>
+      <p style={{ ...serif, margin: 0, fontSize: '11px', color: T.inkMid }}>
+        <strong style={{ color: T.red }}>{HORMUZ.shipsStruck}+</strong> commercial vessels struck since Feb 28 &nbsp;·&nbsp;
+        <span style={{ color: T.inkMuted, fontStyle: 'italic' }}>{HORMUZ.shipsSrc}</span>
+      </p>
+    </div>
+  );
+}
 
 /* ─── Gauge ─────────────────────────────────────────────────────────────────── */
 function Gauge({ pct }) {
@@ -290,29 +392,31 @@ function CommodityCard({ c }) {
 }
 
 /* ─── Average American Cost ─────────────────────────────────────────────────── */
-function AverageAmericanCost({ dayCount }) {
+function AverageAmericanCost({ liveCost }) {
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
   const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
 
-  const warCostB  = parseFloat(getWarCostEstimate(dayCount));
-  const perHH     = ((warCostB * 1000) / US_HOUSEHOLDS).toFixed(0); /* dollars per household */
+  const warCostB  = liveCost / 1e9;
+  const perHH     = ((warCostB * 1000) / US_HOUSEHOLDS).toFixed(0);
   const pwbmPerHH = ((PWBM_MIDPOINT_B * 1000) / US_HOUSEHOLDS).toFixed(0);
   const totPerHH  = ((PWBM_TOTAL_B * 1000) / US_HOUSEHOLDS).toFixed(0);
 
   const items = [
     {
       label: 'War cost to date',
-      value: `$${warCostB}B`,
-      sub: 'Pentagon confirmed $11.3B first 6 days. ~$220M/day sustained (CSIS). Day ' + dayCount + ' estimate.',
+      value: fmtCost(liveCost),
+      sub: 'Pentagon confirmed $11.3B first 6 days. ~$220M/day sustained (CSIS). Live estimate — ticking.',
       src: 'The Hill / Pentagon briefing to Congress, Mar 5; CSIS, Mar 5',
       color: '#C0392B',
+      live: true,
     },
     {
       label: 'Your household share — so far',
       value: `$${parseInt(perHH).toLocaleString()}`,
-      sub: `${US_HOUSEHOLDS}M US households. At $${warCostB}B total, each household's share of the unbudgeted cost.`,
+      sub: `${US_HOUSEHOLDS}M US households. At ${fmtCost(liveCost)} total, each household's share of the unbudgeted cost.`,
       src: 'US Census 2024; calculation by The Long Memo',
       color: '#C0392B',
+      live: false,
     },
     {
       label: 'Projected direct cost (Penn Wharton)',
@@ -320,6 +424,7 @@ function AverageAmericanCost({ dayCount }) {
       sub: 'Penn Wharton Budget Model midpoint for a 2-month campaign. Range: $40B–$95B direct.',
       src: 'Penn Wharton Budget Model / Fortune, Mar 3, 2026',
       color: '#B85C38',
+      live: false,
     },
     {
       label: 'Your household share — projected',
@@ -327,6 +432,7 @@ function AverageAmericanCost({ dayCount }) {
       sub: `At Penn Wharton's $${PWBM_MIDPOINT_B}B midpoint. Total economic impact estimate reaches $180B — $${parseInt(totPerHH).toLocaleString()}/household.`,
       src: 'Penn Wharton Budget Model; calculation by The Long Memo',
       color: '#B85C38',
+      live: false,
     },
   ];
 
@@ -334,8 +440,16 @@ function AverageAmericanCost({ dayCount }) {
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: '#CEC8B8', borderRadius: '2px', overflow: 'hidden' }}>
       {items.map((item, i) => (
         <div key={i} style={{ background: '#FFFFFF', padding: '1.25rem 1.5rem', borderTop: `3px solid ${item.color}` }}>
-          <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9C9590' }}>{item.label}</p>
-          <p style={{ ...display, margin: '0 0 6px', fontSize: '2rem', color: item.color, lineHeight: 1 }}>{item.value}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9C9590' }}>{item.label}</p>
+            {item.live && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#C0392B', display: 'inline-block', animation: 'pulse-dot 1s ease-in-out infinite' }}/>
+                <span style={{ ...serif, fontSize: '9px', color: '#C0392B', letterSpacing: '0.08em' }}>LIVE</span>
+              </span>
+            )}
+          </div>
+          <p className="live-counter" style={{ ...display, margin: '0 0 6px', fontSize: '2rem', color: item.color, lineHeight: 1 }}>{item.value}</p>
           <p style={{ ...serif, margin: '0 0 4px', fontSize: '11px', color: '#6B6258', lineHeight: 1.6 }}>{item.sub}</p>
           <p style={{ ...serif, margin: 0, fontSize: '10px', color: '#9C9590', fontStyle: 'italic' }}>{item.src}</p>
         </div>
@@ -345,19 +459,17 @@ function AverageAmericanCost({ dayCount }) {
 }
 
 /* ─── What It Could Buy ──────────────────────────────────────────────────────── */
-function WhatItCouldBuy({ dayCount }) {
+function WhatItCouldBuy({ liveCost }) {
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
   const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
 
-  const warCostB = parseFloat(getWarCostEstimate(dayCount));
-  const warCostM = warCostB * 1000; /* in millions */
+  const warCostB = liveCost / 1e9;
 
-  /* All math is: warCostM / unit_cost_M = quantity */
   const ITEMS = [
     {
       icon: '🏥',
       category: 'Healthcare',
-      headline: `${Math.round(warCostM / 6).toLocaleString()}`,
+      headline: `${Math.round(liveCost / 6000).toLocaleString()}`,
       unit: 'people covered',
       detail: 'Average ACA marketplace premium with subsidy: ~$6,000/year/person. At current war cost, this covers a full year of health insurance for that many Americans.',
       src: 'KFF Health Insurance Marketplace Calculator 2025',
@@ -366,7 +478,7 @@ function WhatItCouldBuy({ dayCount }) {
     {
       icon: '🏫',
       category: 'Public Education',
-      headline: `${Math.round(warCostM / 0.069).toLocaleString()}`,
+      headline: `${Math.round(liveCost / 69000).toLocaleString()}`,
       unit: 'teacher-years',
       detail: 'Average US public school teacher salary: ~$69,000/year (NEA 2024). War cost to date could fund that many teachers for one full school year.',
       src: 'NEA Rankings & Estimates 2024; calculation by The Long Memo',
@@ -384,16 +496,16 @@ function WhatItCouldBuy({ dayCount }) {
     {
       icon: '💰',
       category: 'Working American Tax Relief',
-      headline: `$${Math.round(warCostM / 100).toLocaleString()}`,
+      headline: `$${Math.round(liveCost / 100e6).toLocaleString()}`,
       unit: 'per working American',
-      detail: 'Roughly 100 million working Americans file taxes. The war cost to date divided equally would deliver that much per filer — not a stimulus check, a hypothetical cost comparison.',
+      detail: 'Roughly 100 million working Americans file taxes. The war cost to date divided equally would deliver that much per filer.',
       src: 'IRS Statistics of Income 2024; calculation by The Long Memo',
       color: '#B8860B',
     },
     {
       icon: '🍽️',
       category: 'Food Security (SNAP)',
-      headline: `${Math.round(warCostM / 2.4 / 12).toLocaleString()}`,
+      headline: `${Math.round(liveCost / 2400).toLocaleString()}`,
       unit: 'families fed for a year',
       detail: "Average SNAP benefit: ~$2,400/year for a family of four. War cost to date could fund that many families' food assistance for one year.",
       src: 'USDA FNS SNAP Data 2025; calculation by The Long Memo',
@@ -402,9 +514,9 @@ function WhatItCouldBuy({ dayCount }) {
     {
       icon: '🎓',
       category: 'Federal Student Aid',
-      headline: `${Math.round(warCostM / 7.5).toLocaleString()}`,
+      headline: `${Math.round(liveCost / 7395).toLocaleString()}`,
       unit: 'Pell Grants',
-      detail: 'Maximum Pell Grant award: $7,395 for 2025–26. War cost to date could fund that many maximum-award grants — roughly one full year of college for each recipient.',
+      detail: 'Maximum Pell Grant award: $7,395 for 2025–26. War cost to date could fund that many maximum-award grants.',
       src: 'Federal Student Aid 2025–26 Award Year; calculation by The Long Memo',
       color: '#1A2535',
     },
@@ -418,7 +530,7 @@ function WhatItCouldBuy({ dayCount }) {
             <span style={{ fontSize: '1.3rem' }}>{item.icon}</span>
             <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9C9590' }}>{item.category}</p>
           </div>
-          <p style={{ ...display, margin: '0 0 2px', fontSize: '1.6rem', color: item.color, lineHeight: 1 }}>{item.headline}</p>
+          <p className="live-counter" style={{ ...display, margin: '0 0 2px', fontSize: '1.6rem', color: item.color, lineHeight: 1 }}>{item.headline}</p>
           <p style={{ ...serif, margin: '0 0 8px', fontSize: '11px', color: '#6B6258', fontWeight: 600 }}>{item.unit}</p>
           <p style={{ ...serif, margin: '0 0 6px', fontSize: '11px', color: '#6B6258', lineHeight: 1.6 }}>{item.detail}</p>
           <p style={{ ...serif, margin: 0, fontSize: '10px', color: '#9C9590', fontStyle: 'italic' }}>{item.src}</p>
@@ -620,6 +732,8 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
+  const liveCost = useLiveCost(dayCount);
+
   const fetchAll = useCallback(async () => {
     try {
       const [oilRes, comRes] = await Promise.all([fetch('/api/oil'), fetch('/api/commodities')]);
@@ -789,18 +903,10 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Strait of Hormuz stat bar */}
-          <div style={{ background: T.slateDk, border: `1px solid rgba(255,255,255,0.06)`, borderLeft: `4px solid ${T.red}`, borderRadius: '2px', padding: '1rem 1.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-            <div>
-              <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.red }}>Strait of Hormuz — Transit Collapse</p>
-              <p style={{ ...serif, margin: 0, fontSize: '13px', color: 'rgba(245,241,235,0.7)', lineHeight: 1.6 }}>
-                Tanker transits down <strong style={{ color: T.red }}>{HORMUZ.dropPct}%</strong> week of Mar 1 (S&P Global); <strong style={{ color: T.red }}>{HORMUZ.kplerDropPct}%</strong> week of Mar 12 (Kpler).
-                Western commercial traffic has since approached zero. &nbsp;<strong style={{ color: T.red }}>{HORMUZ.shipsStruck}+</strong> commercial vessels struck since Feb 28.
-              </p>
-            </div>
-            <div style={{ ...serif, fontSize: '10px', color: 'rgba(245,241,235,0.35)', fontStyle: 'italic', flexShrink: 0 }}>
-              {HORMUZ.shipsSrc}
-            </div>
+          {/* Oil price journey visual */}
+          <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '2px', marginBottom: '1.25rem', overflow: 'hidden' }}>
+            <OilJourney price={price}/>
+            <HormuzVisualBar/>
           </div>
 
           {/* Gauge */}
@@ -932,7 +1038,7 @@ export default function Home() {
               The Pentagon confirmed $11.3 billion spent in the first six days. Penn Wharton projects $40–95 billion for a two-month campaign.
               Here is what that means per household — and what those dollars could have done instead.
             </p>
-            <AverageAmericanCost dayCount={dayCount}/>
+            <AverageAmericanCost liveCost={liveCost}/>
             <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
               Household share calculated by dividing unbudgeted war cost by 132 million US households (Census 2024). Penn Wharton Budget Model range:
               $40B–$95B direct; $50B–$210B total economic impact. Senator Coons has noted the Pentagon figure is likely an undercount.
@@ -941,12 +1047,12 @@ export default function Home() {
 
           {/* What it could buy */}
           <div style={{ ...section }}>
-            <p style={{ ...sectionHead }}>What ${ parseFloat(getWarCostEstimate(dayCount)).toFixed(1) }B Would Have Bought</p>
+            <p style={{ ...sectionHead }}>What {fmtCost(liveCost)} Would Have Bought</p>
             <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
               At the current estimated war cost — Day {dayCount}, running total — here is what the same dollars could alternatively fund.
               Not an argument about whether the war was justified. Just arithmetic.
             </p>
-            <WhatItCouldBuy dayCount={dayCount}/>
+            <WhatItCouldBuy liveCost={liveCost}/>
             <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
               All comparisons use the current estimated war cost to date (Day {dayCount}). Sources listed per card. These are illustrative dollar-for-dollar
               comparisons — not policy proposals. The Long Memo does not take positions on whether the war should be fought. We do math.
