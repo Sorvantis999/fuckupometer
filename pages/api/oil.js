@@ -74,6 +74,21 @@ async function fetchStooq(ticker) {
   };
 }
 
+async function fetchAAAGasPrice() {
+  try {
+    const r = await fetch('https://gasprices.aaa.com/', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' },
+    });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const match = html.match(/price-text[^>]*>[\s\S]*?\$(3\.\d{2,3})/);
+    if (!match) return null;
+    return parseFloat(match[1]);
+  } catch {
+    return null;
+  }
+}
+
 async function fetchWithFallback(yahooSymbol, stooqTicker) {
   try {
     return await fetchYahoo(yahooSymbol);
@@ -88,9 +103,10 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=180, stale-while-revalidate=300');
 
   try {
-    const [wti, brent] = await Promise.all([
+    const [wti, brent, retailGasPrice] = await Promise.all([
       fetchWithFallback('CL=F', 'cl.f'),
       fetchWithFallback('BZ=F', 'cb.f'),
+      fetchAAAGasPrice(),
     ]);
 
     const INAUGURATION_PRICE = 76.0;
@@ -112,6 +128,7 @@ export default async function handler(req, res) {
         ...brent,
         sinceInaugPct: (((parseFloat(brent.price) - BRENT_INAUG) / BRENT_INAUG) * 100).toFixed(1),
       },
+      retailGasPrice: retailGasPrice ?? null,  /* AAA national average retail $/gal */
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
