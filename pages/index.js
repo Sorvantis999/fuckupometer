@@ -801,9 +801,171 @@ function ShareCard({ price, sinceInaugPct, fuckupFactor, dayCount, onClose }) {
 }
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
+
+/* ─── War Economy Winners ────────────────────────────────────────────────────── */
+function WarEconomyWinners({ we }) {
+  const serif   = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  if (!we) return (
+    <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', ...serif, fontSize: '13px', color: T.inkMuted }}>
+      Loading market intelligence…
+    </div>
+  );
+
+  const pctColor = (v) => (v > 0 ? T.red : T.green);
+  const pctSign  = (v) => (v > 0 ? '+' : '−');
+  const gold = we.gold || {};
+  const dxy  = we.dxy  || {};
+  const rtx  = we.rtx  || {};
+  const lmt  = we.lmt  || {};
+  const noc  = we.noc  || {};
+  const ttf  = we.ttf  || {};
+
+  const defenseGainB = (
+    ((rtx.sinceInaugPct || 0) / 100 * 135) +
+    ((lmt.sinceInaugPct || 0) / 100 * 108) +
+    ((noc.sinceInaugPct || 0) / 100 * 33)
+  ).toFixed(1);
+
+  const Cell = ({ ey, val, sub, vc }) => (
+    <div style={{ background: T.bgCard, padding: '1rem 1.25rem' }}>
+      <p style={{ ...serif, margin: '0 0 5px', fontSize: '10px', letterSpacing: '0.13em', textTransform: 'uppercase', color: T.terra }}>{ey}</p>
+      <p style={{ ...display, margin: '0 0 3px', fontSize: '1.85rem', lineHeight: 1, color: vc || T.ink }}>{val}</p>
+      {sub && <p style={{ ...serif, margin: 0, fontSize: '11px', color: T.inkMuted }}>{sub}</p>}
+    </div>
+  );
+  const Note = ({ t }) => <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '8px 0 0', fontStyle: 'italic', lineHeight: 1.6 }}>{t}</p>;
+  const Verdict = ({ t }) => (
+    <div style={{ background: T.bgTint, border: `1px solid ${T.borderDk}`, borderRadius: '2px', padding: '10px 14px', margin: '10px 0 0' }}>
+      <p style={{ ...serif, fontSize: '12px', color: T.ink, lineHeight: 1.7, margin: 0, fontStyle: 'italic' }}>{t}</p>
+    </div>
+  );
+  const grid4 = { display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0,1fr))', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden' };
+  const eyebrowStyle = { ...serif, margin: '0 0 8px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.terra };
+  const divider = { marginBottom: '1.25rem' };
+
+  const fmtGoldAbs = (v) => v != null ? `${pctSign(v)}$${Math.abs(v).toFixed(0)}` : '—';
+  const fmtGoldPct = (v) => v != null ? `${pctSign(v)}${Math.abs(v)}%` : null;
+  const fmtDxyAbs  = (v) => v != null ? `${pctSign(v)}${Math.abs(v).toFixed(1)}` : '—';
+  const fmtDxyPct  = (v, dir) => v != null ? `${pctSign(v)}${Math.abs(v)}% · dollar ${dir}` : null;
+  const fmtEurAbs  = (v) => v != null ? `${pctSign(v)}€${Math.abs(v).toFixed(1)}` : '—';
+  const fmtEurPct  = (v) => v != null ? `${pctSign(v)}${Math.abs(v)}% since Feb 28` : null;
+
+  return (
+    <>
+      {/* ── GOLD ── */}
+      <div style={divider}>
+        <p style={eyebrowStyle}>Gold (GC=F) · Flight to Safety Signal</p>
+        <div style={grid4}>
+          <Cell ey="Spot price"
+            val={gold.price ? `$${gold.price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}` : '—'}
+            sub={gold.change != null ? `${gold.change >= 0 ? '▲' : '▼'} $${Math.abs(gold.change).toFixed(2)} (${gold.change >= 0 ? '+' : ''}${gold.changePct}%) today` : null}
+            vc={T.ink}/>
+          <Cell ey="Inaug. baseline" val="$2,736" sub="Jan 20, 2025" vc={T.inkMid}/>
+          <Cell ey="Since inauguration"
+            val={fmtGoldAbs(gold.sinceInaugAbs)}
+            sub={fmtGoldPct(gold.sinceInaugPct)}
+            vc={pctColor(gold.sinceInaugAbs)}/>
+          <Cell ey="Since Feb 28"
+            val={fmtGoldAbs(gold.sinceWarAbs)}
+            sub={gold.sinceWarPct != null ? `${pctSign(gold.sinceWarPct)}${Math.abs(gold.sinceWarPct)}% war premium` : null}
+            vc={pctColor(gold.sinceWarAbs)}/>
+        </div>
+        <Verdict t={'Institutional investors vote with their hedges. Every time Trump says the war is "over soon," gold goes up. A $300+ per-ounce gain since inauguration is a multi-hundred-dollar vote of no confidence. Inflation hedges don\'t surge when leadership has this handled.'}/>
+        <Note t="GC=F via stooq · Inaug baseline: Jan 20, 2025 settlement · War baseline: Feb 28, 2026 close"/>
+      </div>
+
+      {/* ── DXY ── */}
+      <div style={divider}>
+        <p style={eyebrowStyle}>US Dollar Index (DXY) · Reserve Currency Confidence</p>
+        <div style={grid4}>
+          <Cell ey="DXY now"
+            val={dxy.price != null ? dxy.price.toFixed(1) : '—'}
+            sub={dxy.change != null ? `${dxy.change >= 0 ? '▲' : '▼'} ${Math.abs(dxy.change).toFixed(2)} today` : null}
+            vc={T.ink}/>
+          <Cell ey="Inaug. baseline" val="109.2" sub="Jan 20, 2025 · 20-yr high" vc={T.inkMid}/>
+          <Cell ey="Since inauguration"
+            val={fmtDxyAbs(dxy.sinceInaugAbs)}
+            sub={fmtDxyPct(dxy.sinceInaugPct, dxy.sinceInaugAbs < 0 ? 'weakening' : 'strengthening')}
+            vc={pctColor(-(dxy.sinceInaugAbs || 0))}/>
+          <Cell ey="Since Feb 28"
+            val={fmtDxyAbs(dxy.sinceWarAbs)}
+            sub={dxy.sinceWarPct != null ? `${pctSign(dxy.sinceWarPct)}${Math.abs(dxy.sinceWarPct)}% during the war` : null}
+            vc={pctColor(-(dxy.sinceWarAbs || 0))}/>
+        </div>
+        <Verdict t="Classic war signal: competently prosecuted US military operations strengthen the dollar on reserve-currency safe-haven demand — Gulf War 1991: +4.3%; Iraq 2003: +6.1% in the first 30 days. Not this time."/>
+        <Note t="DXY (DX-Y.NYB) via stooq · Prior conflict DXY benchmarks: Federal Reserve H.10 historical series"/>
+      </div>
+
+      {/* ── DEFENSE CONTRACTORS ── */}
+      <div style={divider}>
+        <p style={eyebrowStyle}>Defense Contractors (RTX · LMT · NOC) · The Bill and the Beneficiaries</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '2px', overflow: 'hidden' }}>
+            {[
+              { k: 'RTX', name: 'Raytheon Technologies', sub: 'Missiles, interceptors, Patriot', d: rtx },
+              { k: 'LMT', name: 'Lockheed Martin',       sub: 'F-35s, THAAD, HIMARS',           d: lmt },
+              { k: 'NOC', name: 'Northrop Grumman',      sub: 'B-2 bombers, strategic systems',  d: noc },
+            ].map((c, i, arr) => (
+              <div key={c.k} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderBottom: i < arr.length - 1 ? `1px solid ${T.border}` : 'none' }}>
+                <span style={{ ...display, fontSize: '1rem', color: T.slateMid, minWidth: '38px' }}>{c.k}</span>
+                <div style={{ flex: 1 }}>
+                  <p style={{ ...serif, margin: '0 0 1px', fontSize: '12px', color: T.ink }}>{c.name}</p>
+                  <p style={{ ...serif, margin: 0, fontSize: '10px', color: T.inkMuted }}>{c.sub}</p>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ ...display, margin: 0, fontSize: '1.1rem', color: T.ink }}>{c.d.price ? `$${c.d.price.toFixed(2)}` : '—'}</p>
+                  <p style={{ ...serif, margin: 0, fontSize: '11px', color: pctColor(c.d.sinceInaugPct) }}>
+                    {c.d.sinceInaugPct != null ? `${pctSign(c.d.sinceInaugPct)}${Math.abs(c.d.sinceInaugPct)}% since 1/20` : ''}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '2px', padding: '1.25rem' }}>
+            <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.13em', textTransform: 'uppercase', color: T.terra }}>Combined mkt cap gain since inaug.</p>
+            <p style={{ ...display, margin: '0 0 4px', fontSize: '2.4rem', lineHeight: 1, color: T.red }}>+${defenseGainB}B</p>
+            <p style={{ ...serif, margin: '0 0 1rem', fontSize: '12px', color: T.inkMuted }}>RTX + LMT + NOC — approximate</p>
+            <div style={{ height: '1px', background: T.border, margin: '0 0 10px' }}/>
+            <p style={{ ...serif, fontSize: '12px', color: T.inkMid, lineHeight: 1.75, margin: 0 }}>
+              The war costs the Treasury an estimated <span style={{ color: T.red, fontWeight: 600 }}>$870M/day</span> and has cost 13 American lives. The three primary defense contractors have collectively added <span style={{ color: T.red, fontWeight: 600 }}>+${defenseGainB}B</span> in market cap since Trump took office.
+            </p>
+          </div>
+        </div>
+        <Note t="RTX, LMT, NOC via stooq · Market cap gain approximate using float-weighted inauguration baselines (RTX ~$135B, LMT ~$108B, NOC ~$33B) · Not financial advice"/>
+      </div>
+
+      {/* ── TTF / LNG ── */}
+      <div>
+        <p style={eyebrowStyle}>European TTF Gas · What the War Costs People Who Weren&apos;t Asked</p>
+        <div style={grid4}>
+          <Cell ey="TTF spot (€/MWh)"
+            val={ttf.price != null ? `€${ttf.price.toFixed(1)}` : '—'}
+            sub={ttf.change != null ? `${ttf.change >= 0 ? '▲' : '▼'} €${Math.abs(ttf.change).toFixed(2)} (${ttf.change >= 0 ? '+' : ''}${ttf.changePct}%) today` : null}
+            vc={T.red}/>
+          <Cell ey="Pre-war (Feb 27)" val="€38.4" sub="Last close before Op. Epic Fury" vc={T.inkMid}/>
+          <Cell ey="Since war start"
+            val={fmtEurAbs(ttf.sinceWarAbs)}
+            sub={fmtEurPct(ttf.sinceWarPct)}
+            vc={pctColor(ttf.sinceWarAbs)}/>
+          <div style={{ background: T.bgCard, padding: '1rem 1.25rem' }}>
+            <p style={{ ...serif, margin: '0 0 5px', fontSize: '10px', letterSpacing: '0.13em', textTransform: 'uppercase', color: T.terra }}>Ras Laffan</p>
+            <p style={{ ...display, margin: '0 0 3px', fontSize: '1.4rem', lineHeight: 1, color: T.red }}>Offline</p>
+            <p style={{ ...serif, margin: 0, fontSize: '11px', color: T.inkMuted }}>Since Mar 2 · 77 mtpa capacity</p>
+          </div>
+        </div>
+        <Verdict t="QatarEnergy shut Ras Laffan — the world's largest LNG export facility — on March 2. It supplies roughly 20% of European LNG imports. Germany, France, and Italy have all declined to send warships. Their citizens are paying the surcharge anyway."/>
+        <Note t="TTF Dutch front-month via stooq · QatarEnergy Ras Laffan shutdown confirmed Mar 2, 2026 · European LNG import share: BloombergNEF 2025"/>
+      </div>
+    </>
+  );
+}
+
 export default function Home() {
   const [data,        setData]        = useState(null);
   const [commodities, setCommodities] = useState(null);
+  const [warEconomy,  setWarEconomy]  = useState(null);
   const [loading,     setLoading]     = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [error,       setError]       = useState(null);
@@ -820,9 +982,9 @@ export default function Home() {
 
   const fetchAll = useCallback(async () => {
     try {
-      const [oilRes, comRes] = await Promise.all([fetch('/api/oil'), fetch('/api/commodities')]);
-      const [oil, com] = await Promise.all([oilRes.json(), comRes.json()]);
-      setData(oil); setCommodities(com.commodities);
+      const [oilRes, comRes, weRes] = await Promise.all([fetch('/api/oil'), fetch('/api/commodities'), fetch('/api/wareconomy')]);
+      const [oil, com, we] = await Promise.all([oilRes.json(), comRes.json(), weRes.json()]);
+      setData(oil); setCommodities(com.commodities); setWarEconomy(we.warEconomy);
       setLastUpdated(new Date()); setError(null);
     } catch { setError('Live data unavailable — markets may be closed.'); }
     finally { setLoading(false); }
@@ -1140,6 +1302,18 @@ export default function Home() {
               Fertilizer tracked via CF Industries (NYSE: CF) — largest US urea producer. Urea is an OTC market with no liquid exchange-traded futures.
               All inauguration baselines estimated from January 20, 2025 market close.
             </p>
+          </div>
+
+          {/* Who's Winning — War Economy Beneficiaries */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead }}>Who&apos;s Winning</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              Four markets that tell you what institutional money thinks about &ldquo;it will be over soon.&rdquo;
+              Gold measures inflation fear. The dollar measures reserve-currency confidence. Defense contractors measure who&apos;s billing.
+              European TTF gas measures what US foreign policy costs people who weren&apos;t asked.
+              All indexed to Inauguration Day, January 20, 2025.
+            </p>
+            <WarEconomyWinners we={warEconomy}/>
           </div>
 
           {/* Average American cost */}
