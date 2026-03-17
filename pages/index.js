@@ -450,6 +450,236 @@ function CommodityCard({ c }) {
   );
 }
 
+/* ─── BAID — Baltic Dirty Tanker Index ──────────────────────────────────────
+   Pre-conflict 12-month monthly approximations (StockQ scale).
+   Anchored to: 2025 full-year return +42.29% (StockQ), start-of-2026 ≈ 1,319,
+   start-of-2025 ≈ 927. Seasonal pattern: VLCC tanker rates trough Q2–Q3,
+   recover Q4. Values are estimated monthly averages — directionally accurate,
+   not day-precise. Source: StockQ / Baltic Exchange.
+   ─────────────────────────────────────────────────────────────────────────── */
+const BAID_HISTORY = [
+  { label: "Feb '25",  value: 950  },
+  { label: "Mar '25",  value: 910  },
+  { label: "Apr '25",  value: 870  },
+  { label: "May '25",  value: 840  },
+  { label: "Jun '25",  value: 820  },
+  { label: "Jul '25",  value: 800  },  /* seasonal trough */
+  { label: "Aug '25",  value: 860  },
+  { label: "Sep '25",  value: 980  },
+  { label: "Oct '25",  value: 1100 },
+  { label: "Nov '25",  value: 1230 },
+  { label: "Dec '25",  value: 1300 },
+  { label: "Jan '26",  value: 1330 },
+  { label: "Feb 28",   value: 1310 },  /* day before commencement */
+];
+const BAID_PRE_LOW  = 800;
+const BAID_PRE_HIGH = 1350;
+const BAID_PRE_AVG  = Math.round(BAID_HISTORY.reduce((s, p) => s + p.value, 0) / BAID_HISTORY.length);
+
+function BAIDChart({ chartReady, currentValue }) {
+  const canvasRef = useRef(null);
+  const chartRef  = useRef(null);
+  const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
+
+  useEffect(() => {
+    if (!chartReady || !canvasRef.current) return;
+    if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; }
+
+    const labels = [...BAID_HISTORY.map(p => p.label), 'Today'];
+    const histValues = BAID_HISTORY.map(p => p.value);
+    const n = BAID_HISTORY.length;
+
+    chartRef.current = new window.Chart(canvasRef.current.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          /* Band: upper bound — fills to next dataset (lower bound) */
+          {
+            label: `Pre-conflict high (${BAID_PRE_HIGH})`,
+            data: [...Array(n).fill(BAID_PRE_HIGH), null],
+            borderColor: 'transparent',
+            backgroundColor: `${T.slatePale}cc`,
+            pointRadius: 0,
+            fill: '+1',
+            tension: 0,
+            order: 4,
+          },
+          /* Band: lower bound floor */
+          {
+            label: `Pre-conflict low (${BAID_PRE_LOW})`,
+            data: [...Array(n).fill(BAID_PRE_LOW), null],
+            borderColor: `${T.border}88`,
+            borderWidth: 1,
+            borderDash: [3, 3],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            order: 3,
+          },
+          /* Historical monthly trend line */
+          {
+            label: 'Monthly avg (est.)',
+            data: [...histValues, null],
+            borderColor: T.slateMid,
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 2.5,
+            pointBackgroundColor: T.slateMid,
+            fill: false,
+            tension: 0.3,
+            order: 2,
+          },
+          /* Pre-conflict average reference */
+          {
+            label: `Pre-conflict avg (~${BAID_PRE_AVG})`,
+            data: Array(n + 1).fill(BAID_PRE_AVG),
+            borderColor: T.inkMuted,
+            borderWidth: 1,
+            borderDash: [5, 4],
+            pointRadius: 0,
+            fill: false,
+            order: 5,
+          },
+          /* Current live value — the spike */
+          {
+            label: 'Live (StockQ)',
+            data: [...Array(n).fill(null), currentValue],
+            borderColor: T.red,
+            backgroundColor: T.red,
+            pointRadius: 8,
+            pointHoverRadius: 10,
+            pointStyle: 'circle',
+            fill: false,
+            order: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: c => {
+                if (c.dataset.label === 'Live (StockQ)') return ` BDTI: ${c.parsed.y.toLocaleString()} — Current (StockQ scale)`;
+                if (c.dataset.label === 'Monthly avg (est.)') return ` BDTI: ${c.parsed.y.toLocaleString()} — Est. monthly avg`;
+                return ` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}`;
+              }
+            }
+          },
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 3200,
+            ticks: {
+              callback: v => v.toLocaleString(),
+              color: T.inkMuted,
+              font: { size: 11, family: "'Source Serif 4', Georgia, serif" },
+              maxTicksLimit: 8,
+            },
+            grid: { color: T.border },
+            border: { color: T.border },
+          },
+          x: {
+            ticks: {
+              color: T.inkMuted,
+              font: { size: 10, family: "'Source Serif 4', Georgia, serif" },
+              maxRotation: 30,
+              autoSkip: false,
+            },
+            grid: { display: false },
+            border: { color: T.border },
+          },
+        },
+      },
+    });
+
+    return () => { if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; } };
+  }, [chartReady, currentValue]);
+
+  return <div style={{ position: 'relative', width: '100%', height: '220px' }}><canvas ref={canvasRef}/></div>;
+}
+
+function BAIDSection({ chartReady, baid }) {
+  const serif   = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  const currentValue  = baid?.value ?? 2849;
+  const changePct     = baid?.changePct ?? null;
+  const isFallback    = baid?.fallback ?? true;
+
+  /* Pct above pre-conflict average */
+  const vsAvgPct = Math.round(((currentValue - BAID_PRE_AVG) / BAID_PRE_AVG) * 100);
+  /* Pct above pre-conflict high */
+  const vsHighPct = Math.round(((currentValue - BAID_PRE_HIGH) / BAID_PRE_HIGH) * 100);
+
+  return (
+    <>
+      {/* Live stat bar */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden', marginBottom: '1.25rem' }}>
+        {[
+          { label: 'BDTI — Current',       value: currentValue.toLocaleString(),          color: T.red,     sub: changePct ? `${changePct} today` : 'StockQ / Baltic Exchange' },
+          { label: 'Pre-conflict avg',      value: BAID_PRE_AVG.toLocaleString(),          color: T.inkMid,  sub: 'Feb 28 2025 → Feb 28 2026' },
+          { label: 'Above pre-conflict avg', value: `+${vsAvgPct}%`,                       color: T.terra,   sub: `+${vsHighPct}% above 12-mo high` },
+        ].map((m, i) => (
+          <div key={i} style={{ background: T.bgCard, padding: '0.9rem 1rem' }}>
+            <p style={{ ...serif, margin: '0 0 4px', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: T.inkMuted }}>{m.label}</p>
+            <p style={{ ...display, margin: '0 0 2px', fontSize: '1.5rem', color: m.color, lineHeight: 1 }}>{m.value}</p>
+            <p style={{ ...serif, margin: 0, fontSize: '10px', color: T.inkMuted, fontStyle: 'italic' }}>{m.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Explainer */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+        <div>
+          <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: T.terra }}>What it is</p>
+          <p style={{ ...serif, margin: 0, fontSize: '12px', color: T.inkMid, lineHeight: 1.75 }}>
+            The Baltic Dirty Tanker Index (BDTI) is the global benchmark for shipping unrefined crude oil — the rate tanker
+            operators charge to move a barrel from wellhead to refinery. It reflects 17 major crude routes weighted by volume,
+            published daily by the Baltic Exchange in London. "Dirty" refers to the unrefined product, not the ethics of anyone involved.
+          </p>
+        </div>
+        <div>
+          <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: T.terra }}>Why we're tracking it</p>
+          <p style={{ ...serif, margin: 0, fontSize: '12px', color: T.inkMid, lineHeight: 1.75 }}>
+            BDTI is a physical-market signal, not a financialized one. When Brent futures spike on a speech or a drone incident,
+            the BDTI may not move — because no tanker is actually rerouting. When both move together, the disruption is real
+            and in the logistics. With 20% of global oil transiting Hormuz and that strait effectively mined and closed,
+            BDTI is the instrument that shows whether the blockade is real or priced on vibes.
+          </p>
+        </div>
+      </div>
+
+      {/* Chart */}
+      <BAIDChart chartReady={chartReady} currentValue={currentValue} />
+
+      {/* Chart legend */}
+      <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap', marginTop: '10px', marginBottom: '4px' }}>
+        {[
+          { color: T.slatePale, border: T.border, label: `12-mo pre-conflict range (${BAID_PRE_LOW.toLocaleString()}–${BAID_PRE_HIGH.toLocaleString()})`, fill: true },
+          { color: T.slateMid,  label: 'Monthly est. avg (pre-conflict)' },
+          { color: T.inkMuted,  label: `12-mo avg (~${BAID_PRE_AVG.toLocaleString()})`, dash: true },
+          { color: T.red,       label: 'Live BDTI' },
+        ].map((l, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {l.fill
+              ? <div style={{ width: '16px', height: '10px', background: l.color, border: `1px solid ${l.border}`, borderRadius: '1px' }}/>
+              : l.dash
+                ? <div style={{ width: '16px', height: '2px', background: l.color, borderTop: `1px dashed ${l.color}` }}/>
+                : <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: l.color }}/>
+            }
+            <span style={{ ...serif, fontSize: '10px', color: T.inkMuted }}>{l.label}</span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 /* ─── Average American Cost ─────────────────────────────────────────────────── */
 function AverageAmericanCost({ liveCost }) {
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
@@ -787,10 +1017,19 @@ export default function Home() {
   const [chartReady,  setChartReady]  = useState(false);
   const [showShare,   setShowShare]   = useState(false);
   const [dayCount,    setDayCount]    = useState(getDayCount());
+  const [baid,        setBaid]        = useState(null);
 
   useEffect(() => {
     const t = setInterval(() => setDayCount(getDayCount()), 60000);
     return () => clearInterval(t);
+  }, []);
+
+  /* BAID — fetched once on mount; Baltic Exchange publishes once daily */
+  useEffect(() => {
+    fetch('/api/baid')
+      .then(r => r.json())
+      .then(d => setBaid(d))
+      .catch(() => {});
   }, []);
 
   const liveCost = useLiveCost(dayCount);
@@ -1116,6 +1355,23 @@ export default function Home() {
             <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '10px 0 0', fontStyle: 'italic', lineHeight: 1.6 }}>
               Fertilizer tracked via CF Industries (NYSE: CF) — largest US urea producer. Urea is an OTC market with no liquid exchange-traded futures.
               All inauguration baselines estimated from January 20, 2025 market close.
+            </p>
+          </div>
+
+          {/* BAID — Baltic Dirty Tanker Index */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead }}>Shipping Intelligence — Baltic Dirty Tanker Index (BDTI)</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              The physical-market confirmation signal. When Brent futures spike on a speech, the BDTI may not move —
+              no tanker is actually rerouting. When both move together, the disruption is real and in the pipes.
+            </p>
+            <BAIDSection chartReady={chartReady} baid={baid} />
+            <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '12px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
+              BDTI sourced from StockQ / Baltic Exchange. Published once per London trading day.
+              Pre-conflict range and monthly averages estimated from StockQ historical data (Feb 2025 – Feb 28, 2026) using
+              reported 2025 annual return (+42.3%) and 2026 YTD performance as anchors. Current reading is on StockQ&apos;s
+              index scale — directionally accurate, consistent across all readings on this page.
+              BDTI does not publish on weekends or UK public holidays; last known value displayed when market is closed.
             </p>
           </div>
 
