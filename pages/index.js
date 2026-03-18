@@ -226,73 +226,78 @@ const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: 
 
 /* ─── Structural floor conditions ───────────────────────────────────────────── */
 /* Each condition holds until explicitly reversed by a named, observable event.
-   Floors stack additively. Current floor = sum of all active contributions. */
+   Floors stack additively. Current floor = sum of all active contributions.
+   Ceiling: $150+ sustained oil or nuclear weapons use = 96–100.
+   Floor calibrated so all-active = ~55 (Significantly → Very Fucked Up boundary).
+   Events push score above floor; score decays 0.5pts/quiet day back toward floor. */
 const FLOOR_CONDITIONS = [
-  { id: 'hormuz',       label: 'Hormuz closed to Western/US-aligned shipping',  contribution: 25, active: true,  reversal: 'Confirmed Western-flagged commercial transit without Iranian escort or yuan settlement' },
-  { id: 'kinetic',      label: 'Active kinetic operations ongoing (both sides)', contribution: 12, active: true,  reversal: '72-hour cessation of strikes confirmed by both CENTCOM and IRGC' },
-  { id: 'mineclear',    label: 'No US mine-clearance capability in theater',     contribution: 10, active: true,  reversal: 'USS Tulsa or USS Santa Barbara confirmed operating in the Persian Gulf' },
-  { id: 'negotiations', label: 'Iran publicly refusing negotiations',            contribution: 8,  active: true,  reversal: 'FM-level statement accepting ceasefire talks — not Trump claiming they want a deal' },
-  { id: 'coalition',    label: 'No allied coalition for Hormuz reopening',       contribution: 8,  active: true,  reversal: 'Two or more named nations confirm warships en route for escort operations' },
-  { id: 'yuan',         label: 'Yuan-denominated transit arrangement in place',  contribution: 7,  active: true,  reversal: 'Arrangement formally dissolved or Western vessels granted equivalent access' },
-  { id: 'arsenal',      label: "Iran's newer-generation arsenal undeployed",     contribution: 5,  active: true,  reversal: 'IRGC confirms or deploys — score rises on deployment, floor condition removed' },
-  { id: 'dissent',      label: 'US internal dissent confirmed public (Kent)',     contribution: 3,  active: true,  reversal: 'Confirmed replacement, no further senior public resignations' },
+  { id: 'hormuz',       label: 'Hormuz closed to Western/US-aligned shipping',  contribution: 18, active: true,  reversal: 'Confirmed Western-flagged commercial transit without Iranian escort or yuan settlement' },
+  { id: 'kinetic',      label: 'Active kinetic operations ongoing (both sides)', contribution: 8,  active: true,  reversal: '72-hour cessation of strikes confirmed by both CENTCOM and IRGC' },
+  { id: 'mineclear',    label: 'No US mine-clearance capability in theater',     contribution: 7,  active: true,  reversal: 'USS Tulsa or USS Santa Barbara confirmed operating in the Persian Gulf' },
+  { id: 'negotiations', label: 'Iran publicly refusing negotiations',            contribution: 6,  active: true,  reversal: 'FM-level statement accepting ceasefire talks — not Trump claiming they want a deal' },
+  { id: 'coalition',    label: 'No allied coalition for Hormuz reopening',       contribution: 5,  active: true,  reversal: 'Two or more named nations confirm warships en route for escort operations' },
+  { id: 'yuan',         label: 'Yuan-denominated transit arrangement in place',  contribution: 5,  active: true,  reversal: 'Arrangement formally dissolved or Western vessels granted equivalent access' },
+  { id: 'arsenal',      label: "Iran's newer-generation arsenal undeployed",     contribution: 4,  active: true,  reversal: 'IRGC confirms or deploys — score rises on deployment, floor condition removed' },
+  { id: 'dissent',      label: 'US internal dissent confirmed public (Kent)',     contribution: 2,  active: true,  reversal: 'Confirmed replacement, no further senior public resignations' },
 ];
 
 const CURRENT_FLOOR = FLOOR_CONDITIONS.filter(c => c.active).reduce((s, c) => s + c.contribution, 0);
 
 /* ─── Daily XY assessments ───────────────────────────────────────────────────── */
-/* X = Fuckedness (0–100, floor-anchored + event push above)
-   Y = Ease of Unfuckability (1–10; 10=walk it back tomorrow, 1=chiseled in rock)
-   yNote = analyst rationale for Y call. Bryan makes the Y call. */
+/* X = Fuckedness (0–100). Scale: 0–20 fine; 21–40 more than a little; 41–60 significantly;
+   61–80 very; 81–95 completely unbelievably; 96–100 reserved ($150+/nuclear).
+   Floor all-active = 55. Events push above; decays 0.5pt/quiet day.
+   Y = Ease of Unfuckability (1–10; 10=walk it back tomorrow, 1=chiseled in rock).
+   Y is TLM Assessment — updated daily with evidence. */
 const DAILY_ASSESSMENTS = [
-  { day: 1,  date: 'Feb 28', x: 38, y: 7.0,
-    xNote: 'War commenced. Floor conditions activating. WTI +15% intraday. Structural damage not yet locked in.',
-    yNote: 'Path theoretically open. No structural foreclosure yet. Ceasefire achievable with political will if either side blinked in week one.' },
-  { day: 2,  date: 'Mar 1',  x: 44, y: 6.5,
-    xNote: 'First US KIA (6 in Kuwait). OPEC+ response fails. QatarEnergy halts Ras Laffan LNG. Gulf targets expanding.',
-    yNote: 'Back-channels structurally intact. Iran hasn\'t formalized closure posture yet. Window exists.' },
-  { day: 3,  date: 'Mar 2',  x: 50, y: 6.0,
-    xNote: 'Kuwait embassy struck. Girls school Minab hit. Iraq southern oilfields collapse 70%.',
-    yNote: 'Civilian casualties begin complicating US domestic political path home. Still reversible.' },
-  { day: 4,  date: 'Mar 3',  x: 54, y: 5.5,
-    xNote: 'Goldman Sachs: $14/bbl war premium embedded. Kuwait and UAE announce precautionary cuts.',
-    yNote: 'Economic pressure building on both sides — theoretically creates negotiation incentive. In practice, Iran has endured sanctions for 40 years.' },
-  { day: 8,  date: 'Mar 7',  x: 57, y: 5.0,
-    xNote: 'War settling into operational pattern. Hormuz effectively closed commercially — P&I insurance withdrawn Mar 5.',
-    yNote: 'Insurance withdrawal is structural, not declaratory. Market reality forming independent of political decisions.' },
-  { day: 9,  date: 'Mar 8',  x: 62, y: 5.0,
+  { day: 1,  date: 'Feb 28', x: 28, y: 7.0,
+    xNote: 'War commenced. Floor conditions activating but not yet locked in. WTI +15% intraday. No structural foreclosure yet.',
+    yNote: 'Path theoretically open. Ceasefire achievable with political will if either side blinked in week one. Back-channels intact.' },
+  { day: 2,  date: 'Mar 1',  x: 33, y: 6.5,
+    xNote: 'First 6 US KIA in Kuwait. OPEC+ response fails. QatarEnergy halts Ras Laffan LNG. Gulf targets expanding.',
+    yNote: 'Back-channels structurally intact. Iran hasn\'t formalized closure posture yet. Window exists but starting to close.' },
+  { day: 3,  date: 'Mar 2',  x: 37, y: 6.0,
+    xNote: 'Kuwait embassy struck. Girls school Minab hit (148–180 dead). Iraq southern oilfields collapse 70%.',
+    yNote: 'Civilian casualty scale beginning to complicate US domestic political path home. Still reversible with political will.' },
+  { day: 4,  date: 'Mar 3',  x: 40, y: 5.5,
+    xNote: 'Goldman Sachs: $14/bbl war premium embedded. Kuwait and UAE announce precautionary production cuts.',
+    yNote: 'Economic pressure theoretically creates negotiation incentive. In practice, Iran has endured 40 years of sanctions without blinking.' },
+  { day: 8,  date: 'Mar 7',  x: 44, y: 5.0,
+    xNote: 'War settling into operational pattern. Hormuz commercially closed — P&I war risk insurance withdrawn Mar 5.',
+    yNote: 'Insurance withdrawal is structural, not declaratory. Market reality forming independently of political decisions.' },
+  { day: 9,  date: 'Mar 8',  x: 48, y: 5.0,
     xNote: 'IRGC formally confirms selective Hormuz closure — strategic formalization of what had been tactical.',
-    yNote: 'Formalization is worse than the original closure. Ad hoc threats can be walked back. Official policy requires face-saving construct to reverse.' },
-  { day: 10, date: 'Mar 9',  x: 74, y: 4.5,
-    xNote: 'WTI $119.48 — 3.75yr high. Mojtaba Khamenei appointed Supreme Leader. Markets read Tehran digging in.',
-    yNote: 'New Supreme Leader whose entire legitimacy rests on not blinking. Negotiating flexibility is existential risk for him, not political inconvenience.' },
-  { day: 11, date: 'Mar 10', x: 76, y: 4.5,
+    yNote: 'Formalization is worse than the original closure. Ad hoc threats can be walked back. Official policy requires a face-saving construct to reverse.' },
+  { day: 10, date: 'Mar 9',  x: 56, y: 4.5,
+    xNote: 'WTI hits $119.48 — 3.75yr high. Mojtaba Khamenei appointed Supreme Leader. Markets read Tehran digging in.',
+    yNote: 'New Supreme Leader whose entire legitimacy rests on not blinking. Negotiating flexibility is existential risk for him, not mere political inconvenience.' },
+  { day: 11, date: 'Mar 10', x: 58, y: 4.5,
     xNote: 'Trump floats Hormuz takeover. Iran mines strait. Yuan transit arrangement emerging. Saudi Safaniya/Zuluf fields shut.',
-    yNote: 'Yuan transit structure beginning to form as market reality — not a policy decision that gets reversed at a summit.' },
-  { day: 12, date: 'Mar 11', x: 77, y: 4.0,
-    xNote: 'IEA 400M barrel release — largest in history — fails to move price. G7 finance ministers convene.',
-    yNote: 'Reserve release failure signals structural supply problem, not a liquidity problem. Cannot be papered over. Fix difficulty rising.' },
-  { day: 13, date: 'Mar 12', x: 79, y: 4.0,
-    xNote: 'Mojtaba first statement — vows Strait stays closed. UK confirms Iran laying mines. 3.2M Iranians displaced.',
-    yNote: 'New leadership\'s first public posture is maximalist. No signals of back-channel interest. Larijani still alive — still a path.' },
-  { day: 14, date: 'Mar 13', x: 85, y: 3.5,
-    xNote: 'KC-135 crash — 6 KIA. Oil above $100 despite all interventions. Kharg struck. Hegseth contradicts himself in one briefing. Dubai building hit.',
-    yNote: 'Larijani still alive and warned publicly — still the most credible interlocutor. Channels technically open. Getting harder to use them.' },
-  { day: 15, date: 'Mar 14', x: 86, y: 3.5,
-    xNote: 'Brent $103. India-Iran yuan transit confirmed. 31st MEU ordered to theater. UAE formally targeted by IRGC.',
-    yNote: 'Yuan transit now confirmed market arrangement — commercial infrastructure forming around the blockade. Structural hardening accelerating.' },
-  { day: 16, date: 'Mar 15', x: 87, y: 3.5,
-    xNote: 'Trump claims 100% military capability destroyed, simultaneously asks 5 nations for warships. None confirm.',
-    yNote: 'US credibility gap widening. Harder to lead a coalition you\'ve already alienated. EU posture calcifying.' },
-  { day: 17, date: 'Mar 16', x: 87, y: 3.5,
-    xNote: 'Mine-clearance ships photographed in Malaysia — 3,500mi from Gulf. First PAK transit yuan-denominated. Dubai airport struck.',
-    yNote: 'Mine-clearance gap is now a confirmed physical constraint on resolution — not just political. Cannot be solved by a phone call.' },
-  { day: 18, date: 'Mar 17', x: 88, y: 3.5,
-    xNote: 'Amnesty confirms Minab school (170+ killed). Larijani and Soleimani killed. Ford fire. Qalibaf: Hormuz "cannot return to previous conditions."',
-    yNote: 'Larijani eliminated — most credible interlocutor gone. Path narrowing structurally. Qalibaf statement signals Iranian consensus: this is permanent.' },
-  { day: 19, date: 'Mar 18', x: 91, y: 3.5,
-    xNote: 'South Pars struck — first upstream energy asset. Brent $108.60 (+5%). Iran names Gulf energy targets. Khatib killed. Kent resigns.',
-    yNote: 'Bryan Day 19: 3.5/10. Path exists but losing lanes, not just getting longer. No architect of a deal on either side. South Pars strike may eliminate Iranian economic incentive to deal short-term.' },
+    yNote: 'Yuan transit structure beginning to form as commercial reality — not a policy decision that gets reversed at a summit.' },
+  { day: 12, date: 'Mar 11', x: 59, y: 4.0,
+    xNote: 'IEA 400M barrel release — largest in history — fails to move price. G7 finance ministers convene. Three more vessels struck.',
+    yNote: 'Reserve release failure signals structural supply problem, not a liquidity problem. Fix difficulty rising — cannot be papered over.' },
+  { day: 13, date: 'Mar 12', x: 61, y: 4.0,
+    xNote: 'Mojtaba first statement — vows Strait stays closed, threatens US bases. UK confirms Iran laying mines. 3.2M Iranians displaced.',
+    yNote: 'New leadership\'s first public posture is maximalist. No back-channel signals. Larijani still alive — path technically exists.' },
+  { day: 14, date: 'Mar 13', x: 63, y: 3.5,
+    xNote: 'KC-135 crash — 6 KIA. Oil above $100 despite all interventions. Kharg struck. Hegseth contradicts himself in one briefing.',
+    yNote: 'Larijani still alive and warning publicly — still most credible interlocutor. Channels technically open. Getting harder to use.' },
+  { day: 15, date: 'Mar 14', x: 64, y: 3.5,
+    xNote: 'Brent closes $103. India-Iran yuan transit confirmed. 31st MEU ordered to theater. UAE formally targeted by IRGC.',
+    yNote: 'Yuan transit now confirmed commercial arrangement — infrastructure forming around the blockade. Structural hardening accelerating.' },
+  { day: 16, date: 'Mar 15', x: 65, y: 3.5,
+    xNote: 'Trump claims 100% military capability destroyed, simultaneously asks 5 nations for warships. None confirm. EU rejects.',
+    yNote: 'US credibility gap widening. Harder to lead a coalition you\'ve already alienated. EU posture calcifying into policy.' },
+  { day: 17, date: 'Mar 16', x: 65, y: 3.5,
+    xNote: 'Mine-clearance ships photographed in Malaysia — 3,500mi away. First PAK transit yuan-denominated. Dubai airport struck.',
+    yNote: 'Mine-clearance gap is now a confirmed physical constraint — not just political. Cannot be solved by a phone call or a summit.' },
+  { day: 18, date: 'Mar 17', x: 66, y: 3.5,
+    xNote: 'Amnesty confirms Minab school (170+ killed). Larijani and Soleimani killed by Israeli strikes. Qalibaf: Hormuz "cannot return to previous conditions."',
+    yNote: 'Larijani eliminated — most credible interlocutor gone. Qalibaf statement signals Iranian institutional consensus: the closure is permanent.' },
+  { day: 19, date: 'Mar 18', x: 68, y: 3.5,
+    xNote: 'South Pars struck — first upstream energy asset. Brent $108.60 (+5%). Iran names Gulf infrastructure targets. Khatib killed. Kent resigns.',
+    yNote: 'TLM Assessment Day 19: 3.5/10. Path exists but losing lanes, not just getting longer. No architect of a deal on either side. South Pars strike likely eliminates Iranian economic incentive to negotiate short-term.' },
 ];
 
 const BILL = [
@@ -523,7 +528,7 @@ function FuckupXYPlot({ chartReady }) {
             ticks: {
               color: T.inkMuted,
               font: { size: 10, family: "'Source Serif 4', Georgia, serif" },
-              callback: v => v === 0 ? 'Fine' : v === 50 ? 'Bad' : v === 100 ? 'Cooked' : v,
+              callback: v => v === 0 ? 'Fine' : v === 41 ? 'Significantly' : v === 61 ? 'Very' : v === 81 ? 'Completely' : v === 100 ? '☢' : '',
             },
             grid: { color: `${T.border}88` },
             border: { color: T.border },
@@ -613,10 +618,9 @@ function FuckupXYPlot({ chartReady }) {
       </div>
 
       <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: '8px 0 0', fontStyle: 'italic', lineHeight: 1.7 }}>
-        X axis (Fuckedness): structural floor conditions + event push above floor, decaying 0.5pts/quiet day.
-        Y axis (Ease of Unfuckability): analyst judgment call — 10 = adults in the room fix it tomorrow, 1 = chiseled in rock.
-        Hover each point for full rationale. Score ceiling: $150+ sustained oil or nuclear weapons use.
-        Analyst: Bryan Del Monte / The Long Memo.
+        X axis (Fuckedness): structural floor conditions (all-active floor = 55) + event push above floor, decaying 0.5pts/quiet day.
+        Y axis (Ease of Unfuckability): TLM Assessment — updated daily with evidence. 10 = adults in the room fix it tomorrow. 1 = chiseled in rock.
+        Score ceiling: $150+ sustained oil or nuclear weapons use = 96–100. Hover each point for full rationale.
       </p>
     </div>
   );
