@@ -627,40 +627,41 @@ function FuckupXYPlot({ chartReady }) {
 }
 
 /* ─── Gauge ─────────────────────────────────────────────────────────────────── */
-function Gauge({ pct }) {
+function Gauge({ pct, accentColor }) {
   const p = Math.min(100, Math.max(0, pct));
   const zones = [
     { threshold: 0,   label: 'Not fucked up',                    color: T.green   },
-    { threshold: 25,  label: 'More than a little fucked up',      color: T.amber   },
-    { threshold: 50,  label: 'Significantly fucked up',           color: T.terra   },
-    { threshold: 75,  label: 'Very fucked up',                    color: T.red     },
-    { threshold: 100, label: 'Completely unbelievably fucked up', color: '#7B0000' },
+    { threshold: 21,  label: 'More than a little fucked up',      color: T.amber   },
+    { threshold: 41,  label: 'Significantly fucked up',           color: T.terra   },
+    { threshold: 61,  label: 'Very fucked up',                    color: T.red     },
+    { threshold: 81,  label: 'Completely unbelievably fucked up', color: '#7B0000' },
   ];
   const activeIdx = zones.reduce((best, z, i) => (p >= z.threshold ? i : best), 0);
+  const fillEnd = accentColor || zones[activeIdx].color;
   return (
     <div style={{ width: '100%', padding: '0.25rem 0 1rem' }}>
       <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-        <span style={{ display: 'inline-block', fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '1.5rem', fontStyle: 'italic', color: zones[activeIdx].color, borderBottom: `2px solid ${zones[activeIdx].color}`, paddingBottom: '2px', letterSpacing: '-0.01em' }}>
+        <span style={{ display: 'inline-block', fontFamily: "'DM Serif Display', Georgia, serif", fontSize: '1.5rem', fontStyle: 'italic', color: fillEnd, borderBottom: `2px solid ${fillEnd}`, paddingBottom: '2px', letterSpacing: '-0.01em' }}>
           {zones[activeIdx].label}
         </span>
       </div>
       <div style={{ position: 'relative', height: '16px', borderRadius: '2px', background: T.bgTint, border: `1px solid ${T.border}`, overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(90deg, ${T.green}22 0%, ${T.amber}22 25%, ${T.terra}33 50%, ${T.red}33 75%, #7B000044 100%)` }}/>
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${p}%`, background: `linear-gradient(90deg, ${T.green}, ${zones[activeIdx].color})`, opacity: 0.85, transition: 'width 1.4s cubic-bezier(0.4,0,0.2,1)' }}/>
-        {[25, 50, 75].map(x => (
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(90deg, ${T.green}22 0%, ${T.amber}22 21%, ${T.terra}33 41%, ${T.red}33 61%, #7B000044 81%)` }}/>
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${p}%`, background: `linear-gradient(90deg, ${T.green}, ${fillEnd})`, opacity: 0.85, transition: 'width 1.4s cubic-bezier(0.4,0,0.2,1)' }}/>
+        {[21, 41, 61, 81].map(x => (
           <div key={x} style={{ position: 'absolute', left: `${x}%`, top: 0, bottom: 0, width: '1px', background: 'rgba(255,255,255,0.6)' }}/>
         ))}
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
         {zones.map((z, i) => (
-          <div key={i} style={{ fontSize: '10px', fontFamily: "'Source Serif 4', Georgia, serif", color: i === activeIdx ? z.color : T.inkMuted, fontWeight: i === activeIdx ? 600 : 400, textAlign: i === 0 ? 'left' : i === zones.length - 1 ? 'right' : 'center', flex: 1, lineHeight: 1.3, letterSpacing: '0.01em' }}>
+          <div key={i} style={{ fontSize: '10px', fontFamily: "'Source Serif 4', Georgia, serif", color: i === activeIdx ? fillEnd : T.inkMuted, fontWeight: i === activeIdx ? 600 : 400, textAlign: i === 0 ? 'left' : i === zones.length - 1 ? 'right' : 'center', flex: 1, lineHeight: 1.3, letterSpacing: '0.01em' }}>
             {z.label}
           </div>
         ))}
       </div>
       <div style={{ textAlign: 'center', marginTop: '10px' }}>
         <span style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: '12px', color: T.inkMuted, letterSpacing: '0.04em' }}>
-          Current reading: <strong style={{ color: zones[activeIdx].color }}>{p.toFixed(1)}%</strong> of maximum recorded fuckup
+          Current reading: <strong style={{ color: fillEnd }}>{p.toFixed(1)}/100</strong>
         </span>
       </div>
     </div>
@@ -1312,10 +1313,84 @@ export default function Home() {
             <HormuzVisualBar/>
           </div>
 
-          {/* Gauge */}
+          {/* Dual Fuckupometer — Market vs Geopolitical */}
           <div style={{ ...section }}>
-            <p style={{ ...sectionHead }}>Fuckupometer™ — Real-Time Reading</p>
-            <Gauge pct={fuckupFactor}/>
+            <p style={{ ...sectionHead }}>Fuckupometer™ — Dual Reading</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.5rem', lineHeight: 1.7 }}>
+              Two instruments measuring different things. When they diverge — when markets price less fuckedness than
+              the structural picture warrants — that gap is the signal. It is also usually temporary.
+            </p>
+
+            {/* Two gauges side by side */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden', marginBottom: '1px' }}>
+
+              {/* Left — Market Fuckedness */}
+              <div style={{ background: T.bgCard, padding: '1.25rem 1.5rem', borderTop: `3px solid ${T.terra}` }}>
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <p style={{ ...serif, margin: '0 0 2px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.terra }}>Market Fuckedness™</p>
+                  <p style={{ ...serif, margin: 0, fontSize: '11px', color: T.inkMuted, fontStyle: 'italic' }}>
+                    WTI crude vs. inauguration baseline · real-time · no editorial judgment
+                  </p>
+                </div>
+                <Gauge pct={fuckupFactor}/>
+                <p style={{ ...serif, fontSize: '11px', color: T.inkMuted, margin: '10px 0 0', lineHeight: 1.6 }}>
+                  Formula: <span style={{ fontFamily: 'monospace', fontSize: '10px', color: T.inkMid }}>(WTI − $76) ÷ ($130 − $76) × 100</span>.
+                  Ceiling = $130 — structural demand destruction threshold. Moves with every tick.
+                  Current WTI: <strong style={{ color: T.terra }}>${price.toFixed(2)}</strong>.
+                </p>
+              </div>
+
+              {/* Right — Geopolitical Fuckedness */}
+              <div style={{ background: T.bgCard, padding: '1.25rem 1.5rem', borderTop: `3px solid ${T.slateMid}` }}>
+                <div style={{ marginBottom: '0.75rem' }}>
+                  <p style={{ ...serif, margin: '0 0 2px', fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.slateMid }}>Geopolitical Fuckedness™</p>
+                  <p style={{ ...serif, margin: 0, fontSize: '11px', color: T.inkMuted, fontStyle: 'italic' }}>
+                    Structural floor + event scoring · updated daily · TLM Assessment
+                  </p>
+                </div>
+                <Gauge pct={DAILY_ASSESSMENTS[DAILY_ASSESSMENTS.length - 1].x} accentColor={T.slateMid}/>
+                <p style={{ ...serif, fontSize: '11px', color: T.inkMuted, margin: '10px 0 0', lineHeight: 1.6 }}>
+                  Floor: <strong style={{ color: T.slateMid }}>{CURRENT_FLOOR}/100</strong> (structural conditions, all active).
+                  Event push today: <strong style={{ color: T.slateMid }}>+{DAILY_ASSESSMENTS[DAILY_ASSESSMENTS.length - 1].x - CURRENT_FLOOR}</strong>.
+                  Ceiling = $150+ sustained oil or nuclear use. Does not reset on a tweet.
+                </p>
+              </div>
+            </div>
+
+            {/* Divergence signal */}
+            {(() => {
+              const geo  = DAILY_ASSESSMENTS[DAILY_ASSESSMENTS.length - 1].x;
+              const mkt  = parseFloat(fuckupFactor);
+              const diff = geo - mkt;
+              const absDiff = Math.abs(diff);
+              const isUnderpriced = diff > 0;
+              const isOverpriced  = diff < 0;
+              const isAligned     = absDiff < 5;
+              const signalColor   = isAligned ? T.green : isUnderpriced ? T.red : T.amber;
+              const signalLabel   = isAligned
+                ? 'Aligned — markets and structural reality broadly agree'
+                : isUnderpriced
+                ? `Market under-pricing structural risk by ${absDiff.toFixed(1)} points`
+                : `Market over-pricing vs. structural picture by ${absDiff.toFixed(1)} points`;
+              const signalBody = isAligned
+                ? 'No significant divergence between what markets are pricing and what the structural situation warrants. Rare.'
+                : isUnderpriced
+                ? 'The gap between market pricing and structural reality is the number to watch. Markets reprice when they can no longer ignore what analysts have been measuring. The Strait is still closed. The mine-clearance ships are still in Malaysia.'
+                : 'Markets are pricing more fear than the structural picture currently warrants. Could mean a relief rally is coming — or that traders see something the structural model hasn\'t captured yet.';
+              return (
+                <div style={{ background: `${signalColor}0D`, border: `1px solid ${signalColor}44`, borderRadius: '2px', padding: '1rem 1.25rem', marginTop: '1px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: signalColor, flexShrink: 0 }}/>
+                    <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.14em', textTransform: 'uppercase', color: signalColor, fontWeight: 600 }}>
+                      Divergence Signal — {signalLabel}
+                    </p>
+                  </div>
+                  <p style={{ ...serif, margin: 0, fontSize: '12px', color: T.inkMid, lineHeight: 1.7 }}>{signalBody}</p>
+                </div>
+              );
+            })()}
+
+            {/* Drill quote — moved here from old gauge location */}
             <div style={{ borderTop: `1px solid ${T.border}`, marginTop: '1.25rem', paddingTop: '1.25rem' }}>
               <p style={{ ...serif, fontSize: '14px', fontStyle: 'italic', color: T.inkMid, lineHeight: 1.8, margin: '0 0 6px' }}>
                 &quot;We&apos;re going to get the price of energy down… get it down fast… we&apos;re going to drill, baby, drill.&quot;
@@ -1331,10 +1406,9 @@ export default function Home() {
           <div style={{ ...section }}>
             <p style={{ ...sectionHead }}>War Trajectory — State vs. Reversibility</p>
             <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
-              Two independent measures. X axis: how fucked is it right now — anchored to structural floor conditions
-              that don&apos;t move until something physically reverses (Hormuz reopens, mine-clearance assets arrive,
-              Iran negotiates). Y axis: how easy is it to unfuck — analyst judgment, updated daily, with evidence.
-              The trail of dots is the story. Hover each for full rationale.
+              Each dot is a day. X axis: geopolitical fuckedness — structural floor plus event scoring.
+              Y axis: ease of unfuckability — TLM Assessment, updated daily with evidence.
+              The trail is the argument. Hover each point for the full rationale on both axes.
             </p>
             <FuckupXYPlot chartReady={chartReady}/>
           </div>
