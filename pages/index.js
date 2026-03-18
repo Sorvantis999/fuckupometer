@@ -1261,58 +1261,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Hero metrics — 4 col */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '1px', background: T.border, border: `1px solid ${T.border}`, marginBottom: '1.25rem', borderRadius: '2px', overflow: 'hidden' }}>
-            {[
-              {
-                eyebrow: `WTI crude — ${data ? mktLabel(data.marketState) : '—'}`,
-                value: loading ? '—' : `$${parseFloat(data?.price).toFixed(2)}`,
-                sub: data ? `${isUp ? '▲' : '▼'} $${Math.abs(parseFloat(data.change)).toFixed(2)} (${isUp?'+':''}${data.changePct}%) vs prior close` : null,
-                valueColor: T.ink,
-                subColor: isUp ? T.red : T.green,
-              },
-              {
-                eyebrow: `Brent crude — ${data?.brent ? mktLabel(data.brent.marketState) : '—'}`,
-                value: loading ? '—' : `$${parseFloat(data?.brent?.price ?? 0).toFixed(2)}`,
-                sub: data?.brent ? `${parseFloat(data.brent.change) >= 0 ? '▲' : '▼'} $${Math.abs(parseFloat(data.brent.change)).toFixed(2)} (${parseFloat(data.brent.change) >= 0 ? '+' : ''}${data.brent.changePct}%) vs prior close` : null,
-                valueColor: T.ink,
-                subColor: parseFloat(data?.brent?.change ?? 0) >= 0 ? T.red : T.green,
-                sinceInaugPct: data?.brent?.sinceInaugPct,
-              },
-              {
-                eyebrow: 'Since 1/20/25',
-                value: `+${data ? data.sinceInaugurationPct : '~27'}%`,
-                sub: `+$${data ? data.sinceInauguration : '~20'} above the $76 baseline`,
-                valueColor: T.terra,
-                subColor: T.terra,
-              },
-              {
-                eyebrow: 'Crisis peak — Mar 9',
-                value: '$119.48',
-                sub: 'Conflict high · $10.52 from inflection',
-                valueColor: T.terra,
-                subColor: T.inkMuted,
-              },
-            ].map((m, i) => (
-              <div key={i} style={{ background: T.bgCard, padding: '1.25rem 1.5rem' }}>
-                <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.15em', color: T.terra, textTransform: 'uppercase' }}>{m.eyebrow}</p>
-                <p style={{ ...display, margin: '0 0 4px', fontSize: '2rem', lineHeight: 1.1, color: m.valueColor }}>{m.value}</p>
-                {m.sub && <p style={{ ...serif, margin: 0, fontSize: '12px', color: m.subColor }}>{m.sub}</p>}
-                {m.sinceInaugPct !== undefined && (
-                  <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', fontWeight: 600, color: parseFloat(m.sinceInaugPct) >= 0 ? T.terra : T.green }}>
-                    {parseFloat(m.sinceInaugPct) >= 0 ? '+' : ''}{m.sinceInaugPct}% since 1/20/25
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Oil price journey visual */}
-          <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '2px', marginBottom: '1.25rem', overflow: 'hidden' }}>
-            <OilJourney price={price}/>
-            <HormuzVisualBar/>
-          </div>
-
           {/* Dual Fuckupometer — Market vs Geopolitical */}
           <div style={{ ...section }}>
             <p style={{ ...sectionHead }}>Fuckupometer™ — Dual Reading</p>
@@ -1390,7 +1338,7 @@ export default function Home() {
               );
             })()}
 
-            {/* Drill quote — moved here from old gauge location */}
+            {/* Drill quote */}
             <div style={{ borderTop: `1px solid ${T.border}`, marginTop: '1.25rem', paddingTop: '1.25rem' }}>
               <p style={{ ...serif, fontSize: '14px', fontStyle: 'italic', color: T.inkMid, lineHeight: 1.8, margin: '0 0 6px' }}>
                 &quot;We&apos;re going to get the price of energy down… get it down fast… we&apos;re going to drill, baby, drill.&quot;
@@ -1400,6 +1348,58 @@ export default function Home() {
                 <span style={{ color: T.terra, fontWeight: 600 }}>WTI that day: ~$76. Today: ${price.toFixed(2)}.</span>
               </p>
             </div>
+          </div>
+
+          {/* Hero metrics — 4 col */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '1px', background: T.border, border: `1px solid ${T.border}`, marginBottom: '1.25rem', borderRadius: '2px', overflow: 'hidden' }}>
+            {[
+              {
+                eyebrow: `WTI crude — ${data ? mktLabel(data.marketState) : '—'}`,
+                value: loading ? '—' : `$${parseFloat(data?.price).toFixed(2)}`,
+                sub: data ? `${isUp ? '▲' : '▼'} $${Math.abs(parseFloat(data.change)).toFixed(2)} (${isUp?'+':''}${data.changePct}%) vs prior close` : null,
+                valueColor: T.ink,
+                subColor: isUp ? T.red : T.green,
+              },
+              {
+                eyebrow: `Brent crude — ${data?.brent ? mktLabel(data.brent.marketState) : '—'}`,
+                value: loading ? '—' : `$${parseFloat(data?.brent?.price ?? 0).toFixed(2)}`,
+                sub: data?.brent ? `${parseFloat(data.brent.change) >= 0 ? '▲' : '▼'} $${Math.abs(parseFloat(data.brent.change)).toFixed(2)} (${parseFloat(data.brent.change) >= 0 ? '+' : ''}${data.brent.changePct}%) vs prior close` : null,
+                valueColor: T.ink,
+                subColor: parseFloat(data?.brent?.change ?? 0) >= 0 ? T.red : T.green,
+                sinceInaugPct: data?.brent?.sinceInaugPct,
+              },
+              {
+                eyebrow: 'Since 1/20/25',
+                value: `+${data ? data.sinceInaugurationPct : '~27'}%`,
+                sub: `+$${data ? data.sinceInauguration : '~20'} above the $76 baseline`,
+                valueColor: T.terra,
+                subColor: T.terra,
+              },
+              {
+                eyebrow: 'Crisis peak — Mar 9',
+                value: '$119.48',
+                sub: 'Conflict high · $10.52 from inflection',
+                valueColor: T.terra,
+                subColor: T.inkMuted,
+              },
+            ].map((m, i) => (
+              <div key={i} style={{ background: T.bgCard, padding: '1.25rem 1.5rem' }}>
+                <p style={{ ...serif, margin: '0 0 6px', fontSize: '10px', letterSpacing: '0.15em', color: T.terra, textTransform: 'uppercase' }}>{m.eyebrow}</p>
+                <p style={{ ...display, margin: '0 0 4px', fontSize: '2rem', lineHeight: 1.1, color: m.valueColor }}>{m.value}</p>
+                {m.sub && <p style={{ ...serif, margin: 0, fontSize: '12px', color: m.subColor }}>{m.sub}</p>}
+                {m.sinceInaugPct !== undefined && (
+                  <p style={{ ...serif, margin: '4px 0 0', fontSize: '11px', fontWeight: 600, color: parseFloat(m.sinceInaugPct) >= 0 ? T.terra : T.green }}>
+                    {parseFloat(m.sinceInaugPct) >= 0 ? '+' : ''}{m.sinceInaugPct}% since 1/20/25
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Oil price journey visual */}
+          <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '2px', marginBottom: '1.25rem', overflow: 'hidden' }}>
+            <OilJourney price={price}/>
+            <HormuzVisualBar/>
           </div>
 
           {/* XY Trajectory */}
