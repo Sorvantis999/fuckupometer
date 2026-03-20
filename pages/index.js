@@ -1219,7 +1219,7 @@ export default function Home() {
     <>
       <Head>
         <title>Trump Fuckupometer™ — The Long Memo</title>
-        <meta name="description" content="For when 'drill baby drill' meets a little excursion/war. Live WTI crude index vs. Inauguration Day 2025." />
+        <meta name="description" content="A little excursion. Live WTI crude index vs. Inauguration Day 2025." />
         <meta property="og:title" content="Trump Fuckupometer™ — The Long Memo" />
         <meta property="og:description" content={`Day ${dayCount}. WTI crude: $${price.toFixed(2)}/bbl — ${data?.sinceInaugurationPct ?? '~27'}% above the Inauguration Day baseline.`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1272,7 +1272,7 @@ export default function Home() {
               Trump Fuckupometer™
             </h1>
             <p style={{ ...serif, fontSize: '1.05rem', fontStyle: 'italic', color: T.inkMid, margin: '0 0 1rem', lineHeight: 1.7, fontWeight: 300 }}>
-              For when &quot;drill baby drill&quot; meets a little excursion/war.
+              A little excursion.
             </p>
             <p style={{ ...serif, fontSize: '13px', color: T.inkMuted, margin: 0, lineHeight: 1.7 }}>
               WTI crude oil indexed to Inauguration Day 2025 (baseline ~$76/bbl). Last trade: {data?.lastTradeISO ? new Date(data.lastTradeISO).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short' }) : 'loading…'}. {data ? (data.marketState === 'REGULAR' ? 'Market open — refreshes every 3 min.' : data.marketState === 'CLOSED' ? 'Market closed — showing last settlement price.' : 'Futures active — refreshes every 3 min.') : ''}
