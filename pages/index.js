@@ -154,11 +154,7 @@ const TRUMP_SAID = [
     said: 'Recurring claim: "Talks are going very well." "Almost all points of agreement." Iran "wants to make a deal." (Multiple Truth Social posts and Cabinet statements, Days 24–30)',
     reality: 'Iran FM Araghchi made the same denial at least four times across the same period on Iranian state television: "No, we never asked for a ceasefire," "we have never asked even for negotiation," "no negotiations have happened with the enemy until now, and we do not plan on any negotiations." The pattern: Trump announces progress, Araghchi appears on state TV within hours to deny it. This happened after the Pakistan proposal (Day 26), after the 5-day pause (Day 24), after the third deadline extension (Day 27), and again on Day 28. Markets corrected Trump\'s diplomatic announcements three separate times. The Houthis entered the war on Day 29. The USS Tripoli — an amphibious assault ship — arrived in theater on Day 30.',
   },
-  {
-    date: 'Mar 28, 2026',
-    said: '"We have already destroyed 100% of Iran\'s Military capability" (restatement). War "ahead of schedule." (Rubio, Day 29)',
-    reality: 'US intelligence sources confirmed to Reuters and the Jerusalem Post that the US can only verify it destroyed approximately one-third of Iran\'s missile arsenal. The status of another third — potentially buried in underground tunnels — remains unknown. On Day 29 alone: Iranian strike on Prince Sultan Air Base in Saudi Arabia wounded 15 US service members; Houthis fired the first ballistic missile of the war toward Israel; Iran struck Kuwait\'s Shuwaikh Port; Iranian missile killed a civilian in Tel Aviv. 300+ US service members wounded total. The Strait of Hormuz remained closed for the 30th consecutive day.',
-  },
+
   {
     date: 'Mar 28, 2026',
     said: '"We are ahead of schedule." War objectives will be complete "in the next couple weeks," leaving Iran "weaker." (Rubio, G7)',
