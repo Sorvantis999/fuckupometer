@@ -145,6 +145,21 @@ const TRUMP_SAID = [
     reality: 'Iran FM Araghchi said the same day that Iran "has not engaged in talks to end the war and does not plan to." Iran formally rejected the US 15-point peace proposal delivered via Pakistan and countered with five conditions — including war reparations and recognition of Iranian sovereignty over the Strait of Hormuz. The sovereignty demand is not a negotiating position; it is a demand that the US accept permanent Iranian control over 20% of global oil flow. Oil dipped briefly on Trump\'s claims, the third market correction of a Trump diplomatic announcement this war.',
   },
   {
+    date: 'Mar 26, 2026',
+    said: '"Iran gave us a present" — 8 oil tankers allowed through the Strait. "I said, \'Well, I guess we\'re dealing with the right people.\'" Proof of good-faith negotiating partners.',
+    reality: 'The tankers were Pakistani-flagged vessels transiting under Iran\'s existing yuan-denominated arrangement — the same transit structure China and Pakistan negotiated without US involvement, active since Day 10. Iran FM Araghchi told state television on the same day that Iran "has not engaged in talks to end the war and does not plan to." The Strait remained closed to Western shipping. Iran\'s Parliament was simultaneously passing tollbooth legislation to institutionalize the closure. What Trump called a diplomatic signal was a commercial transaction he did not arrange.',
+  },
+  {
+    date: 'Mar 27–29, 2026',
+    said: 'Recurring claim: "Talks are going very well." "Almost all points of agreement." Iran "wants to make a deal." (Multiple Truth Social posts and Cabinet statements, Days 24–30)',
+    reality: 'Iran FM Araghchi made the same denial at least four times across the same period on Iranian state television: "No, we never asked for a ceasefire," "we have never asked even for negotiation," "no negotiations have happened with the enemy until now, and we do not plan on any negotiations." The pattern: Trump announces progress, Araghchi appears on state TV within hours to deny it. This happened after the Pakistan proposal (Day 26), after the 5-day pause (Day 24), after the third deadline extension (Day 27), and again on Day 28. Markets corrected Trump\'s diplomatic announcements three separate times. The Houthis entered the war on Day 29. The USS Tripoli — an amphibious assault ship — arrived in theater on Day 30.',
+  },
+  {
+    date: 'Mar 28, 2026',
+    said: '"We have already destroyed 100% of Iran\'s Military capability" (restatement). War "ahead of schedule." (Rubio, Day 29)',
+    reality: 'US intelligence sources confirmed to Reuters and the Jerusalem Post that the US can only verify it destroyed approximately one-third of Iran\'s missile arsenal. The status of another third — potentially buried in underground tunnels — remains unknown. On Day 29 alone: Iranian strike on Prince Sultan Air Base in Saudi Arabia wounded 15 US service members; Houthis fired the first ballistic missile of the war toward Israel; Iran struck Kuwait\'s Shuwaikh Port; Iranian missile killed a civilian in Tel Aviv. 300+ US service members wounded total. The Strait of Hormuz remained closed for the 30th consecutive day.',
+  },
+  {
     date: 'Mar 28, 2026',
     said: '"We are ahead of schedule." War objectives will be complete "in the next couple weeks," leaving Iran "weaker." (Rubio, G7)',
     reality: 'US intelligence sources (Reuters/Jerusalem Post) confirm the US can only verify it has destroyed approximately one-third of Iran\'s missile arsenal. The status of another third — potentially damaged or buried in underground tunnels — is unknown. Iran launched a missile that killed a man in Tel Aviv on Day 29. Houthis entered the war the same day Rubio made the statement. 300+ US service members wounded. The war is one month old. The Strait of Hormuz remains closed.',
