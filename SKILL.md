@@ -282,10 +282,45 @@ for _ in range(18):  # 3 min max
 
 ---
 
+## Correct insertion markers
+
+**CRITICAL — use these exact markers for each array. Never use a phrase from inside an entry's text as a marker, even if it seems unique. Always use the array boundary itself.**
+
+### EVENTS_2026
+```python
+# Correct marker — the array's own closing
+marker = "];\n\nconst tierDot"
+# Insert BEFORE it:
+content = content.replace(marker, "\n" + new_events + "\n" + marker, 1)
+```
+
+### DAILY_ASSESSMENTS
+```python
+# Correct marker — the array closes before const BILL
+marker = "];\n\nconst BILL"
+# Insert BEFORE it:
+content = content.replace(marker, "\n" + new_assessment + "\n" + marker, 1)
+```
+
+### TRUMP_SAID
+```python
+# Correct marker — the array closes before const HORMUZ
+marker = "];\n\n/* ─── Hormuz"
+# Insert BEFORE it:
+content = content.replace(marker, "\n" + new_trump + "\n" + marker, 1)
+```
+
+**Why this matters:** Text inside entry yNote/xNote fields (e.g. "April 6 is X days away") can accidentally match the intended insertion target. The array boundary markers (`const tierDot`, `const BILL`, `/* ─── Hormuz`) are unique and unambiguous. Always use those.
+
+---
+
 ## Common failure modes
 
+- **Events injected into DAILY_ASSESSMENTS**: Happens when the EVENTS insertion marker matches text inside a DAILY_ASSESSMENTS yNote instead of the EVENTS_2026 array closing. Use `];\n\nconst tierDot` as the EVENTS marker — it's unambiguous. Symptom: XY plot breaks, Chart.js gets `undefined` for x/y.
+- **Day N+1 inserted before Day N**: Happens when new assessment entries are appended using a text marker that resolves to a position before an existing entry rather than after it. Always verify final order with `re.findall(r'\{ day: (\d+),', da_block)` before committing.
+- **Entries merged onto one line**: Happens when a Day N entry's closing `},` has no newline before the next entry. Check with `grep -n "{ day:"` and look for two entries on the same line. Fix with explicit `\n  ` before each entry.
 - **Stale SHA on commit**: Always pull fresh SHA in Step 1. If another commit happened between pull and push, the commit will 400. Pull again.
-- **Mangled JS escaping**: Use Python string replacement, not sed. Single quotes inside JS strings that are already single-quoted need `\\'` escaping.
-- **Wrong tier on current day's entries**: New entries get `tier: 'today'`. Previous day's `today` entries must be changed to `critical` first.
+- **Mangled JS escaping**: Use Python string replacement, not sed. Single quotes inside JS strings that are already single-quoted need `\\'` escaping. Verify by checking the lines around each edit with `repr()`.
+- **Wrong tier on current day's entries**: New entries get `tier: 'today'`. Previous day's `today` entries must be changed to `critical` first. Verify with `grep -n "tier: 'today'"` before committing.
 - **Y score dispute**: Bryan will push back if Y moves mechanically. See scoring methodology — distinguish Parliament noise from SNSC/operational signals.
 - **Deploy 400**: Usually wrong payload shape. Ensure `gitSource.org` and `gitSource.repo` are separate fields, not `repoId`.
