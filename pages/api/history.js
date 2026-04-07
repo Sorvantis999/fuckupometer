@@ -30,6 +30,18 @@ const WTI_MILESTONES = [
   { date: '2026-03-12', close: 96.00 },  // Mojtaba first statement; UK confirms Iran mining Strait
   { date: '2026-03-13', close: 98.71 },  // IEA 400M-bbl release fails to move prices
   { date: '2026-03-19', close: 106.50 }, // Iran strikes Qatar/Saudi/UAE/Kuwait energy in retaliation for South Pars; infrastructure war loop begins
+  { date: '2026-03-20', close: 100.50 }, // Brent eases to ~$108; WTI ~$100 after Day 20 Brent $116.38 spike
+  { date: '2026-03-21', close: 107.00 }, // Brent $112.19 — highest of war; Goldman: prices through 2027
+  { date: '2026-03-22', close: 100.29 }, // Brent $114.09; WTI $100.29 — Natanz struck, DIA assessment
+  { date: '2026-03-23', close: 90.10 },  // WTI drops 8% on Trump's 5-day pause announcement
+  { date: '2026-03-24', close: 95.00 },  // Market re-corrects; Pakistan go-between confirmed
+  { date: '2026-03-26', close: 99.00 },  // Brent ~$105.85; tollbooth legislation, Tangsiri killed
+  { date: '2026-03-27', close: 94.00 },  // WTI -3.5% on 8-day attack pause (UKMTO); Brent $107.81
+  { date: '2026-03-29', close: 99.64 },  // WTI $99.64 close — briefly touches $100.04 intraday
+  { date: '2026-03-30', close: 106.00 }, // Brent $116+ on Kharg Island seizure threat (Trump/FT)
+  { date: '2026-03-31', close: 103.00 }, // Brent ~$107.92; gas crosses $4/gal nationally
+  { date: '2026-04-02', close: 111.00 }, // Thursday close locked in for Good Friday (+11% single day)
+  { date: '2026-04-07', close: 115.80 }, // Kharg Island struck; WTI highest since April 2008
 ];
 
 const BRENT_MILESTONES = [
@@ -51,6 +63,18 @@ const BRENT_MILESTONES = [
   { date: '2026-03-12', close: 100.46 },
   { date: '2026-03-13', close: 103.14 },
   { date: '2026-03-19', close: 110.50 }, // Brent above $110 — +50% since Feb 28; Gulf energy infrastructure exchange
+  { date: '2026-03-20', close: 108.00 }, // Eases after Day 20 surge to $116.38
+  { date: '2026-03-21', close: 112.19 }, // Brent $112.19 — highest of the war; Goldman: through 2027
+  { date: '2026-03-22', close: 114.09 }, // Brent $114.09 — 22 nations sign Hormuz statement
+  { date: '2026-03-23', close: 103.91 }, // Brent -8% on 5-day pause
+  { date: '2026-03-24', close: 100.00 }, // Brent bounces back above $100
+  { date: '2026-03-26', close: 105.85 }, // Recovering from Day 26 diplomatic dip
+  { date: '2026-03-27', close: 107.81 }, // Brent $107.81; 8-day UKMTO attack pause confirmed
+  { date: '2026-03-29', close: 112.57 }, // Brent $112.57; Dubai physical $126
+  { date: '2026-03-30', close: 116.00 }, // Brent $116+ on Kharg seizure threat
+  { date: '2026-03-31', close: 107.92 }, // Brent ~$107.92; gas $4/gal nationally
+  { date: '2026-04-02', close: 108.00 }, // Brent $108 — Thursday close (+6.6%)
+  { date: '2026-04-07', close: 111.00 }, // Kharg Island struck; Brent $111
 ];
 
 async function fetchLive(ticker) {
