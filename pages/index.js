@@ -41,10 +41,11 @@ const FONTS = `
 
 /* War started Feb 28, 2026 — Feb 28 = Day 1 (inclusive, consistent with media/Pentagon usage)
    Pentagon 'Day 6' briefing = Mar 5, which is 6 days inclusive from Feb 28. */
-const WAR_START = new Date('2026-02-28T00:00:00Z');
+const WAR_START = new Date(2026, 1, 28); // Feb 28 local time — day flips at local midnight, not UTC
 function getDayCount() {
   const now = new Date();
-  return Math.max(1, Math.floor((now - WAR_START) / (1000 * 60 * 60 * 24)) + 1);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.max(1, Math.floor((today - WAR_START) / (1000 * 60 * 60 * 24)) + 1);
 }
 
 /* ─── Trump Said vs Reality ──────────────────────────────────────────────────── */
