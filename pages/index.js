@@ -287,8 +287,8 @@ const HORMUZ = {
   dropPct: 95,
   kplerDropPct: 92,
   src: 'S&P Global (95%, week of Mar 1); Kpler (92%, week of Mar 12); Bloomberg Mar 10',
-  shipsStruck: 21,
-  shipsSrc: 'UKMTO / Reuters / Al Jazeera, Mar 17',
+  shipsStruck: 26,
+  shipsSrc: 'Al Jazeera Apr 14 (22 confirmed) / Windward Maritime AI Apr 18-19 / UKMTO',
 };
 
 /* ─── War cost data (CSIS, Pentagon, Penn Wharton) ──────────────────────────── */
