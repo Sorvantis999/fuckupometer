@@ -270,6 +270,11 @@ const TRUMP_SAID = [
     said: '"Iran decided to fire bullets yesterday in the Strait of Hormuz — A Total Violation of our Ceasefire Agreement!"',
     reality: 'Iran\'s military responded that the US violated the ceasefire by boarding and seizing the Iranian cargo ship Touska in the Sea of Oman, calling it "armed piracy" and vowing retaliation. Both sides claimed the other fired first. Day 52.',
   },
+  {
+    date: 'Apr 21, 2026',
+    said: '"I expect to be bombing because I think that\'s a better attitude to go in with. We\'re ready to go."',
+    reality: 'Hours later, Trump announced an open-ended ceasefire extension — the opposite of bombing — citing Iran\'s "seriously fractured" government. His stated expectation of bombing did not materialize. Day 53.',
+  },
 ];
 
 /* ─── Hormuz stat ────────────────────────────────────────────────────────────── */
@@ -480,10 +485,16 @@ const EVENTS_2026 = [
   { date: 'Apr 19', tier: 'critical', label: 'Iran FM spokesperson: enriched uranium "as sacred to us as the soil of Iran" — transfer to US not on the table. Torpedoes Trump\'s claim of imminent uranium deal. Day 51.' },
   { date: 'Apr 19', tier: 'critical', label: 'IRGC gunboats fired on Indian-flagged tankers during April 17 Hormuz re-opening. India summons Iran\'s ambassador. ~200 vessels and 20,000 seafarers remain stranded in Gulf. Day 51.' },
   { date: 'Apr 19', tier: 'critical', label: 'Trump: might not extend ceasefire, "we\'ll have to start dropping bombs again." Also says deal could still happen. Ceasefire expires Monday April 21 — 2 days. No extension confirmed by either side. Day 51.' },
-  { date: 'Apr 20', tier: 'today', label: 'USS Spruance fires on and seizes Iranian cargo ship Touska in Gulf of Oman — first kinetic boarding of the war. Iran military calls it "maritime piracy," vows retaliation, says US has broken the ceasefire. Day 52.' },
-  { date: 'Apr 20', tier: 'today', label: 'Iran FM Baghaei: "As of now we have no plans for the next round of negotiations." US delegation (Vance, Witkoff, Kushner) confirmed heading to Islamabad. Iran has not confirmed attendance. Islamabad billboards up, hotel requisitioned. Day 52.' },
-  { date: 'Apr 20', tier: 'today', label: 'Zero tankers transited Strait of Hormuz on Sunday. ~200 vessels and 20,000 seafarers still stranded. Ceasefire expires 0000 GMT Wednesday (8pm ET Tuesday) — 1 day. Nuclear gap: US proposed 20-year enrichment pause; Iran countered 5 years; US rejected. Day 52.' },
-  { date: 'Apr 20', tier: 'today', label: 'WTI surges ~6% to ~$89 on ship seizure news. IMF warns global growth will take a hit even if ceasefire holds, citing Hormuz uncertainty as persistent drag. Gas national average $4.05/gal. Day 52.' },
+  { date: 'Apr 20', tier: 'critical', label: 'USS Spruance fires on and seizes Iranian cargo ship Touska in Gulf of Oman — first kinetic boarding of the war. Iran military calls it "maritime piracy," vows retaliation, says US has broken the ceasefire. Day 52.' },
+  { date: 'Apr 20', tier: 'critical', label: 'Iran FM Baghaei: "As of now we have no plans for the next round of negotiations." US delegation (Vance, Witkoff, Kushner) confirmed heading to Islamabad. Iran has not confirmed attendance. Islamabad billboards up, hotel requisitioned. Day 52.' },
+  { date: 'Apr 20', tier: 'critical', label: 'Zero tankers transited Strait of Hormuz on Sunday. ~200 vessels and 20,000 seafarers still stranded. Ceasefire expires 0000 GMT Wednesday (8pm ET Tuesday) — 1 day. Nuclear gap: US proposed 20-year enrichment pause; Iran countered 5 years; US rejected. Day 52.' },
+  { date: 'Apr 20', tier: 'critical', label: 'WTI surges ~6% to ~$89 on ship seizure news. IMF warns global growth will take a hit even if ceasefire holds, citing Hormuz uncertainty as persistent drag. Gas national average $4.05/gal. Day 52.' },
+  { date: 'Apr 21', tier: 'critical', label: 'Trump on CNBC: "I don\'t want to extend" the ceasefire, "I expect to be bombing." Vance never departs for Islamabad — trip on hold as Iran fails to confirm delegation. Brent spikes above $101 on Vance no-show. Day 53.' },
+  { date: 'Apr 21', tier: 'critical', label: 'US boards second vessel: Pentagon seizes sanctioned oil tanker M/T Tifani in Indian Ocean. Iran FM Araghchi: US blockade is "an act of war and thus a violation of the ceasefire." IRGC threatens to strike oil facilities in neighboring countries if bombing resumes. Day 53.' },
+  { date: 'Apr 21', tier: 'critical', label: 'Trump extends ceasefire with no end date — waiting for Iran\'s "unified proposal" from its "seriously fractured" government. Vance Islamabad trip canceled for day. Iran adviser Mohammadi: "Trump\'s ceasefire extension means nothing, the losing side cannot dictate terms." Day 53.' },
+  { date: 'Apr 21', tier: 'critical', label: 'Iran notifies Pakistan it will not send delegation to Islamabad talks. Iran domestic flights resume after 50-day wartime suspension. Brent settles ~$99.67 after retreating from $101 spike. Day 53.' },
+  { date: 'Apr 22', tier: 'today', label: 'Iran state media Tasnim: Tehran told US through Pakistani intermediary that "attending negotiations is a waste of time because the US prevents reaching any suitable agreement." Second Islamabad round effectively dead for now. Day 54.' },
+  { date: 'Apr 22', tier: 'today', label: 'Ceasefire technically holds under open-ended Trump extension. No Iranian kinetic retaliation for Touska seizure yet. Brent ~$99.81, WTI ~$90.86. Hormuz still closed. Both sides accusing each other of ceasefire violations. Day 54.' },
 ];
 
 const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: T.red, today: T.red };
@@ -683,6 +694,12 @@ const DAILY_ASSESSMENTS = [
   { day: 52, date: 'Apr 20', x: 84, y: 1.3,
     xNote: '84/100: Floor is 59 (9 conditions, all active). Event push of +25. Ship seizure is new kinetic category — first armed US boarding of the war. Iran vowing retaliation. Zero Hormuz transits Sunday. Ceasefire expires in under 36 hours with no extension confirmed. Nuclear gap hardened: 20-year vs 5-year enrichment pause, both sides publicly locked. X spikes to its highest since Day 23.',
     yNote: 'TLM Assessment Day 52: 1.3/10. The Touska seizure is the tell. The US boarded an Iranian merchant vessel while both sides were supposedly in a ceasefire and approaching talks. Iran called it piracy and vowed retaliation — that is IRGC operational language, not Parliament grandstanding. The Y thread holding above 1.0: Islamabad is physically prepared, US delegation is confirmed en route, and Iranian sources privately told CNN their team would also go. But the official Iranian position is "no plans." If Tehran sends a delegation despite that public stance, Y stays above 1.0. If Iran retaliates for the Touska before the ceasefire expires, Y goes to 0.5 and X goes to 90+. The 36-hour window is the entire ballgame.' },
+  { day: 53, date: 'Apr 21', x: 80, y: 2.2,
+    xNote: '80/100: Floor is 59 (9 conditions, all active). Event push of +21. Ceasefire extended at the last minute — imminent kinetic risk deferred. But second tanker seized, IRGC threatening regional oil infrastructure, Brent briefly above $101. X declines slightly from Day 52 peak as the extension removes the immediate war-resumption clock, but structural conditions unchanged.',
+    yNote: 'TLM Assessment Day 53: 2.2/10. The extension is analytically interesting for one reason: Trump\'s framing. He called Iran\'s government "seriously fractured" — that is an accurate read of the SNSC/IRGC vs. negotiating-team divide that has paralyzed Iranian decision-making throughout. The open-ended extension removes deadline pressure on Iran, which advisers warned Trump about privately. That cuts both ways: it defers war but also lets Iran drag. Y rises modestly from 1.3 because the extension reveals Trump\'s revealed preference is still a deal, not bombs — his "I expect to be bombing" statement dissolved within hours into a ceasefire extension. Structural problem: no end date means no forcing function.' },
+  { day: 54, date: 'Apr 22', x: 78, y: 2.2,
+    xNote: '78/100: Floor is 59 (9 conditions, all active). Event push of +19. Ceasefire holds under open-ended extension. No Iranian kinetic retaliation for Touska yet despite IRGC threat language. Hormuz closed. X declines marginally on quiet day — no new escalation events. Structural floor unchanged.',
+    yNote: 'TLM Assessment Day 54: 2.2/10. Iran officially refusing to attend Islamabad II is not a surprise — it is consistent with their stated "no plans" position since Day 50. What matters is whether the refusal is a hard no or a negotiating posture. Iran\'s language ("waste of time because US prevents reaching any suitable agreement") points at the blockade as the unlocking condition — the same loop since Day 46. The open-ended extension with no forcing function now defines the situation: both sides in a holding pattern, each waiting for the other to blink on blockade vs. Hormuz. Trafigura\'s estimate: even if this resolves tomorrow, 1 billion barrels of supply already lost. The meter keeps running.' },
 ];
 
 const BILL = [
