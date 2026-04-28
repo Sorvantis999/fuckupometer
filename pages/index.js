@@ -1399,11 +1399,10 @@ function WhatItCouldBuy({ liveCost }) {
 
 /* ─── Gas Calculator ─────────────────────────────────────────────────────────── */
 function TrumpSaidList() {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const PREVIEW = 3;
   const visible = expanded ? TRUMP_SAID : TRUMP_SAID.slice(-PREVIEW);
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
-  const T = THEME;
   return (
     <>
       {!expanded && TRUMP_SAID.length > PREVIEW && (
@@ -1440,13 +1439,12 @@ function TrumpSaidList() {
 }
 
 function IncidentLogList() {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const PREVIEW_2026 = 5;
   const visible2026 = expanded ? EVENTS_2026 : EVENTS_2026.slice(-PREVIEW_2026);
   const total = EVENTS_2025.length + EVENTS_2026.length;
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
   const T = THEME;
-  const tierDot = { background: '#C0392B', today: '#C0392B', critical: '#B85C38', major: '#B8860B', minor: '#2E7D4F' };
   return (
     <>
       {!expanded && (
