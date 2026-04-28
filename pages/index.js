@@ -1444,7 +1444,6 @@ function IncidentLogList() {
   const visible2026 = expanded ? EVENTS_2026 : EVENTS_2026.slice(-PREVIEW_2026);
   const total = EVENTS_2025.length + EVENTS_2026.length;
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
-  const T = THEME;
   return (
     <>
       {!expanded && (
