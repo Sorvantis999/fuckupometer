@@ -81,7 +81,7 @@ async function fetchAAAGasPrice() {
     });
     if (!r.ok) return null;
     const html = await r.text();
-    const match = html.match(/price-text[^>]*>[\s\S]*?\$(3\.\d{2,3})/);
+    const match = html.match(/price-text[^>]*>[\s\S]*?\$([345]\.\d{2,3})/);
     if (!match) return null;
     return parseFloat(match[1]);
   } catch {
