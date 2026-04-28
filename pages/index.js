@@ -1913,7 +1913,18 @@ export default function Home() {
             <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
               A running log. The gap between the statement and the situation tends to widen over time.
             </p>
-            {TRUMP_SAID.map((item, i) => (
+            {(() => {
+              const [tsExpanded, setTsExpanded] = React.useState(false);
+              const PREVIEW = 3;
+              const visible = tsExpanded ? TRUMP_SAID : TRUMP_SAID.slice(-PREVIEW);
+              return (
+                <>
+                  {!tsExpanded && TRUMP_SAID.length > PREVIEW && (
+                    <p style={{ ...serif, fontSize: '11px', color: T.inkFaint, margin: '0 0 10px', fontStyle: 'italic' }}>
+                      Showing most recent {PREVIEW} of {TRUMP_SAID.length} entries.
+                    </p>
+                  )}
+                  {visible.map((item, i) => (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '90px 1fr 1fr', gap: '1rem', padding: '12px 0', borderBottom: i < TRUMP_SAID.length - 1 ? `1px solid ${T.border}` : 'none', alignItems: 'flex-start' }}>
                 <span style={{ ...serif, fontSize: '10px', color: T.inkMuted, letterSpacing: '0.04em', paddingTop: '2px' }}>{item.date}</span>
                 <div>
@@ -1926,6 +1937,23 @@ export default function Home() {
                 </div>
               </div>
             ))}
+                  <button
+                    onClick={() => setTsExpanded(e => !e)}
+                    style={{
+                      display: 'block', width: '100%', marginTop: '12px',
+                      padding: '10px', background: 'none',
+                      border: '1px solid #CEC8B8', borderRadius: '2px',
+                      fontFamily: "'Source Serif 4', Georgia, serif",
+                      fontSize: '11px', letterSpacing: '0.12em',
+                      textTransform: 'uppercase', color: '#B85C38',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {tsExpanded ? '▲ Collapse entries' : `▼ Show all ${TRUMP_SAID.length} entries`}
+                  </button>
+                </>
+              );
+            })()}
           </div>
 
           {/* Two-column: Charts + Butcher's bill */}
@@ -2099,28 +2127,61 @@ export default function Home() {
           {/* Incident log */}
           <div style={{ ...section }}>
             <p style={{ ...sectionHead }}>Incident Log</p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-              <span style={{ ...serif, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: T.terra, fontWeight: 600 }}>2025</span>
-              <div style={{ flex: 1, height: '1px', background: T.border }}/>
-            </div>
-            {EVENTS_2025.map((e, i) => (
-              <div key={i} style={{ display: 'flex', gap: '14px', padding: '10px 0', borderBottom: `1px solid ${T.border}`, alignItems: 'flex-start' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: tierDot[e.tier], flexShrink: 0, marginTop: '6px' }}/>
-                <span style={{ ...serif, fontSize: '11px', color: T.inkMuted, minWidth: '52px', paddingTop: '1px', letterSpacing: '0.04em' }}>{e.date}</span>
-                <span style={{ ...serif, fontSize: '13px', color: T.inkMid, lineHeight: 1.65 }}>{e.label}</span>
-              </div>
-            ))}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0 4px' }}>
-              <span style={{ ...serif, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: T.terra, fontWeight: 600 }}>2026</span>
-              <div style={{ flex: 1, height: '1px', background: T.border }}/>
-            </div>
-            {EVENTS_2026.map((e, i) => (
-              <div key={i} style={{ display: 'flex', gap: '14px', padding: '10px 0', borderBottom: i < EVENTS_2026.length - 1 ? `1px solid ${T.border}` : 'none', alignItems: 'flex-start' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: tierDot[e.tier], flexShrink: 0, marginTop: '6px' }}/>
-                <span style={{ ...serif, fontSize: '11px', color: T.inkMuted, minWidth: '52px', paddingTop: '1px', letterSpacing: '0.04em' }}>{e.date}</span>
-                <span style={{ ...serif, fontSize: '13px', color: T.inkMid, lineHeight: 1.65 }}>{e.label}</span>
-              </div>
-            ))}
+            {(() => {
+              const [ilExpanded, setIlExpanded] = React.useState(false);
+              const PREVIEW_2026 = 5;
+              const visible2026 = ilExpanded ? EVENTS_2026 : EVENTS_2026.slice(-PREVIEW_2026);
+              const total = EVENTS_2025.length + EVENTS_2026.length;
+              return (
+                <>
+                  {!ilExpanded && (
+                    <p style={{ ...serif, fontSize: '11px', color: T.inkFaint, margin: '0 0 10px', fontStyle: 'italic' }}>
+                      Showing most recent {PREVIEW_2026} of {total} entries. 2025 pre-war events collapsed.
+                    </p>
+                  )}
+                  {ilExpanded && (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
+                        <span style={{ ...serif, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: T.terra, fontWeight: 600 }}>2025</span>
+                        <div style={{ flex: 1, height: '1px', background: T.border }}/>
+                      </div>
+                      {EVENTS_2025.map((e, i) => (
+                        <div key={i} style={{ display: 'flex', gap: '14px', padding: '10px 0', borderBottom: `1px solid ${T.border}`, alignItems: 'flex-start' }}>
+                          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: tierDot[e.tier], flexShrink: 0, marginTop: '6px' }}/>
+                          <span style={{ ...serif, fontSize: '11px', color: T.inkMuted, minWidth: '52px', paddingTop: '1px', letterSpacing: '0.04em' }}>{e.date}</span>
+                          <span style={{ ...serif, fontSize: '13px', color: T.inkMid, lineHeight: 1.65 }}>{e.label}</span>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: ilExpanded ? '20px 0 4px' : '0 0 4px' }}>
+                    <span style={{ ...serif, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: T.terra, fontWeight: 600 }}>2026</span>
+                    <div style={{ flex: 1, height: '1px', background: T.border }}/>
+                  </div>
+                  {visible2026.map((e, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '14px', padding: '10px 0', borderBottom: i < visible2026.length - 1 ? `1px solid ${T.border}` : 'none', alignItems: 'flex-start' }}>
+                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: tierDot[e.tier], flexShrink: 0, marginTop: '6px' }}/>
+                      <span style={{ ...serif, fontSize: '11px', color: T.inkMuted, minWidth: '52px', paddingTop: '1px', letterSpacing: '0.04em' }}>{e.date}</span>
+                      <span style={{ ...serif, fontSize: '13px', color: T.inkMid, lineHeight: 1.65 }}>{e.label}</span>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => setIlExpanded(e => !e)}
+                    style={{
+                      display: 'block', width: '100%', marginTop: '12px',
+                      padding: '10px', background: 'none',
+                      border: '1px solid #CEC8B8', borderRadius: '2px',
+                      fontFamily: "'Source Serif 4', Georgia, serif",
+                      fontSize: '11px', letterSpacing: '0.12em',
+                      textTransform: 'uppercase', color: '#B85C38',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {ilExpanded ? '▲ Collapse log' : `▼ Show full log (${total} entries)`}
+                  </button>
+                </>
+              );
+            })()}
           </div>
 
           {/* Analysis */}
