@@ -1465,7 +1465,7 @@ function GasCalc({ rbobPrice, retailGasPrice }) {
       </div>
       <p style={{ ...serif, fontSize: '10px', color: T.inkMuted, margin: 0, fontStyle: 'italic', lineHeight: 1.7 }}>
         Pump price sourced from AAA national average when available; falls back to RBOB futures + $1.00 markup. Inauguration baseline: $3.13/gal (EIA national avg, Jan 20, 2025).
-        Average US driver: ~1,000 miles/month, ~28 MPG. National average crossed $4.00/gal on Mar 31 (GasBuddy/AAA) — up $1.00+ since Feb 28. California: $5.87/gal. Diesel: $5.45/gal, up 45% since war began.
+        Average US driver: ~1,000 miles/month, ~28 MPG. National average: $4.03/gal as of Apr 23 (AAA) — up 29% since Feb 28 baseline of $3.13. EIA week of Apr 20: $4.178/gal. California: $5.89/gal. 5 states above or near $5/gal. Gas ticked back up after mid-April dip as Brent climbed above $110.
       </p>
     </div>
   );
@@ -1489,7 +1489,7 @@ function BroaderImpact() {
       label: 'Groceries',
       est: '+$30–55/mo',
       estColor: '#C0392B',
-      note: 'Oil up ~52% from inaug → food CPI +~1.56% per Fed Board model ($550/mo spend = +$8.58 mechanically). Add fertilizer lag (natural gas up sharply; 1–2 season pass-through), supply chain repricing, and diesel transport costs already at $5.45/gal — full household exposure runs $30–55/mo above Jan 2025 baseline.',
+      note: 'Oil up ~29% from inaug (WTI ~$98 vs $76) → food CPI +~0.87% per Fed Board model ($550/mo spend = +$4.79 mechanically). Add fertilizer lag, supply chain repricing, and diesel transport costs still elevated — full household exposure runs $30–55/mo above Jan 2025 baseline, with further pass-through building into Q3 2026.',
       src: 'Fed Board FEDS Notes, Dec 2023; GasBuddy/AAA Apr 2026; BLS CES 2024',
     },
     {
@@ -1503,7 +1503,7 @@ function BroaderImpact() {
       label: 'Consumables',
       est: '+$12–22/mo',
       estColor: '#B85C38',
-      note: 'Petroleum inputs in plastics, packaging, cleaning products, and synthetics. Core CPI +~0.52% at current oil levels (52% increase × Fed model). Applied to ~$400/mo nondurables spend plus supply chain repricing now flowing through to retail shelves.',
+      note: 'Petroleum inputs in plastics, packaging, cleaning products, and synthetics. Core CPI +~0.29% at current oil levels (29% increase × Fed model). Applied to ~$400/mo nondurables spend plus supply chain repricing now flowing through to retail shelves.',
       src: 'Fed Board FEDS Notes, Dec 2023; EIA oil-to-consumer analysis',
     },
     {
