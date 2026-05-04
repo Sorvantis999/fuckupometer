@@ -1,37 +1,37 @@
 {
-  "updatedAt": "2026-05-04T15:04:44.967Z",
+  "updatedAt": "2026-05-04T15:07:25.009Z",
   "oil": {
-    "price": 102.59,
+    "price": 103.41,
     "prevClose": 101.94,
-    "change": 0.65,
-    "changePct": 0.64,
-    "dayHigh": 107.46,
-    "dayLow": 99.11,
+    "change": 1.47,
+    "changePct": 1.44,
+    "dayHigh": 107.43,
+    "dayLow": 99.74,
     "marketState": "CLOSED",
-    "lastTradeISO": "2026-05-04T14:54:41.000Z",
-    "source": "yahoo",
+    "lastTradeISO": "2026-05-04T23:00:00.000Z",
+    "source": "stooq",
     "primarySource": "wti",
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 26.59,
-    "sinceInaugurationPct": 35,
-    "fuckupFactor": 49.2,
+    "sinceInauguration": 27.41,
+    "sinceInaugurationPct": 36.1,
+    "fuckupFactor": 50.8,
     "marketOpen": false,
     "brent": {
-      "price": 111.55,
+      "price": 112.46,
       "prevClose": 108.17,
-      "change": 3.38,
-      "changePct": 3.12,
-      "dayHigh": 114.3,
+      "change": 4.29,
+      "changePct": 3.97,
+      "dayHigh": 114.29,
       "dayLow": 105.66,
       "marketState": "CLOSED",
-      "lastTradeISO": "2026-05-04T14:54:15.000Z",
-      "source": "yahoo",
-      "sinceInaugPct": 41.2
+      "lastTradeISO": "2026-05-04T23:00:00.000Z",
+      "source": "stooq",
+      "sinceInaugPct": 42.4
     },
     "retailGasPrice": 4.457,
-    "timestamp": "2026-05-04T15:04:44.842Z"
+    "timestamp": "2026-05-04T15:07:24.243Z"
   },
   "commodities": [
     {
@@ -40,10 +40,10 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.867,
+      "price": 2.866,
       "prev": 2.78,
-      "change": 0.087,
-      "changePct": 3.13,
+      "change": 0.086,
+      "changePct": 3.09,
       "sinceInaugPct": -11
     },
     {
@@ -52,11 +52,11 @@
       "unit": "$/gal",
       "inaugBaseline": 2.1,
       "decimals": 4,
-      "price": 3.6716,
-      "prev": 3.5952,
-      "change": 0.0764,
-      "changePct": 2.13,
-      "sinceInaugPct": 74.8
+      "price": 3.5952,
+      "prev": 3.615,
+      "change": -0.0198,
+      "changePct": -0.55,
+      "sinceInaugPct": 71.2
     },
     {
       "ticker": "ZW=F",
@@ -64,11 +64,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 535,
       "decimals": 2,
-      "price": 634,
+      "price": 640.8,
       "prev": 637.75,
-      "change": -3.75,
-      "changePct": -0.59,
-      "sinceInaugPct": 18.5
+      "change": 3.05,
+      "changePct": 0.48,
+      "sinceInaugPct": 19.8
     },
     {
       "ticker": "ZC=F",
@@ -76,11 +76,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 481,
+      "price": 484.4,
       "prev": 480.25,
-      "change": 0.75,
-      "changePct": 0.16,
-      "sinceInaugPct": 6.9
+      "change": 4.15,
+      "changePct": 0.86,
+      "sinceInaugPct": 7.6
     },
     {
       "ticker": "CF",
@@ -88,10 +88,10 @@
       "unit": "$/sh",
       "inaugBaseline": 110,
       "decimals": 2,
-      "price": 124.35,
+      "price": 124.3,
       "prev": 122.69,
-      "change": 1.66,
-      "changePct": 1.35,
+      "change": 1.61,
+      "changePct": 1.31,
       "sinceInaugPct": 13
     }
   ]
