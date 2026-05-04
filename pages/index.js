@@ -290,6 +290,16 @@ const TRUMP_SAID = [
     said: '"The United States holds the cards and will only make a deal that puts the American people first, never allowing Iran to have a nuclear weapon."',
     reality: 'The Iranian proposal on the table explicitly defers nuclear talks to Phase 2. Rubio confirmed the proposal is "better than expected" and declined to say Trump would reject it. Sources familiar with the mediation told CNN the sides are discussing a staged process — Hormuz first, nuclear later — that would require the US to accept the exact sequencing Trump publicly claims to reject. The White House simultaneously refused to discuss specifics, saying it would "not negotiate through the press." Day 60.',
   },
+  {
+    date: 'Apr 29, 2026',
+    said: '"Approximately, of this day, we\'re spending about $25 billion on Operation Epic Fury." — Acting Pentagon Comptroller Jules Hurst, House Armed Services Committee testimony.',
+    reality: 'The same Pentagon told Congress in March that the war cost $11.3B in just the first six days. The same Pentagon has already sent OMB a $200B supplemental request — Hegseth, asked to defend the gap, said only that the supplemental will be "larger than $25 billion" and that "there\'s a lot more we would ask for beyond just Iran." CBS, citing US officials familiar with internal assessments: real cost ~$50B. Hurst confirmed $25B excludes base damage repair, which he separately admitted has no estimate. 24 MQ-9 Reapers ($30M+ each), four F-15Es, an A-10, and an E-3G Sentry are all attrited and not in the headline number. Three numbers from the same institution: $25B (public), $50B (internal), $200B (OMB ask). They cannot all be true unless the supplemental is mostly unrelated to the war. Hegseth conceded that. Day 61.',
+  },
+  {
+    date: 'May 1, 2026',
+    said: '"Hostilities" with Iran have "terminated." There has been no exchange of fire between the United States Forces and Iran since April 7, 2026.',
+    reality: 'Sent in nearly identical letters to House Speaker Mike Johnson and Senate leaders to dodge the War Powers Resolution\'s 60-day Congressional authorization deadline. Two days later, Trump announces "Project Freedom" — US Navy escorts of non-belligerent ships through the Strait, beginning Monday. CENTCOM has turned back 48 Iran-bound ships in the prior 20 days. The naval blockade of Iranian ports remains in force. The IRGC has set the Pentagon a deadline to lift it. A bulk carrier reports being "attacked by multiple small craft" near the Iranian coast on Day 65. Hostilities have terminated, the blockade is ongoing, escorts are being mobilized, and ships are being attacked. At least one of those statements is wrong.',
+  },
 ];
 
 /* ─── Hormuz stat ────────────────────────────────────────────────────────────── */
@@ -527,9 +537,18 @@ const EVENTS_2026 = [
   { date: 'Apr 27', tier: 'critical', label: 'Iran offers to reopen Hormuz if US lifts naval blockade and agrees to end war — nuclear program talks deferred to later phase. Two regional officials confirm to AP. Trump plans NSC meeting on proposal. No public response yet. Day 59.' },
   { date: 'Apr 27', tier: 'critical', label: 'Araghchi meets Putin in St. Petersburg. Putin: confirms Russia will maintain intelligence ties with Tehran, hails Iran fighting "courageously and heroically," extends wishes for Mojtaba Khamenei\'s health. Russia-Iran strategic alignment hardening. Day 59.' },
   { date: 'Apr 27', tier: 'critical', label: 'Brent ~$108.36 (+3%), WTI ~$96.85 (+2.6%) — highest in 3 weeks. Goldman Sachs raises Brent Q4 forecast to $90 (from $80). Trump: war could "come to an end very soon." White House: will "not negotiate through the press" on Hormuz deal offer. Day 59.' },
-  { date: 'Apr 28', tier: 'today', label: 'Trump NSC reviews Iran\'s staged Hormuz proposal — Phase 1: reopen Hormuz + end war; nuclear deferred to Phase 2. Rubio: proposal "better than what we thought they were going to submit" but "the nuclear question is the reason why we\'re in this in the first place." Sources: sides not as far apart as they appear. Day 60.' },
-  { date: 'Apr 28', tier: 'today', label: 'UAE announces it is quitting OPEC — first departure in the cartel\'s history. Cited "diverging interests" driven by Iran war energy disruption. Brent above $110 for first time since early April. WTI ~$98. Goldman Q4 Brent forecast: $90/bbl. Day 60.' },
-  { date: 'Apr 28', tier: 'today', label: 'Gulf leaders meet in Riyadh. Qatar FM warns against a "frozen conflict" and says Hormuz should not be used as a "pressure card." Araghchi: Washington\'s "destructive habits" — unreasonable demands, changing positions, threatening rhetoric — caused talks to stall. Trump: war could end "very soon." Day 60.' },
+  { date: 'Apr 28', tier: 'critical', label: 'Trump NSC reviews Iran\'s staged Hormuz proposal — Phase 1: reopen Hormuz + end war; nuclear deferred to Phase 2. Rubio: proposal "better than what we thought they were going to submit" but "the nuclear question is the reason why we\'re in this in the first place." Sources: sides not as far apart as they appear. Day 60.' },
+  { date: 'Apr 28', tier: 'critical', label: 'UAE announces it is quitting OPEC — first departure in the cartel\'s history. Cited "diverging interests" driven by Iran war energy disruption. Brent above $110 for first time since early April. WTI ~$98. Goldman Q4 Brent forecast: $90/bbl. Day 60.' },
+  { date: 'Apr 28', tier: 'critical', label: 'Gulf leaders meet in Riyadh. Qatar FM warns against a "frozen conflict" and says Hormuz should not be used as a "pressure card." Araghchi: Washington\'s "destructive habits" — unreasonable demands, changing positions, threatening rhetoric — caused talks to stall. Trump: war could end "very soon." Day 60.' },
+  { date: 'Apr 29', tier: 'critical', label: 'Acting Pentagon Comptroller Jules Hurst tells House Armed Services Committee Operation Epic Fury has cost $25B — "most of that is in munitions" plus operations, maintenance, and equipment replacement. Excludes base damage repair (Hurst: no final number, "not reflected" in FY27 budget). Hegseth, asked if a supplemental will follow: "if and when... larger than $25 billion... a lot more we would ask for beyond just Iran." DoD has already sent OMB a $200B supplemental. The Pentagon previously told Congress in March that the war cost $11.3B in the first six days alone. Sen. Coons (D-DE): "I am frankly certain that is low." Rep. Khanna (D-CA): "totally off." Three numbers from the same institution: $25B (public testimony), ~$50B (CBS internal sources), $200B (OMB supplemental ask). An 8x range. Day 61.' },
+  { date: 'Apr 29', tier: 'critical', label: 'Hegseth FY27 budget testimony: $1.5T request — a 42% increase, the largest single-year jump since the Iraq War supplemental. Used to replace missiles and weapons expended, build more ships and aircraft, fund "tens of billions" for drone and counter-drone capabilities. Pentagon has lost 24 MQ-9 Reapers ($30M+ each = $720M+ in drones alone), four F-15E Strike Eagles, an A-10, and an E-3G Sentry. None of those replacement costs are included in the $25B headline. Trump warns Iran "better get smart soon." Day 61.' },
+  { date: 'Apr 30', tier: 'critical', label: 'Senate Armed Services Committee hearing — Hegseth and Caine testify. Hurst tells the Senate that base reconstruction costs are "hard to estimate." CENTCOM Cdr Adm. Brad Cooper and JCS Chair Caine brief Trump on options including "limited ground interventions, targeted strikes on Iranian energy infrastructure, and other contingencies." USS Gerald R. Ford ordered out of Middle East theater. New Supreme Leader Mojtaba Khamenei delivers public message: declares "victory over the US," proclaims Iranian "control over the Strait of Hormuz." First public Mojtaba statement on the war framed as outcome rather than ongoing. Day 62.' },
+  { date: 'May 1',  tier: 'critical', label: 'War Powers Resolution 60-day Congressional authorization clock notionally expires. Trump letter to Congressional leaders claims "hostilities" with Iran have "terminated" — therefore the clock does not apply. Cites no exchange of fire since April 7. Senate vote to compel withdrawal fails. Sen. Blumenthal: "The Constitution gives Congress an essential role in decisions of war and peace, and the War Powers Act establishes a clear 60-day deadline... That deadline is not a suggestion; it is a requirement." US blockade ongoing — CENTCOM has turned back 48 Iran-bound ships in 20 days. The administration position: hostilities terminated, blockade continues, escort ops being planned. Day 63.' },
+  { date: 'May 1',  tier: 'critical', label: 'AAA national gas average: $4.39/gal — up 9¢ from Thursday, 34¢ from a week prior, and ~50% above the inauguration baseline. Brent briefly back above $120 on no-imminent-deal pricing. Lebanon ceasefire bleeding: 73 killed, 163 injured since Apr 30 per Lebanon Health Ministry, with both Hezbollah and IDF claiming attacks in response to the other\'s violations. Hezbollah strike drone hits IDF vehicle in Al-Bayyada. Trump on the negotiations: the US "may be \'better off\' if no deal is reached." Day 63.' },
+  { date: 'May 2',  tier: 'critical', label: 'Iran submits a 14-point counter-proposal via Pakistani intermediaries. Demands: end the war within 30 days (not the US-proposed two-month ceasefire); withdraw US forces from Iran\'s periphery; lift the naval blockade; release frozen Iranian assets; pay reparations; lift sanctions; end fighting on all fronts including Lebanon; new control mechanism for the Strait of Hormuz; US recognition of Iran\'s right to enrich uranium for peaceful purposes. Nuclear talks moved to "the final stage." Trump: "told me the concept of the deal... can\'t imagine that it would be acceptable." First formally documented Iranian negotiating position since the war began. Day 64.' },
+  { date: 'May 2',  tier: 'critical', label: 'Iran parliament moves on a 12-point Hormuz transit law. Israeli vessels permanently banned. "Hostile countries" — explicitly the US — required to pay war reparations to obtain a transit permit. All other vessels require Iranian authorization. The IRGC announces it has set the Pentagon a deadline to lift the blockade. International Chamber of Shipping: ~20,000 seafarers stranded in waters around the Strait. Captain on a stranded Emirati tanker: "Ceasefire is for normal people." Day 64.' },
+  { date: 'May 3',  tier: 'today',    label: 'Trump announces "Project Freedom" — US Navy escorts of non-belligerent commercial vessels through the Strait of Hormuz, beginning Monday. Unilateral US action; does not end the blockade of Iranian ports. Mohsen Rezaee, top military adviser to Mojtaba Khamenei: Iran is prepared to make a "graveyard of American military vessels" if fighting resumes. UKMTO: a bulk carrier near the Iranian coast reports being "attacked by multiple small craft." Adm. Cooper visits the USS Tripoli. Germany FM Wadephul phone call with Iranian counterpart aligning Berlin with Washington — Trump separately announces a further 5,000+ troop withdrawal from Germany. Day 65.' },
+  { date: 'May 3',  tier: 'today',    label: 'IRGC statement (Press TV): the US "room for decision-making has narrowed." Frames the choice as "an impossible military operation or a bad deal." Cites critical statements from China, Russia, Europe. Iranian Basij Construction Organization claims 12,000 residential buildings damaged in the war have been repaired — domestic narrative pivoting from active war footing to reconstruction. Day 65.' },
 ];
 
 const tierDot = { baseline: T.green, neutral: T.amber, critical: T.terra, peak: T.red, today: T.red };
@@ -753,6 +772,21 @@ const DAILY_ASSESSMENTS = [
   { day: 60, date: 'Apr 28', x: 77, y: 3.2,
     xNote: '77/100: Floor is 59 (9 conditions, all active). Event push of +18. UAE quitting OPEC is a structural signal — the cartel architecture that has anchored Gulf energy cooperation since 1967 is fracturing under the war\'s pressure. Brent above $110 again. But the staged deal framework being discussed behind the scenes reduces the immediate kinetic probability, and Trump has shown no appetite to resume bombing. X declines slightly.',
     yNote: 'TLM Assessment Day 60: 3.2/10. The highest Y since Day 53. Three things moved it: Rubio calling the proposal "better than expected" — that is the Secretary of State publicly validating the Iranian paper, which is not nothing; sources telling CNN the sides are "not as far apart as they seem" with a staged framework being actively discussed; and Trump showing zero public appetite to resume bombing despite the ceasefire having no end date and Iran explicitly refusing nuclear talks in Phase 1. The UAE-OPEC departure is the week\'s most underreported structural signal — it tells you Gulf states are repositioning around a new energy reality, not waiting for the pre-war order to return. The gap that keeps Y below 5: Rubio also said nuclear is "the reason why we\'re in this in the first place," and Iran\'s red lines on Hormuz sovereignty and enrichment have not moved. Staged process or not, those two items are still incompatible.' },
+  { day: 61, date: 'Apr 29', x: 77, y: 3.0,
+    xNote: '77/100: Floor 59, push +18. Cost contradiction surfaces in HASC testimony. Comptroller Hurst: $25B for the war so far. Pentagon\'s own March admission: $11.3B in the first six days — a number that, projected at any reasonable subsequent tempo, makes $25B arithmetically implausible. CBS internal sources: ~$50B. Pentagon supplemental request to OMB: $200B (Hegseth concedes "a lot more beyond just Iran" is included). Same institution, three numbers, an 8x range. The credibility hit is real — but it\'s a domestic political story, not a kinetic story. The war state itself didn\'t move today. X holds.',
+    yNote: 'TLM Assessment Day 61: 3.0/10. Down from 3.2 — not because anything escalated, but because the cost contradiction narrows the political maneuvering room for both ends of any deal. The administration cannot hold $25B as the public number while simultaneously asking OMB for $200B; either the supplemental gets quietly trimmed (signaling Iran the US wants out) or the public number gets revised upward (signaling escalation). Either move costs domestic credibility. The gap between "what we\'re telling Congress" and "what we\'re telling OMB" is the kind of contradiction that gets resolved by external events, not by negotiation. Y declines slightly.' },
+  { day: 62, date: 'Apr 30', x: 78, y: 2.8,
+    xNote: '78/100: Floor 59, push +19. Mojtaba Khamenei delivers his first framing of the war as outcome rather than process — declares "victory over the US" and proclaims Iranian "control over the Strait of Hormuz." This is structural. A new Supreme Leader whose entire legitimacy rests on not blinking has now publicly tied his identity to a maximalist Hormuz posture. Walking it back becomes existential, not negotiable. CENTCOM commander and JCS Chair brief Trump on options including "limited ground interventions" and "targeted strikes on Iranian energy infrastructure" — kinetic options remain on the table even with no recent strikes. USS Gerald R. Ford ordered out of theater. X up 1.',
+    yNote: 'TLM Assessment Day 62: 2.8/10. Mojtaba\'s "victory" speech is the single most important Y signal since the parliamentary speaker statement on Day 18. A Supreme Leader who has publicly claimed victory cannot accept a deal that looks like defeat. The face-saving construct required to reverse the closure now has to look — to Iran\'s own audience — like it was always going to happen this way. That construct does not yet exist on the US side. Adding to it: Hurst told the Senate base reconstruction costs are unestimated. Translation: the Pentagon does not yet know what it will cost to put Saudi, Qatari, and UAE bases back together — let alone whether host nations will pay any of it. Lock-in compounds.' },
+  { day: 63, date: 'May 1',  x: 78, y: 2.7,
+    xNote: '78/100: Floor 59, push +19. War Powers Resolution\'s 60-day clock expires today. Trump letter to Congressional leaders declares "hostilities have terminated" since April 7 — a unilateral redefinition that allows the administration to keep the blockade running, prepare new escort ops, and avoid Congressional authorization simultaneously. Senate vote to compel withdrawal fails. Gas $4.39 per AAA — up 9¢ in 24 hours, 34¢ in a week. Brent briefly back above $120. Lebanon ceasefire technically intact, materially bleeding: 73 killed since Apr 30. Trump publicly says US "may be \'better off\' if no deal is reached." X holds because nothing kinetic actually changed — but the trajectory is locking in.',
+    yNote: 'TLM Assessment Day 63: 2.7/10. The War Powers dodge is the most important Y signal of the week. Trump has constructed a position in which: (1) hostilities have legally terminated, so no Congressional authorization is required; (2) the blockade continues anyway because that is not "hostilities"; (3) escort operations are being planned because the Strait is "open" but commercially closed. Three positions that cannot all be true simultaneously, but each one resolves a different audience problem. Walking back from this requires admitting at least one was wrong — and that admission is now politically costly in a way it wasn\'t a week ago. Y declines.' },
+  { day: 64, date: 'May 2',  x: 78, y: 2.8,
+    xNote: '78/100: Floor 59, push +19. Iran submits a 14-point counter-proposal via Pakistan. First formally documented Iranian negotiating position since the war began — and the document\'s existence is the news, regardless of what Trump said about it ("can\'t imagine that it would be acceptable"). Simultaneously: Iran parliament moves on a 12-point Hormuz transit law that bans Israeli vessels permanently and makes "hostile country" transits contingent on war reparations. The two documents cancel each other on X — one signals diplomatic engagement, the other signals legislative lock-in. Net neutral. X holds.',
+    yNote: 'TLM Assessment Day 64: 2.8/10. Up 0.1 from Day 63 — the existence of a concrete, written Iranian counter-proposal is meaningful. Iran has now committed to specific terms in writing. Even if those terms are unacceptable in their current form, having them on paper means the negotiation has a starting position rather than a vacuum. That\'s genuine progress on Y. Cancelled by the parliamentary law: Israeli vessels banned in legislation is harder to walk back than mined waters. Two structural signals pointing in opposite directions on the same day, with the parliament marginally heavier because law is harder to reverse than a proposal is to advance.' },
+  { day: 65, date: 'May 3',  x: 79, y: 3.0,
+    xNote: '79/100: Floor 59, push +20. Trump announces "Project Freedom" — US Navy escort of non-belligerent commercial vessels through the Strait beginning Monday. Unilateral US action; does not lift the blockade of Iranian ports. Sets up a direct kinetic test on Day 66+: Iran has stated it will treat US ships in the strait as "graveyard" candidates, and a bulk carrier near Iran has already reported being "attacked by multiple small craft" today (UKMTO). Project Freedom is not de-escalation — it is a unilateral assertion of access on US terms, with the blockade unchanged on the other side. The IRGC explicitly framed the choice today: "an impossible military operation or a bad deal." X up 1.',
+    yNote: 'TLM Assessment Day 65: 3.0/10. Up from 2.8. Project Freedom is genuinely two-sided on Y. Down: it creates a new commitment the US must enforce — escorts that get harassed will need a response, and a response can re-ignite kinetic. Up: it signals US wants to assert that the war is "over" while the practical state remains a blockade — and that political need to declare resolution is, on its own, a path toward an actual deal. Iran\'s 14-point proposal still on the table. The IRGC framing — "impossible military operation or a bad deal" — is, beneath the rhetoric, an acknowledgment that the bad deal is one of two roads. That\'s the most diplomatically explicit Iranian framing of the war\'s endgame to date. Y nudges up.' },
 ];
 
 const BILL = [
@@ -1567,6 +1601,77 @@ function GasCalc({ rbobPrice, retailGasPrice }) {
 }
 
 /* ─── Broader Cost Impact ────────────────────────────────────────────────────── */
+/* ─── Cost Contradiction — three-numbers feature ──────────────────────────── */
+function CostContradiction() {
+  const serif    = { fontFamily: "'Source Serif 4', Georgia, serif" };
+  const display  = { fontFamily: "'DM Serif Display', Georgia, serif" };
+
+  /* Three numbers, same institution, same war.
+     $25B  — Acting Comptroller Hurst, HASC testimony, Apr 29 2026.
+     $50B  — CBS internal Pentagon sources cited Apr 30 2026.
+     $200B — DoD supplemental request to OMB (referenced by Hurst at HASC).
+     Pentagon Day-6 admission ($11.3B, March) is the math anchor. */
+  const NUMBERS = [
+    {
+      label: 'Public',
+      figure: '$25B',
+      headline: 'Comptroller, on the record',
+      body: 'Acting Pentagon Comptroller Jules Hurst, sworn testimony to the House Armed Services Committee on Apr 29: "Approximately, of this day, we\'re spending about $25 billion on Operation Epic Fury." Hurst confirmed this excludes base damage repair, which the Pentagon "does not have a final number for" — and which is "not reflected" in the FY27 budget request.',
+      src: 'Hurst, HASC, Apr 29 2026',
+      color: T.terra,
+    },
+    {
+      label: 'Internal',
+      figure: '~$50B',
+      headline: 'Officials, off the record',
+      body: 'CBS News, citing "US officials familiar with internal assessments": the war\'s actual cost so far is closer to $50 billion. Much of the gap accounted for by attrition replacement — 24 MQ-9 Reaper drones lost (≈$30M each), four F-15E Strike Eagles, an A-10, and an E-3G Sentry. None are in Hurst\'s public number.',
+      src: 'CBS News, Apr 30 2026',
+      color: T.amber,
+    },
+    {
+      label: 'Budget',
+      figure: '$200B',
+      headline: 'Supplemental, to OMB',
+      body: 'The Defense Department has already sent OMB a $200B supplemental request — eight times the public figure. Hegseth, asked to reconcile: the supplemental will be "larger than $25 billion" because "there\'s a lot more we would ask for beyond just Iran." That is an admission the supplemental is bundled — and the Pentagon will not itemize the Iran-specific share.',
+      src: 'InsideDefense, Apr 29 2026',
+      color: T.red,
+    },
+  ];
+
+  return (
+    <div>
+      {/* Pentagon Day-6 anchor */}
+      <div style={{ background: T.bgTint, border: `1px solid ${T.border}`, borderLeft: `3px solid ${T.terra}`, borderRadius: '2px', padding: '0.9rem 1.1rem', marginBottom: '1rem' }}>
+        <p style={{ ...serif, margin: 0, fontSize: '12px', color: T.inkMid, lineHeight: 1.65 }}>
+          <span style={{ ...serif, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.terra, marginRight: '8px' }}>Math anchor</span>
+          The same Pentagon told Congress in <strong>March 2026</strong> that Operation Epic Fury cost <strong>$11.3 billion in just the first six days.</strong> Projected at any plausible subsequent tempo, that rate alone passes $25B before Day 14.
+        </p>
+      </div>
+
+      {/* Three numbers grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1px', background: T.border, borderRadius: '2px', overflow: 'hidden' }}>
+        {NUMBERS.map((n, i) => (
+          <div key={i} style={{ background: T.bgCard, padding: '1.1rem 1.25rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+              <p style={{ ...serif, margin: 0, fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: T.inkMuted }}>{n.label}</p>
+              <span style={{ ...display, fontSize: '1.8rem', color: n.color, lineHeight: 1 }}>{n.figure}</span>
+            </div>
+            <p style={{ ...display, margin: '0 0 8px', fontSize: '13px', fontStyle: 'italic', color: T.ink }}>{n.headline}</p>
+            <p style={{ ...serif, margin: '0 0 6px', fontSize: '11.5px', color: T.inkMid, lineHeight: 1.65 }}>{n.body}</p>
+            <p style={{ ...serif, margin: 0, fontSize: '10px', color: T.inkMuted, fontStyle: 'italic' }}>{n.src}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Editorial close */}
+      <p style={{ ...serif, margin: '1rem 0 0', fontSize: '12px', color: T.inkMid, lineHeight: 1.7 }}>
+        Three numbers, one institution, one war. They cannot all be true unless the supplemental is mostly unrelated to Iran — and Hegseth has functionally conceded that, without itemizing. The $25B is the audience-managed figure for sworn testimony. The $50B is what officials say privately. The $200B is what the Pentagon needs Congress to actually appropriate. Each number gets to exist because each has a different reader.
+      </p>
+    </div>
+  );
+}
+
+/* ─── Broader economic impact ─────────────────────────────────────────────── */
 function BroaderImpact() {
   const serif = { fontFamily: "'Source Serif 4', Georgia, serif" };
   const display = { fontFamily: "'DM Serif Display', Georgia, serif" };
@@ -2125,6 +2230,17 @@ export default function Home() {
               Fertilizer tracked via CF Industries (NYSE: CF) — largest US urea producer. Urea is an OTC market with no liquid exchange-traded futures.
               All inauguration baselines estimated from January 20, 2025 market close.
             </p>
+          </div>
+
+          {/* Cost contradiction — three numbers, one Pentagon */}
+          <div style={{ ...section }}>
+            <p style={{ ...sectionHead, color: T.red }}>The Cost Contradiction — $25B vs. $50B vs. $200B</p>
+            <p style={{ ...serif, fontSize: '13px', color: T.inkMid, margin: '0 0 1.25rem', lineHeight: 1.7 }}>
+              On April 29, 2026, the Pentagon told Congress under oath that Operation Epic Fury has cost $25 billion. That same week,
+              internal Pentagon sources told CBS the real number is closer to $50 billion. The Pentagon&apos;s own supplemental request
+              to OMB asks for $200 billion. The Long Memo does not pick a number. We log the contradiction.
+            </p>
+            <CostContradiction/>
           </div>
 
           {/* Average American cost */}
