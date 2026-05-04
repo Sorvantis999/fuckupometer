@@ -1,16 +1,42 @@
-// commodities.js — commodity quotes via stooq (replaces Yahoo Finance)
+// commodities.js — commodity quotes via Yahoo (primary) + Stooq (fallback)
+// Stooq blocks/rate-limits cloud IPs unreliably; Yahoo query2 is more permissive.
 const COMMODITIES = [
-  { ticker: 'ng.f',  label: 'Natural Gas',     unit: '$/MMBtu', inaugBaseline: 3.22,  decimals: 3 },
-  { ticker: 'rb.f',  label: 'Gasoline (RBOB)',  unit: '$/gal',   inaugBaseline: 2.10,  decimals: 4 },
-  { ticker: 'zw.f',  label: 'Wheat',            unit: 'cents/bu', inaugBaseline: 535,  decimals: 2 },
-  { ticker: 'zc.f',  label: 'Corn',             unit: 'cents/bu', inaugBaseline: 450,  decimals: 2 },
-  { ticker: 'cf.us', label: 'Fertilizer',       unit: '$/sh',    inaugBaseline: 110,   decimals: 2 },
+  { yahoo: 'NG=F', stooq: 'ng.f',  label: 'Natural Gas',     unit: '$/MMBtu', inaugBaseline: 3.22,  decimals: 3 },
+  { yahoo: 'RB=F', stooq: 'rb.f',  label: 'Gasoline (RBOB)', unit: '$/gal',   inaugBaseline: 2.10,  decimals: 4 },
+  { yahoo: 'ZW=F', stooq: 'zw.f',  label: 'Wheat',           unit: 'cents/bu', inaugBaseline: 535,  decimals: 2 },
+  { yahoo: 'ZC=F', stooq: 'zc.f',  label: 'Corn',            unit: 'cents/bu', inaugBaseline: 450,  decimals: 2 },
+  { yahoo: 'CF',   stooq: 'cf.us', label: 'Fertilizer',      unit: '$/sh',    inaugBaseline: 110,   decimals: 2 },
 ];
+
+const YF_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  'Accept': 'application/json',
+  'Referer': 'https://finance.yahoo.com/',
+};
 
 const STOOQ_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 };
+
+async function fetchYahoo(symbol, decimals) {
+  const url = `https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=5d`;
+  const r = await fetch(url, { headers: YF_HEADERS });
+  if (!r.ok) return null;
+  const json = await r.json();
+  const meta = json?.chart?.result?.[0]?.meta;
+  if (!meta || !meta.regularMarketPrice) return null;
+  const price = meta.regularMarketPrice;
+  const prev  = meta.chartPreviousClose ?? meta.previousClose ?? price;
+  const change = price - prev;
+  const changePct = prev ? (change / prev) * 100 : 0;
+  return {
+    price:     parseFloat(price.toFixed(decimals)),
+    prev:      parseFloat(prev.toFixed(decimals)),
+    change:    parseFloat(change.toFixed(decimals)),
+    changePct: parseFloat(changePct.toFixed(2)),
+  };
+}
 
 async function fetchStooq(ticker, decimals) {
   const url = `https://stooq.com/q/l/?s=${ticker}&f=sd2t2ohlcp&h&e=csv`;
@@ -36,29 +62,43 @@ async function fetchStooq(ticker, decimals) {
   };
 }
 
+async function fetchOne(c) {
+  /* Yahoo first; on null/throw, fall through to Stooq. Never throw upward. */
+  try {
+    const y = await fetchYahoo(c.yahoo, c.decimals);
+    if (y) return y;
+  } catch { /* fall through */ }
+  try {
+    return await fetchStooq(c.stooq, c.decimals);
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   try {
-    const results = await Promise.all(
-      COMMODITIES.map(async (c) => {
-        const quote = await fetchStooq(c.ticker, c.decimals);
-        if (!quote) return null;
-        const sinceInaugPct = ((quote.price - c.inaugBaseline) / c.inaugBaseline * 100).toFixed(1);
-        // Return with original Yahoo-style ticker alias so front-end keeps working
-        const tickerAlias = {
-          'ng.f':  'NG=F',
-          'rb.f':  'RB=F',
-          'zw.f':  'ZW=F',
-          'zc.f':  'ZC=F',
-          'cf.us': 'CF',
-        }[c.ticker] || c.ticker;
-        return { ...c, ticker: tickerAlias, ...quote, sinceInaugPct: parseFloat(sinceInaugPct) };
-      })
-    );
+    const settled = await Promise.allSettled(COMMODITIES.map(c => fetchOne(c)));
+    const results = settled.map((s, i) => {
+      const c = COMMODITIES[i];
+      const quote = s.status === 'fulfilled' ? s.value : null;
+      if (!quote) return null;
+      const sinceInaugPct = ((quote.price - c.inaugBaseline) / c.inaugBaseline * 100).toFixed(1);
+      /* Keep the Yahoo-style ticker on the response so the front-end keeps working */
+      return {
+        ticker: c.yahoo,
+        label: c.label,
+        unit: c.unit,
+        inaugBaseline: c.inaugBaseline,
+        decimals: c.decimals,
+        ...quote,
+        sinceInaugPct: parseFloat(sinceInaugPct),
+      };
+    }).filter(Boolean);
 
-    res.json({ commodities: results.filter(Boolean) });
+    res.json({ commodities: results });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
