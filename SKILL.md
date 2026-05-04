@@ -5,7 +5,7 @@ description: Daily update workflow for the Trump Fuckupometer at fuckupometer.th
 
 # Fuckupometer Daily Update Skill
 
-Live tracker at **fuckupometer.thelongmemo.com**. Repo: `Sorvantis999/fuckupometer`. Next.js app, single file: `pages/index.js`.
+Live tracker at **fuckupometer.thelongmemo.com**. Repo: `SorvantisCo/fuckupometer`. Next.js app, single file: `pages/index.js`.
 
 ---
 
@@ -32,7 +32,7 @@ Live tracker at **fuckupometer.thelongmemo.com**. Repo: `Sorvantis999/fuckupomet
 import urllib.request, json, base64
 
 req = urllib.request.Request(
-    "https://api.github.com/repos/Sorvantis999/fuckupometer/contents/pages/index.js",
+    "https://api.github.com/repos/SorvantisCo/fuckupometer/contents/pages/index.js",
     headers={"Authorization": "token <GITHUB_TOKEN_FROM_MEMORY>", "User-Agent": "python"}
 )
 with urllib.request.urlopen(req) as r:
@@ -200,7 +200,7 @@ payload = json.dumps({
 }).encode('utf-8')
 
 req = urllib.request.Request(
-    "https://api.github.com/repos/Sorvantis999/fuckupometer/contents/pages/index.js",
+    "https://api.github.com/repos/SorvantisCo/fuckupometer/contents/pages/index.js",
     data=payload, method="PUT",
     headers={
         "Authorization": "token <GITHUB_TOKEN_FROM_MEMORY>",
@@ -225,7 +225,7 @@ payload = json.dumps({
     "target": "production",
     "gitSource": {
         "type": "github",
-        "org": "Sorvantis999",
+        "org": "SorvantisCo",
         "repo": "fuckupometer",
         "ref": "main",
         "sha": commit_sha
@@ -324,3 +324,44 @@ content = content.replace(marker, "\n" + new_trump + "\n" + marker, 1)
 - **Wrong tier on current day's entries**: New entries get `tier: 'today'`. Previous day's `today` entries must be changed to `critical` first. Verify with `grep -n "tier: 'today'"` before committing.
 - **Y score dispute**: Bryan will push back if Y moves mechanically. See scoring methodology — distinguish Parliament noise from SNSC/operational signals.
 - **Deploy 400**: Usually wrong payload shape. Ensure `gitSource.org` and `gitSource.repo` are separate fields, not `repoId`.
+
+
+---
+
+## Commodity feed resilience architecture (May 2026)
+
+The `/api/oil` and `/api/commodities` endpoints have a three-layer fetch chain. When Bryan says "the data streams aren't working," check this chain in order:
+
+1. **Yahoo Finance (primary)** — `query2.finance.yahoo.com`. Periodically IP-blocks Vercel's Lambda egress.
+2. **Stooq (per-symbol fallback)** — `stooq.com`. Also intermittently blocks Vercel IPs but on a different schedule than Yahoo.
+3. **Static JSON fallback** — `https://raw.githubusercontent.com/SorvantisCo/fuckupometer/main/public/data/prices.json`. Refreshed hourly by `.github/workflows/update-prices.yml`, which runs `scripts/fetch-prices.js` from a GitHub Actions runner (clean IP space, not blocked).
+
+**Diagnostic flow when commodities show empty / oil shows 503:**
+
+```bash
+# 1. Test the live endpoints
+curl -s https://fuckupometer.thelongmemo.com/api/oil | jq '.cached, .source'
+curl -s https://fuckupometer.thelongmemo.com/api/commodities | jq '.cached, (.commodities | length)'
+
+# 2. Check the static fallback file directly
+curl -s https://raw.githubusercontent.com/SorvantisCo/fuckupometer/main/public/data/prices.json | jq '.updatedAt'
+
+# 3. Check the most recent GitHub Action run
+# https://github.com/SorvantisCo/fuckupometer/actions/workflows/update-prices.yml
+```
+
+If `cached: true` is set in the API response, both Yahoo and Stooq failed and the static JSON fallback served the request. The `cachedAt` field shows when the JSON was last refreshed. If the JSON itself is older than ~2 hours, the GitHub Action has failed — go check Actions tab.
+
+**Manual workflow trigger:**
+```python
+import urllib.request, json
+req = urllib.request.Request(
+    "https://api.github.com/repos/SorvantisCo/fuckupometer/actions/workflows/update-prices.yml/dispatches",
+    data=json.dumps({"ref": "main"}).encode(),
+    method="POST",
+    headers={"Authorization": "token <GITHUB_TOKEN>", "Content-Type": "application/json", "User-Agent": "python"}
+)
+urllib.request.urlopen(req)  # returns HTTP 204
+```
+
+**Do not** simply add yet another upstream scrape source when this fails. The architectural answer is "fetch from GitHub-runner IPs, cache statically, serve from raw.githubusercontent.com." Adding fourth/fifth scrape sources just delays the next IP-block by a couple of weeks.
