@@ -102,38 +102,49 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=180, stale-while-revalidate=300');
 
-  try {
-    const [wti, brent, retailGasPrice] = await Promise.all([
-      fetchWithFallback('CL=F', 'cl.f'),
-      fetchWithFallback('BZ=F', 'cb.f'),
-      fetchAAAGasPrice(),
-    ]);
+  const settled = await Promise.allSettled([
+    fetchWithFallback('CL=F', 'cl.f'),
+    fetchWithFallback('BZ=F', 'cb.f'),
+    fetchAAAGasPrice(),
+  ]);
+  const wti            = settled[0].status === 'fulfilled' ? settled[0].value : null;
+  const brent          = settled[1].status === 'fulfilled' ? settled[1].value : null;
+  const retailGasPrice = settled[2].status === 'fulfilled' ? settled[2].value : null;
 
-    const INAUGURATION_PRICE    = 76.0;
-    const FUCKUP_CEILING        = 130.0;   /* structural demand destruction / policy crisis threshold */
-    const CONFLICT_PEAK_ACTUAL  = 119.48;  /* Mar 9 intraday high — tracked for reference */
-    const BRENT_INAUG           = 79.0;
-
-    const price = parseFloat(wti.price);
-    const marketOpen = wti.marketState === 'REGULAR';
-
-    res.json({
-      ...wti,
-      inaugurationPrice:    INAUGURATION_PRICE,
-      peakPrice:            FUCKUP_CEILING,
-      conflictPeakActual:   CONFLICT_PEAK_ACTUAL,
-      sinceInauguration:    (price - INAUGURATION_PRICE).toFixed(2),
-      sinceInaugurationPct: (((price - INAUGURATION_PRICE) / INAUGURATION_PRICE) * 100).toFixed(1),
-      fuckupFactor:         Math.min(100, Math.max(0, ((price - INAUGURATION_PRICE) / (FUCKUP_CEILING - INAUGURATION_PRICE)) * 100)).toFixed(1),
-      marketOpen,
-      brent: {
-        ...brent,
-        sinceInaugPct: (((parseFloat(brent.price) - BRENT_INAUG) / BRENT_INAUG) * 100).toFixed(1),
-      },
-      retailGasPrice: retailGasPrice ?? null,  /* AAA national average retail $/gal */
-      timestamp: new Date().toISOString(),
+  if (!wti && !brent) {
+    return res.status(503).json({
+      error: 'All upstream price sources unreachable',
+      wtiErr:   settled[0].reason?.message ?? null,
+      brentErr: settled[1].reason?.message ?? null,
     });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
+
+  const INAUGURATION_PRICE   = 76.0;
+  const FUCKUP_CEILING       = 130.0;   /* structural demand destruction / policy crisis threshold */
+  const CONFLICT_PEAK_ACTUAL = 119.48;  /* Mar 9 intraday high — tracked for reference */
+  const BRENT_INAUG          = 79.0;
+
+  /* Build response. Prefer WTI but degrade gracefully if only Brent succeeded. */
+  const primary = wti ?? brent;
+  const price = parseFloat(primary.price);
+  const marketOpen = primary.marketState === 'REGULAR';
+
+  res.json({
+    ...primary,
+    /* If we fell back to Brent for the top-level numbers, flag it */
+    primarySource: wti ? 'wti' : 'brent_fallback',
+    inaugurationPrice:    INAUGURATION_PRICE,
+    peakPrice:            FUCKUP_CEILING,
+    conflictPeakActual:   CONFLICT_PEAK_ACTUAL,
+    sinceInauguration:    (price - INAUGURATION_PRICE).toFixed(2),
+    sinceInaugurationPct: (((price - INAUGURATION_PRICE) / INAUGURATION_PRICE) * 100).toFixed(1),
+    fuckupFactor:         Math.min(100, Math.max(0, ((price - INAUGURATION_PRICE) / (FUCKUP_CEILING - INAUGURATION_PRICE)) * 100)).toFixed(1),
+    marketOpen,
+    brent: brent ? {
+      ...brent,
+      sinceInaugPct: (((parseFloat(brent.price) - BRENT_INAUG) / BRENT_INAUG) * 100).toFixed(1),
+    } : null,
+    retailGasPrice: retailGasPrice ?? null,  /* AAA national average retail $/gal */
+    timestamp: new Date().toISOString(),
+  });
 }
