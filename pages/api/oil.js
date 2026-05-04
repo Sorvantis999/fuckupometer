@@ -1,5 +1,18 @@
-// oil.js — WTI + Brent with Yahoo Finance (query2) primary + Stooq fallback
-// Per-symbol error isolation: one failing never kills the other
+// oil.js — WTI + Brent with Yahoo Finance (query2) primary, Stooq fallback,
+// and raw.githubusercontent.com static-JSON last-resort fallback.
+//
+// Why three sources:
+//   - Yahoo and Stooq both intermittently IP-block Vercel egress (AWS Lambda
+//     ranges). Either can fail at any time without warning.
+//   - The static JSON at /public/data/prices.json is refreshed hourly by the
+//     update-prices GitHub Action (runner IP space, not blocked).
+//   - We read it from raw.githubusercontent.com instead of the bundled file
+//     so price updates do not require a Vercel redeploy.
+//
+// Per-symbol error isolation: one failing never kills the other.
+
+const RAW_PRICES_URL =
+  'https://raw.githubusercontent.com/SorvantisCo/fuckupometer/main/public/data/prices.json';
 
 const YF_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -98,6 +111,31 @@ async function fetchWithFallback(yahooSymbol, stooqTicker) {
   }
 }
 
+/**
+ * Read the cached prices.json published by the GitHub Action.
+ * Returns null on any failure (network, parse, missing fields).
+ */
+async function fetchStaticFallback() {
+  try {
+    const r = await fetch(RAW_PRICES_URL, {
+      headers: { 'User-Agent': 'fuckupometer-api/1.0' },
+    });
+    if (!r.ok) {
+      console.error(`Static fallback HTTP ${r.status}`);
+      return null;
+    }
+    const data = await r.json();
+    if (!data?.oil?.price) {
+      console.error('Static fallback: malformed payload');
+      return null;
+    }
+    return data;
+  } catch (e) {
+    console.error(`Static fallback error: ${e.message}`);
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=180, stale-while-revalidate=300');
@@ -111,9 +149,20 @@ export default async function handler(req, res) {
   const brent          = settled[1].status === 'fulfilled' ? settled[1].value : null;
   const retailGasPrice = settled[2].status === 'fulfilled' ? settled[2].value : null;
 
+  /* ─── Both upstream sources dead → fall back to static JSON ─── */
   if (!wti && !brent) {
+    const fallback = await fetchStaticFallback();
+    if (fallback) {
+      return res.json({
+        ...fallback.oil,
+        retailGasPrice: retailGasPrice ?? fallback.oil.retailGasPrice,
+        cached: true,
+        cachedAt: fallback.updatedAt,
+        timestamp: new Date().toISOString(),
+      });
+    }
     return res.status(503).json({
-      error: 'All upstream price sources unreachable',
+      error: 'All upstream price sources unreachable and static fallback unavailable',
       wtiErr:   settled[0].reason?.message ?? null,
       brentErr: settled[1].reason?.message ?? null,
     });

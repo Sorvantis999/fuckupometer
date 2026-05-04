@@ -1,0 +1,47 @@
+name: Update Prices
+
+# Refreshes public/data/prices.json hourly using GitHub Actions runner egress
+# (which is not IP-blocked by Yahoo / Stooq the way Vercel's Lambda IPs are).
+# The /api/oil and /api/commodities routes serve this file via raw.githubusercontent.com
+# as a last-resort fallback when both Yahoo and Stooq fail in the Vercel runtime.
+
+on:
+  schedule:
+    # Top of every hour. GitHub may delay or skip runs during high load.
+    - cron: '0 * * * *'
+  workflow_dispatch: # allow manual trigger from the Actions tab
+
+# Only one update at a time; cancel any in-flight run when a new one starts.
+concurrency:
+  group: update-prices
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch prices
+        run: node scripts/fetch-prices.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "fuckupometer-bot"
+          git config user.email "bot@thelongmemo.com"
+          git add public/data/prices.json
+          if git diff --cached --quiet; then
+            echo "No price changes; nothing to commit."
+          else
+            # [skip ci] keeps GitHub Actions from looping on its own commits.
+            git commit -m "Hourly price refresh [skip ci]"
+            git push
+          fi

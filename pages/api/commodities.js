@@ -1,5 +1,13 @@
-// commodities.js — commodity quotes via Yahoo (primary) + Stooq (fallback)
-// Stooq blocks/rate-limits cloud IPs unreliably; Yahoo query2 is more permissive.
+// commodities.js — commodity quotes via Yahoo (primary) + Stooq (per-symbol
+// fallback) + raw.githubusercontent.com static-JSON last-resort fallback.
+//
+// Same triple-layered resilience pattern as oil.js: when both Yahoo and Stooq
+// IP-block Vercel egress simultaneously, we serve the hourly-refreshed JSON
+// produced by the update-prices GitHub Action.
+
+const RAW_PRICES_URL =
+  'https://raw.githubusercontent.com/SorvantisCo/fuckupometer/main/public/data/prices.json';
+
 const COMMODITIES = [
   { yahoo: 'NG=F', stooq: 'ng.f',  label: 'Natural Gas',     unit: '$/MMBtu', inaugBaseline: 3.22,  decimals: 3 },
   { yahoo: 'RB=F', stooq: 'rb.f',  label: 'Gasoline (RBOB)', unit: '$/gal',   inaugBaseline: 2.10,  decimals: 4 },
@@ -75,6 +83,24 @@ async function fetchOne(c) {
   }
 }
 
+/**
+ * Read the cached prices.json published by the GitHub Action.
+ * Returns the commodities array only on success.
+ */
+async function fetchStaticFallback() {
+  try {
+    const r = await fetch(RAW_PRICES_URL, {
+      headers: { 'User-Agent': 'fuckupometer-api/1.0' },
+    });
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!Array.isArray(data?.commodities) || data.commodities.length === 0) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
@@ -98,8 +124,29 @@ export default async function handler(req, res) {
       };
     }).filter(Boolean);
 
+    /* If every commodity failed → fall back to static JSON. */
+    if (results.length === 0) {
+      const fallback = await fetchStaticFallback();
+      if (fallback) {
+        return res.json({
+          commodities: fallback.commodities,
+          cached: true,
+          cachedAt: fallback.updatedAt,
+        });
+      }
+    }
+
     res.json({ commodities: results });
   } catch (err) {
+    /* Last-ditch attempt at static fallback before erroring out */
+    const fallback = await fetchStaticFallback();
+    if (fallback) {
+      return res.json({
+        commodities: fallback.commodities,
+        cached: true,
+        cachedAt: fallback.updatedAt,
+      });
+    }
     res.status(500).json({ error: err.message });
   }
 }
