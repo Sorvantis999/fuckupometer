@@ -42,6 +42,14 @@ const WTI_MILESTONES = [
   { date: '2026-03-31', close: 103.00 }, // Brent ~$107.92; gas crosses $4/gal nationally
   { date: '2026-04-02', close: 111.00 }, // Thursday close locked in for Good Friday (+11% single day)
   { date: '2026-04-07', close: 115.80 }, // Kharg Island struck; WTI highest since April 2008
+  { date: '2026-04-15', close: 109.50 }, // Pakistan-brokered ceasefire takes effect Apr 16; WTI eases
+  { date: '2026-04-23', close: 105.20 }, // Day 55 — Hormuz declared open Apr 23 (CENTCOM); blockade in place
+  { date: '2026-04-28', close: 98.30 },  // Day 60 — UAE quits OPEC, staged deal framework discussed; WTI mid-90s
+  { date: '2026-04-29', close: 99.10 },  // Day 61 — HASC cost testimony, $25B vs $200B contradiction
+  { date: '2026-04-30', close: 100.40 }, // Day 62 — Mojtaba "victory" speech; SASC hearing
+  { date: '2026-05-01', close: 103.80 }, // Day 63 — War Powers dodge, gas $4.39, Brent briefly above $120
+  { date: '2026-05-02', close: 102.10 }, // Day 64 — Iran 14-point + parliament 12-point Hormuz law
+  { date: '2026-05-03', close: 101.84 }, // Day 65 — Project Freedom announced; IRGC graveyard threat
 ];
 
 const BRENT_MILESTONES = [
@@ -75,6 +83,14 @@ const BRENT_MILESTONES = [
   { date: '2026-03-31', close: 107.92 }, // Brent ~$107.92; gas $4/gal nationally
   { date: '2026-04-02', close: 108.00 }, // Brent $108 — Thursday close (+6.6%)
   { date: '2026-04-07', close: 111.00 }, // Kharg Island struck; Brent $111
+  { date: '2026-04-15', close: 105.50 }, // Ceasefire onset; Brent eases
+  { date: '2026-04-23', close: 102.00 }, // Day 55 — Hormuz declared open Apr 23
+  { date: '2026-04-28', close: 110.20 }, // Day 60 — UAE quits OPEC; Brent above $110 first time since early April
+  { date: '2026-04-29', close: 111.50 }, // Day 61 — HASC cost testimony
+  { date: '2026-04-30', close: 113.40 }, // Day 62 — Mojtaba victory; Senate hearing
+  { date: '2026-05-01', close: 119.80 }, // Day 63 — Brent briefly above $120 on no-deal pricing
+  { date: '2026-05-02', close: 116.20 }, // Day 64 — Iran 14-point counter-proposal
+  { date: '2026-05-03', close: 108.23 }, // Day 65 — Project Freedom; Brent eases on US escort optionality
 ];
 
 async function fetchLive(ticker) {
