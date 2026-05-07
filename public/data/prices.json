@@ -1,37 +1,37 @@
 {
-  "updatedAt": "2026-05-07T20:18:13.063Z",
+  "updatedAt": "2026-05-07T22:04:51.684Z",
   "oil": {
-    "price": 95.9,
-    "prevClose": 95.08,
-    "change": 0.82,
-    "changePct": 0.86,
-    "dayHigh": 97.41,
-    "dayLow": 89.88,
+    "price": 97.69,
+    "prevClose": 94.81,
+    "change": 2.88,
+    "changePct": 3.04,
+    "dayHigh": 97.86,
+    "dayLow": 97.39,
     "marketState": "CLOSED",
-    "lastTradeISO": "2026-05-07T23:00:00.000Z",
+    "lastTradeISO": "2026-05-08T23:00:00.000Z",
     "source": "stooq",
     "primarySource": "wti",
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 19.9,
-    "sinceInaugurationPct": 26.2,
-    "fuckupFactor": 36.9,
+    "sinceInauguration": 21.69,
+    "sinceInaugurationPct": 28.5,
+    "fuckupFactor": 40.2,
     "marketOpen": false,
     "brent": {
-      "price": 101.09,
+      "price": 103.49,
       "prevClose": 101.27,
-      "change": -0.18,
-      "changePct": -0.18,
-      "dayHigh": 102.83,
+      "change": 2.22,
+      "changePct": 2.19,
+      "dayHigh": 103.86,
       "dayLow": 96.1,
       "marketState": "CLOSED",
       "lastTradeISO": "2026-05-07T23:00:00.000Z",
       "source": "stooq",
-      "sinceInaugPct": 28
+      "sinceInaugPct": 31
     },
     "retailGasPrice": 4.558,
-    "timestamp": "2026-05-07T20:18:12.250Z"
+    "timestamp": "2026-05-07T22:04:50.985Z"
   },
   "commodities": [
     {
@@ -40,11 +40,11 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.786,
-      "prev": 2.73,
-      "change": 0.056,
-      "changePct": 2.05,
-      "sinceInaugPct": -13.5
+      "price": 2.779,
+      "prev": 2.769,
+      "change": 0.01,
+      "changePct": 0.36,
+      "sinceInaugPct": -13.7
     },
     {
       "ticker": "RB=F",
@@ -76,10 +76,10 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 467.25,
+      "price": 467,
       "prev": 468.5,
-      "change": -1.25,
-      "changePct": -0.27,
+      "change": -1.5,
+      "changePct": -0.32,
       "sinceInaugPct": 3.8
     },
     {
