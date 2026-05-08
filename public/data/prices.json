@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-05-08T20:08:38.661Z",
+  "updatedAt": "2026-05-08T22:01:54.523Z",
   "oil": {
-    "price": 94.75,
+    "price": 95.42,
     "prevClose": 94.81,
-    "change": -0.06,
-    "changePct": -0.06,
+    "change": 0.61,
+    "changePct": 0.64,
     "dayHigh": 98.02,
     "dayLow": 93.86,
     "marketState": "CLOSED",
@@ -14,15 +14,15 @@
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 18.75,
-    "sinceInaugurationPct": 24.7,
-    "fuckupFactor": 34.7,
+    "sinceInauguration": 19.42,
+    "sinceInaugurationPct": 25.6,
+    "fuckupFactor": 36,
     "marketOpen": false,
     "brent": {
-      "price": 100.6,
+      "price": 100.57,
       "prevClose": 100.06,
-      "change": 0.54,
-      "changePct": 0.54,
+      "change": 0.51,
+      "changePct": 0.51,
       "dayHigh": 102.93,
       "dayLow": 99.58,
       "marketState": "CLOSED",
@@ -31,7 +31,7 @@
       "sinceInaugPct": 27.3
     },
     "retailGasPrice": 4.546,
-    "timestamp": "2026-05-08T20:08:38.026Z"
+    "timestamp": "2026-05-08T22:01:53.600Z"
   },
   "commodities": [
     {
@@ -40,11 +40,11 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.742,
+      "price": 2.757,
       "prev": 2.769,
-      "change": -0.027,
-      "changePct": -0.98,
-      "sinceInaugPct": -14.8
+      "change": -0.012,
+      "changePct": -0.43,
+      "sinceInaugPct": -14.4
     },
     {
       "ticker": "RB=F",
@@ -64,11 +64,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 535,
       "decimals": 2,
-      "price": 620,
+      "price": 619,
       "prev": 612.25,
-      "change": 7.75,
-      "changePct": 1.27,
-      "sinceInaugPct": 15.9
+      "change": 6.75,
+      "changePct": 1.1,
+      "sinceInaugPct": 15.7
     },
     {
       "ticker": "ZC=F",
@@ -76,10 +76,10 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 471,
+      "price": 471.25,
       "prev": 467.5,
-      "change": 3.5,
-      "changePct": 0.75,
+      "change": 3.75,
+      "changePct": 0.8,
       "sinceInaugPct": 4.7
     },
     {
@@ -88,11 +88,11 @@
       "unit": "$/sh",
       "inaugBaseline": 110,
       "decimals": 2,
-      "price": 114.97,
+      "price": 115.02,
       "prev": 118.68,
-      "change": -3.71,
-      "changePct": -3.13,
-      "sinceInaugPct": 4.5
+      "change": -3.66,
+      "changePct": -3.08,
+      "sinceInaugPct": 4.6
     }
   ]
 }
