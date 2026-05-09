@@ -201,6 +201,26 @@ async function buildCommodities() {
     .filter(Boolean);
 }
 
+
+/* ─── Weekend / closed-market guard ─────────────────────────────────────────
+ * Oil futures (NYMEX WTI, ICE Brent) trade Sunday 6pm ET – Friday 5pm ET.
+ * On Saturday they are completely closed; Stooq returns no rows, Yahoo 429s.
+ * When both upstream sources fail, check whether that's expected before
+ * declaring a hard failure and wrecking the GitHub Action.
+ *
+ * Approximation in UTC:
+ *   Saturday (day 6): always closed
+ *   Sunday (day 0): closed until ~22:00 UTC (6pm ET summer, 23:00 ET winter)
+ * ──────────────────────────────────────────────────────────────────────── */
+function marketsAreClosed() {
+  const now = new Date();
+  const day = now.getUTCDay();   // 0 = Sunday, 6 = Saturday
+  const hour = now.getUTCHours();
+  if (day === 6) return true;                   // Saturday: fully closed
+  if (day === 0 && hour < 22) return true;      // Sunday before ~6pm ET
+  return false;
+}
+
 /* ─── Main ─── */
 
 async function main() {
@@ -215,6 +235,13 @@ async function main() {
   const retailGas = oilSettled[2].status === 'fulfilled' ? oilSettled[2].value : null;
 
   if (!wti && !brent) {
+    if (marketsAreClosed()) {
+      // Saturday or Sunday pre-open: both sources return no data legitimately.
+      // Preserve the existing prices.json and exit cleanly so the Action
+      // doesn't spam the failure log on every weekend hour.
+      console.log('Markets closed (weekend). Both sources returned no data — expected. Preserving existing prices.json.');
+      process.exit(0);
+    }
     console.error('FAIL: both WTI and Brent failed; refusing to write degraded data');
     console.error(`  WTI err: ${oilSettled[0].reason?.message ?? 'n/a'}`);
     console.error(`  Brent err: ${oilSettled[1].reason?.message ?? 'n/a'}`);
