@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-05-09T06:20:27.954Z",
+  "updatedAt": "2026-05-09T08:44:29.454Z",
   "oil": {
     "price": 95.42,
     "prevClose": 94.81,
     "change": 0.61,
     "changePct": 0.64,
-    "dayHigh": 98.02,
-    "dayLow": 93.86,
+    "dayHigh": 98.64,
+    "dayLow": 93.82,
     "marketState": "CLOSED",
     "lastTradeISO": "2026-05-08T23:00:00.000Z",
     "source": "stooq",
@@ -30,8 +30,8 @@
       "source": "stooq",
       "sinceInaugPct": 28.2
     },
-    "retailGasPrice": 4.546,
-    "timestamp": "2026-05-09T06:20:27.284Z"
+    "retailGasPrice": 4.53,
+    "timestamp": "2026-05-09T08:44:28.816Z"
   },
   "commodities": [
     {
@@ -52,11 +52,11 @@
       "unit": "$/gal",
       "inaugBaseline": 2.1,
       "decimals": 4,
-      "price": 3.456,
-      "prev": 3.4593,
-      "change": -0.0033,
-      "changePct": -0.1,
-      "sinceInaugPct": 64.6
+      "price": 3.5267,
+      "prev": 3.456,
+      "change": 0.0707,
+      "changePct": 2.05,
+      "sinceInaugPct": 67.9
     },
     {
       "ticker": "ZW=F",
