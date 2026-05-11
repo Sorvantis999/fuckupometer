@@ -1,37 +1,37 @@
 {
-  "updatedAt": "2026-05-11T20:49:04.703Z",
+  "updatedAt": "2026-05-11T22:10:45.916Z",
   "oil": {
-    "price": 98.33,
-    "prevClose": 95.42,
-    "change": 2.91,
-    "changePct": 3.05,
-    "dayHigh": 100.35,
-    "dayLow": 96.16,
+    "price": 98.18,
+    "prevClose": 98.07,
+    "change": 0.11,
+    "changePct": 0.11,
+    "dayHigh": 98.31,
+    "dayLow": 98.05,
     "marketState": "CLOSED",
-    "lastTradeISO": "2026-05-11T23:00:00.000Z",
+    "lastTradeISO": "2026-05-12T23:00:00.000Z",
     "source": "stooq",
     "primarySource": "wti",
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 22.33,
-    "sinceInaugurationPct": 29.4,
-    "fuckupFactor": 41.4,
+    "sinceInauguration": 22.18,
+    "sinceInaugurationPct": 29.2,
+    "fuckupFactor": 41.1,
     "marketOpen": false,
     "brent": {
-      "price": 104.33,
+      "price": 104.58,
       "prevClose": 101.29,
-      "change": 3.04,
-      "changePct": 3,
+      "change": 3.29,
+      "changePct": 3.25,
       "dayHigh": 105.97,
       "dayLow": 102.84,
       "marketState": "CLOSED",
       "lastTradeISO": "2026-05-11T23:00:00.000Z",
       "source": "stooq",
-      "sinceInaugPct": 32.1
+      "sinceInaugPct": 32.4
     },
     "retailGasPrice": 4.52,
-    "timestamp": "2026-05-11T20:49:03.732Z"
+    "timestamp": "2026-05-11T22:10:44.855Z"
   },
   "commodities": [
     {
@@ -40,11 +40,11 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.93,
-      "prev": 2.757,
-      "change": 0.173,
-      "changePct": 6.27,
-      "sinceInaugPct": -9
+      "price": 2.92,
+      "prev": 2.91,
+      "change": 0.01,
+      "changePct": 0.34,
+      "sinceInaugPct": -9.3
     },
     {
       "ticker": "RB=F",
@@ -77,9 +77,9 @@
       "inaugBaseline": 450,
       "decimals": 2,
       "price": 474.5,
-      "prev": 471.25,
-      "change": 3.25,
-      "changePct": 0.69,
+      "prev": 475,
+      "change": -0.5,
+      "changePct": -0.11,
       "sinceInaugPct": 5.4
     },
     {
