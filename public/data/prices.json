@@ -1,37 +1,37 @@
 {
-  "updatedAt": "2026-05-12T20:47:39.607Z",
+  "updatedAt": "2026-05-12T22:15:47.075Z",
   "oil": {
-    "price": 102.09,
-    "prevClose": 98.07,
-    "change": 4.02,
-    "changePct": 4.1,
-    "dayHigh": 102.72,
-    "dayLow": 98.02,
+    "price": 102.01,
+    "prevClose": 102.18,
+    "change": -0.17,
+    "changePct": -0.17,
+    "dayHigh": 102.26,
+    "dayLow": 102.01,
     "marketState": "CLOSED",
-    "lastTradeISO": "2026-05-12T23:00:00.000Z",
+    "lastTradeISO": "2026-05-13T23:00:00.000Z",
     "source": "stooq",
     "primarySource": "wti",
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 26.09,
-    "sinceInaugurationPct": 34.3,
-    "fuckupFactor": 48.3,
+    "sinceInauguration": 26.01,
+    "sinceInaugurationPct": 34.2,
+    "fuckupFactor": 48.2,
     "marketOpen": false,
     "brent": {
-      "price": 107.51,
+      "price": 107.66,
       "prevClose": 104.21,
-      "change": 3.3,
-      "changePct": 3.17,
+      "change": 3.45,
+      "changePct": 3.31,
       "dayHigh": 108.43,
       "dayLow": 104.31,
       "marketState": "CLOSED",
       "lastTradeISO": "2026-05-12T23:00:00.000Z",
       "source": "stooq",
-      "sinceInaugPct": 36.1
+      "sinceInaugPct": 36.3
     },
     "retailGasPrice": 4.504,
-    "timestamp": "2026-05-12T20:47:38.961Z"
+    "timestamp": "2026-05-12T22:15:46.249Z"
   },
   "commodities": [
     {
@@ -40,10 +40,10 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.833,
-      "prev": 2.91,
-      "change": -0.077,
-      "changePct": -2.65,
+      "price": 2.832,
+      "prev": 2.843,
+      "change": -0.011,
+      "changePct": -0.39,
       "sinceInaugPct": -12
     },
     {
@@ -76,11 +76,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 478.75,
+      "price": 478.5,
       "prev": 475.25,
-      "change": 3.5,
-      "changePct": 0.74,
-      "sinceInaugPct": 6.4
+      "change": 3.25,
+      "changePct": 0.68,
+      "sinceInaugPct": 6.3
     },
     {
       "ticker": "CF",
