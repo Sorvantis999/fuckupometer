@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-05-13T07:52:51.976Z",
+  "updatedAt": "2026-05-13T10:34:10.434Z",
   "oil": {
-    "price": 101.1,
+    "price": 102.2,
     "prevClose": 102.18,
-    "change": -1.08,
-    "changePct": -1.06,
-    "dayHigh": 102.26,
+    "change": 0.02,
+    "changePct": 0.02,
+    "dayHigh": 102.28,
     "dayLow": 100.57,
     "marketState": "CLOSED",
     "lastTradeISO": "2026-05-13T23:00:00.000Z",
@@ -14,24 +14,24 @@
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 25.1,
-    "sinceInaugurationPct": 33,
-    "fuckupFactor": 46.5,
+    "sinceInauguration": 26.2,
+    "sinceInaugurationPct": 34.5,
+    "fuckupFactor": 48.5,
     "marketOpen": false,
     "brent": {
-      "price": 106.7,
+      "price": 108.1,
       "prevClose": 107.77,
-      "change": -1.07,
-      "changePct": -0.99,
-      "dayHigh": 107.47,
+      "change": 0.33,
+      "changePct": 0.31,
+      "dayHigh": 108.18,
       "dayLow": 106.15,
       "marketState": "CLOSED",
       "lastTradeISO": "2026-05-13T23:00:00.000Z",
       "source": "stooq",
-      "sinceInaugPct": 35.1
+      "sinceInaugPct": 36.8
     },
     "retailGasPrice": 4.511,
-    "timestamp": "2026-05-13T07:52:51.068Z"
+    "timestamp": "2026-05-13T10:34:09.358Z"
   },
   "commodities": [
     {
@@ -64,11 +64,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 535,
       "decimals": 2,
-      "price": 671.12,
+      "price": 680.9,
       "prev": 679,
-      "change": -7.88,
-      "changePct": -1.16,
-      "sinceInaugPct": 25.4
+      "change": 1.9,
+      "changePct": 0.28,
+      "sinceInaugPct": 27.3
     },
     {
       "ticker": "ZC=F",
@@ -76,11 +76,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 479.4,
+      "price": 481.62,
       "prev": 480,
-      "change": -0.6,
-      "changePct": -0.13,
-      "sinceInaugPct": 6.5
+      "change": 1.62,
+      "changePct": 0.34,
+      "sinceInaugPct": 7
     },
     {
       "ticker": "CF",
