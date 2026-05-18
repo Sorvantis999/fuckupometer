@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-05-17T22:01:59.831Z",
+  "updatedAt": "2026-05-18T00:01:17.077Z",
   "oil": {
-    "price": 102.62,
+    "price": 102.38,
     "prevClose": 105.42,
-    "change": -2.8,
-    "changePct": -2.66,
+    "change": -3.04,
+    "changePct": -2.88,
     "dayHigh": 102.92,
     "dayLow": 101.69,
     "marketState": "CLOSED",
@@ -14,24 +14,24 @@
     "inaugurationPrice": 76,
     "peakPrice": 130,
     "conflictPeakActual": 119.48,
-    "sinceInauguration": 26.62,
-    "sinceInaugurationPct": 35,
-    "fuckupFactor": 49.3,
+    "sinceInauguration": 26.38,
+    "sinceInaugurationPct": 34.7,
+    "fuckupFactor": 48.9,
     "marketOpen": false,
     "brent": {
-      "price": 110.85,
+      "price": 110.47,
       "prevClose": 109.26,
-      "change": 1.59,
-      "changePct": 1.46,
+      "change": 1.21,
+      "changePct": 1.11,
       "dayHigh": 111.04,
-      "dayLow": 110.85,
+      "dayLow": 110.13,
       "marketState": "CLOSED",
       "lastTradeISO": "2026-05-18T23:00:00.000Z",
       "source": "stooq",
-      "sinceInaugPct": 40.3
+      "sinceInaugPct": 39.8
     },
     "retailGasPrice": 4.513,
-    "timestamp": "2026-05-17T22:01:59.337Z"
+    "timestamp": "2026-05-18T00:01:16.487Z"
   },
   "commodities": [
     {
@@ -40,11 +40,11 @@
       "unit": "$/MMBtu",
       "inaugBaseline": 3.22,
       "decimals": 3,
-      "price": 2.995,
+      "price": 3.018,
       "prev": 2.96,
-      "change": 0.035,
-      "changePct": 1.18,
-      "sinceInaugPct": -7
+      "change": 0.058,
+      "changePct": 1.96,
+      "sinceInaugPct": -6.3
     },
     {
       "ticker": "RB=F",
@@ -64,11 +64,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 535,
       "decimals": 2,
-      "price": 635.75,
-      "prev": 658,
-      "change": -22.25,
-      "changePct": -3.38,
-      "sinceInaugPct": 18.8
+      "price": 653.12,
+      "prev": 635.75,
+      "change": 17.37,
+      "changePct": 2.73,
+      "sinceInaugPct": 22.1
     },
     {
       "ticker": "ZC=F",
@@ -76,11 +76,11 @@
       "unit": "cents/bu",
       "inaugBaseline": 450,
       "decimals": 2,
-      "price": 455.75,
-      "prev": 467.5,
-      "change": -11.75,
-      "changePct": -2.51,
-      "sinceInaugPct": 1.3
+      "price": 468.12,
+      "prev": 455.75,
+      "change": 12.37,
+      "changePct": 2.71,
+      "sinceInaugPct": 4
     },
     {
       "ticker": "CF",
